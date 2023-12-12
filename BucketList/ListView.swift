@@ -10,30 +10,51 @@ import SwiftUI
 struct ListView: View {
     var body: some View {
         VStack{
-            NavigationStack {
-                List {
-                    ForEach(1..<21){ number in
-                        Text("やりたいこと \(number)")
-                            .listRowSeparatorTint(.blue, edges: /*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
+            ZStack(alignment: .bottomTrailing){
+                NavigationStack {
+                    List {
+                            ForEach(1..<21){ number in
+                                HStack {
+                                    Text("やりたいこと \(number)")
+                                        .listRowSeparatorTint(.blue, edges: /*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
+                                    
+                                }
+                        }
+                    }
+                    .scrollContentBackground(.hidden)
+                    .navigationBarTitleDisplayMode(.inline)
+                    .toolbarBackground(.gray, for: .navigationBar)
+                    .toolbarBackground(.visible, for: .navigationBar)
+                    .toolbar {
+                        ToolbarItem(placement: .navigationBarLeading) {
+                            NavigationLink(destination: FolderView()) {
+                                Image(systemName: "arrowshape.turn.up.backward")
+                                    .foregroundColor(.black)
+                            }
+                        }
+                        ToolbarItem(placement: .principal) {
+                            toolBar
+                        }
                     }
                 }
-                .scrollContentBackground(.hidden)
-                .navigationBarTitleDisplayMode(.inline)
-                .toolbarBackground(.gray, for: .navigationBar)
-                .toolbarBackground(.visible, for: .navigationBar)
-                .toolbar {
-                    ToolbarItem(placement: .principal) {
-                        toolBar
-                    }
+                HStack{
+                    Image(systemName: "list.bullet.circle.fill")
+                        .foregroundColor(.black)
+                        .font(.largeTitle)
+                    
+                    Image(systemName: "plus.circle.fill")
+                        .foregroundColor(.black)
+                        .font(.largeTitle)
+                        .padding()
+                    
+                }
                 
-                }
+                
             }
+              bottomArea
             
-            
-            Spacer()
-            
-            bottomArea
         }
+        
   }
 }
 
@@ -45,17 +66,19 @@ struct ListView: View {
 extension ListView {
     
     private var toolBar : some View {
-        VStack{
-            Text("2023年の自分磨きやりたいこと100")
-                .font(.headline)
-            HStack{
-                Text("2023/01/01~2023/12/31")
-                    .font(.subheadline)
-                    .padding(.trailing)
-                Text("達成率 20/100")
-                    .font(.subheadline)
-            }
+        
+                
+            VStack{
+                Text("2023年の自分磨きやりたいこと100")
+                    .font(.headline)
+                HStack{
+                    Text("2023/01/01~2023/12/31")
+                        .font(.subheadline)
+                        .padding(.trailing)
+                }
+            
         }
+        
     }
     
     private var bottomArea: some View {
