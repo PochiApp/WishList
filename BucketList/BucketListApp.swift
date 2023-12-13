@@ -9,9 +9,11 @@ import SwiftUI
 
 @main
 struct BucketListApp: App {
-    var body: some Scene {
-        WindowGroup {
-            FolderView()
+    private let persistence = PersistenceController.shared
+        var body: some Scene {
+            WindowGroup {
+                FolderView()
+                    .environment(\.managedObjectContext, persistence.container.viewContext)
+            }
         }
-    }
 }
