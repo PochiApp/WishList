@@ -6,8 +6,10 @@
 //
 
 import SwiftUI
+import CoreData
 
 struct FolderView: View {
+    
     var body: some View {
         VStack {
             ZStack(alignment: .bottomTrailing) {

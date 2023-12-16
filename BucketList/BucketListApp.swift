@@ -6,13 +6,14 @@
 //
 
 import SwiftUI
+import CoreData
 
 @main
 struct BucketListApp: App {
     private let persistence = PersistenceController.shared
         var body: some Scene {
             WindowGroup {
-                FolderView()
+                ListView()
                     .environment(\.managedObjectContext, persistence.container.viewContext)
             }
         }

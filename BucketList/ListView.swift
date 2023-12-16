@@ -6,16 +6,27 @@
 //
 
 import SwiftUI
+import CoreData
 
 struct ListView: View {
+    
+    @Environment(\.managedObjectContext) private var viewContext
+    
+    @FetchRequest(
+            sortDescriptors: [NSSortDescriptor(keyPath: \ListModel.text, ascending: true)],
+            animation: .default)
+        private var ListModels: FetchedResults<ListModel>
+    
+    @State var isShowListAdd = false
+    
     var body: some View {
         VStack{
             ZStack(alignment: .bottomTrailing){
                 NavigationStack {
                     List {
-                            ForEach(1..<21){ number in
+                            ForEach(ListModels){ ListModel in
                                 HStack {
-                                    Text("やりたいこと \(number)")
+                                    Text("ListModel")
                                         .listRowSeparatorTint(.blue, edges: /*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
                                     
                                 }
@@ -33,28 +44,37 @@ struct ListView: View {
                             }
                         }
                         ToolbarItem(placement: .principal) {
-                            toolBar
+                            navigationArea
                         }
                     }
                 }
                 HStack{
+                    
                     Image(systemName: "list.bullet.circle.fill")
                         .foregroundColor(.black)
                         .font(.largeTitle)
                     
-                    Image(systemName: "plus.circle.fill")
-                        .foregroundColor(.black)
-                        .font(.largeTitle)
-                        .padding()
-                    
+                    Button(action: {
+                        isShowListAdd.toggle()
+                    }, label: {
+                        Image(systemName: "plus.circle.fill")
+                            .foregroundColor(.black)
+                            .font(.largeTitle)
+                            .padding()
+                    })
+                    .sheet(isPresented: $isShowListAdd){
+                        
+                        AddListView(isShowListAdd: $isShowListAdd)
+                            .presentationDetents([.medium, .fraction(0.5)])
+                                
+                        }
+                    }
+  
                 }
                 
                 
             }
               bottomArea
-            
-        }
-        
   }
 }
 
@@ -65,7 +85,7 @@ struct ListView: View {
 
 extension ListView {
     
-    private var toolBar : some View {
+    private var navigationArea : some View {
         
                 
             VStack{

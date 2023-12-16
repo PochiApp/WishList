@@ -17,7 +17,6 @@ struct PersistenceController {
         let newListModel = ListModel(context: viewContext)
         newListModel.text = ""
         newListModel.category = ""
-        newListModel.limit = Date()
         newListModel.number = 1
         newListModel.achievement = false
         do {

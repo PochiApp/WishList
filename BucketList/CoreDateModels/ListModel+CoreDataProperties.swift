@@ -18,7 +18,6 @@ extension ListModel {
 
     @NSManaged public var text: String?
     @NSManaged public var category: String?
-    @NSManaged public var limit: Date?
     @NSManaged public var number: Int16
     @NSManaged public var achievement: Bool
 
