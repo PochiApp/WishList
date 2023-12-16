@@ -20,6 +20,7 @@
 		395828A12B2D1B07007E085C /* ListModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395828A02B2D1B07007E085C /* ListModels.swift */; };
 		395828A52B2D2356007E085C /* AddListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395828A42B2D2356007E085C /* AddListView.swift */; };
 		395828A72B2D75EE007E085C /* AddFolderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395828A62B2D75ED007E085C /* AddFolderView.swift */; };
+		395828A92B2DBF5C007E085C /* FolderModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395828A82B2DBF5C007E085C /* FolderModels.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,6 +38,7 @@
 		395828A02B2D1B07007E085C /* ListModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListModels.swift; sourceTree = "<group>"; };
 		395828A42B2D2356007E085C /* AddListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddListView.swift; sourceTree = "<group>"; };
 		395828A62B2D75ED007E085C /* AddFolderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFolderView.swift; sourceTree = "<group>"; };
+		395828A82B2DBF5C007E085C /* FolderModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderModels.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,6 +105,7 @@
 			isa = PBXGroup;
 			children = (
 				395828A02B2D1B07007E085C /* ListModels.swift */,
+				395828A82B2DBF5C007E085C /* FolderModels.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -201,6 +204,7 @@
 				3958285D2B21DB13007E085C /* BucketListApp.swift in Sources */,
 				395828712B2347FE007E085C /* ListView.swift in Sources */,
 				3958287C2B29C8CE007E085C /* Persistence.swift in Sources */,
+				395828A92B2DBF5C007E085C /* FolderModels.swift in Sources */,
 				395828A52B2D2356007E085C /* AddListView.swift in Sources */,
 				3958289D2B2B2316007E085C /* ListViewModel.swift in Sources */,
 				3958287A2B29C576007E085C /* ListModel+CoreDataProperties.swift in Sources */,
