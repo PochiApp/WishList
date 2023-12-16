@@ -23,58 +23,37 @@ struct ListView: View {
         VStack{
             ZStack(alignment: .bottomTrailing){
                 NavigationStack {
-                    List {
-                            ForEach(ListModels){ ListModel in
-                                HStack {
-                                    Text("ListModel")
-                                        .listRowSeparatorTint(.blue, edges: /*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
-                                    
-                                }
-                        }
-                    }
-                    .scrollContentBackground(.hidden)
-                    .navigationBarTitleDisplayMode(.inline)
-                    .toolbarBackground(.gray, for: .navigationBar)
-                    .toolbarBackground(.visible, for: .navigationBar)
-                    .toolbar {
-                        ToolbarItem(placement: .navigationBarLeading) {
-                            NavigationLink(destination: FolderView()) {
-                                Image(systemName: "arrowshape.turn.up.backward")
-                                    .foregroundColor(.black)
+                    listArea
+                        .scrollContentBackground(.hidden)
+                        .navigationBarTitleDisplayMode(.inline)
+                        .toolbarBackground(.gray, for: .navigationBar)
+                        .toolbarBackground(.visible, for: .navigationBar)
+                        .toolbar {
+                            ToolbarItem(placement: .navigationBarLeading) {
+                                backButton
+                            }
+                            ToolbarItem(placement: .principal) {
+                                navigationArea
+                            }
+                            
+                            ToolbarItemGroup(placement: .bottomBar){
+                                bottomArea
                             }
                         }
-                        ToolbarItem(placement: .principal) {
-                            navigationArea
-                        }
                     }
-                }
+                    
                 HStack{
                     
-                    Image(systemName: "list.bullet.circle.fill")
-                        .foregroundColor(.black)
-                        .font(.largeTitle)
+                    sortFloatingButton
                     
-                    Button(action: {
-                        isShowListAdd.toggle()
-                    }, label: {
-                        Image(systemName: "plus.circle.fill")
-                            .foregroundColor(.black)
-                            .font(.largeTitle)
-                            .padding()
-                    })
-                    .sheet(isPresented: $isShowListAdd){
-                        
-                        AddListView(isShowListAdd: $isShowListAdd)
-                            .presentationDetents([.medium, .fraction(0.5)])
-                                
-                        }
+                    plusFloatingButton
+                    
                     }
   
                 }
                 
                 
             }
-              bottomArea
   }
 }
 
@@ -84,6 +63,18 @@ struct ListView: View {
 }
 
 extension ListView {
+    
+    private var listArea : some View {
+        List {
+                ForEach(ListModels){ ListModel in
+                    HStack {
+                        Text("ListModel")
+                            .listRowSeparatorTint(.blue, edges: /*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
+                        
+                    }
+            }
+        }
+    }
     
     private var navigationArea : some View {
         
@@ -101,19 +92,48 @@ extension ListView {
         
     }
     
+    private var backButton : some View {
+        NavigationLink(destination: FolderView()) {
+            Image(systemName: "arrowshape.turn.up.backward")
+                .foregroundColor(.black)
+                .navigationBarBackButtonHidden(true)
+        }
+    }
+    
     private var bottomArea: some View {
-        HStack(spacing:100) {
+        HStack(spacing:90) {
+            
             Image(systemName: "folder")
-                .font(.largeTitle)
+                .font(.title2)
             
             Image(systemName: "gearshape")
-                .font(.largeTitle)
+                .font(.title2)
             
             Image(systemName: "square.and.arrow.up")
-                .font(.largeTitle)
-            
+                .font(.title2)
         }
-        .padding()
-        .background(.white)
+    }
+    
+    private var sortFloatingButton: some View {
+        Image(systemName: "list.bullet.circle.fill")
+            .foregroundColor(.black)
+            .font(.largeTitle)
+    }
+    
+    private var plusFloatingButton: some View {
+        Button(action: {
+            isShowListAdd.toggle()
+        }, label: {
+            Image(systemName: "plus.circle.fill")
+                .foregroundColor(.black)
+                .font(.largeTitle)
+                .padding()
+        })
+        .sheet(isPresented: $isShowListAdd){
+            
+            AddListView(isShowListAdd: $isShowListAdd)
+                .presentationDetents([.medium, .fraction(0.5)])
+                    
+            }
     }
 }

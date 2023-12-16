@@ -19,6 +19,7 @@
 		3958289D2B2B2316007E085C /* ListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3958289C2B2B2316007E085C /* ListViewModel.swift */; };
 		395828A12B2D1B07007E085C /* ListModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395828A02B2D1B07007E085C /* ListModels.swift */; };
 		395828A52B2D2356007E085C /* AddListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395828A42B2D2356007E085C /* AddListView.swift */; };
+		395828A72B2D75EE007E085C /* AddFolderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395828A62B2D75ED007E085C /* AddFolderView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,6 +36,7 @@
 		3958289C2B2B2316007E085C /* ListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewModel.swift; sourceTree = "<group>"; };
 		395828A02B2D1B07007E085C /* ListModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListModels.swift; sourceTree = "<group>"; };
 		395828A42B2D2356007E085C /* AddListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddListView.swift; sourceTree = "<group>"; };
+		395828A62B2D75ED007E085C /* AddFolderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFolderView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,6 +73,7 @@
 				395828762B29C1CF007E085C /* Models */,
 				395828722B234829007E085C /* Views */,
 				3958286E2B21E148007E085C /* FolderView.swift */,
+				395828A62B2D75ED007E085C /* AddFolderView.swift */,
 				395828702B2347FE007E085C /* ListView.swift */,
 				395828A42B2D2356007E085C /* AddListView.swift */,
 				395828A32B2D1CE0007E085C /* ViewModel */,
@@ -193,6 +196,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				395828A72B2D75EE007E085C /* AddFolderView.swift in Sources */,
 				3958286F2B21E148007E085C /* FolderView.swift in Sources */,
 				3958285D2B21DB13007E085C /* BucketListApp.swift in Sources */,
 				395828712B2347FE007E085C /* ListView.swift in Sources */,
