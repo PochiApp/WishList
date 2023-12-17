@@ -105,7 +105,7 @@ extension FolderView {
         .sheet(isPresented: $isShowFolderAdd){
             
             AddFolderView()
-
+                .presentationDetents([.large, .fraction(0.7)])
                     
             }
     }

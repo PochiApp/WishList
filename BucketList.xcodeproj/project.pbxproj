@@ -21,6 +21,7 @@
 		395828A52B2D2356007E085C /* AddListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395828A42B2D2356007E085C /* AddListView.swift */; };
 		395828A72B2D75EE007E085C /* AddFolderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395828A62B2D75ED007E085C /* AddFolderView.swift */; };
 		395828A92B2DBF5C007E085C /* FolderModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395828A82B2DBF5C007E085C /* FolderModels.swift */; };
+		39E54C662B2E70E000298D98 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39E54C652B2E70E000298D98 /* Colors.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -39,6 +40,7 @@
 		395828A42B2D2356007E085C /* AddListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddListView.swift; sourceTree = "<group>"; };
 		395828A62B2D75ED007E085C /* AddFolderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFolderView.swift; sourceTree = "<group>"; };
 		395828A82B2DBF5C007E085C /* FolderModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderModels.swift; sourceTree = "<group>"; };
+		39E54C652B2E70E000298D98 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +108,7 @@
 			children = (
 				395828A02B2D1B07007E085C /* ListModels.swift */,
 				395828A82B2DBF5C007E085C /* FolderModels.swift */,
+				39E54C652B2E70E000298D98 /* Colors.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -207,6 +210,7 @@
 				395828A92B2DBF5C007E085C /* FolderModels.swift in Sources */,
 				395828A52B2D2356007E085C /* AddListView.swift in Sources */,
 				3958289D2B2B2316007E085C /* ListViewModel.swift in Sources */,
+				39E54C662B2E70E000298D98 /* Colors.swift in Sources */,
 				3958287A2B29C576007E085C /* ListModel+CoreDataProperties.swift in Sources */,
 				395828752B29C152007E085C /* ListModel.xcdatamodeld in Sources */,
 				395828792B29C576007E085C /* ListModel+CoreDataClass.swift in Sources */,

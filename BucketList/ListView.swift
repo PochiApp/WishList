@@ -102,9 +102,11 @@ extension ListView {
     
     private var bottomArea: some View {
         HStack(spacing:90) {
-            
-            Image(systemName: "folder")
-                .font(.title2)
+            NavigationLink(destination: FolderView()) {
+                Image(systemName: "folder")
+                    .font(.title2)
+                    .foregroundColor(.black)
+            }
             
             Image(systemName: "gearshape")
                 .font(.title2)

@@ -14,8 +14,3 @@ struct FolderModels {
     var backColor = Color.white
     var backImage : UIImage?
 }
-
-struct Colors: Identifiable, Hashable {
-    var name: String
-    var colorsymbol: String
-}

@@ -14,36 +14,50 @@ struct AddFolderView: View {
         @State var selectedStartDate = Date()
         @State var selectedColor = Color.white
         
+        
         var body: some View {
             VStack {
-                
-                
-                Text("タイトル")
-                    .font(.title3)
-                    .frame(maxWidth: .infinity, alignment: .center)
-                
-                titleTextField
-                
-                Text("期限")
-                    .font(.title3)
-                    .frame(maxWidth: .infinity, alignment: .center)
-    
-                startDatePicker
+                NavigationStack{
+                    Text("タイトル")
+                        .font(.title3)
+                        .frame(maxWidth: .infinity, alignment: .center)
                     
-                finishDatePicker
+                    titleTextField
+                    
+                    Text("期限")
+                        .font(.title3)
+                        .frame(maxWidth: .infinity, alignment: .center)
+        
+                    startDatePicker
+                        
+                    finishDatePicker
 
-                Text("背景色")
-                    .font(.title3)
-                    .frame(maxWidth: .infinity, alignment: .center)
-                colorPicker
-                
-                Button(action: {}, label: {
-                    Text("追加")
-                        .font(.title2)
-                })
-                
+                    Text("背景色")
+                        .font(.title3)
+                        .frame(maxWidth: .infinity, alignment: .center)
+                    
+                    
+                    colorPicker
+                    
+                    
+                    Button(action: {}, label: {
+                        Text("作成")
+                            .font(.title2)
+                            .foregroundColor(.blue)
+                    })
+                    .navigationBarTitleDisplayMode(.inline)
+                    .toolbarBackground(.gray, for: .navigationBar)
+                    .toolbarBackground(.visible, for: .navigationBar)
+                    .toolbar{
+                        ToolbarItem(placement: .principal){
+                            Text("新規フォルダ作成")
+                                .font(.title3)
+                                .frame(maxHeight:300)
+                        }
+                    }
+                    
+                }
             }
-            
         }
     }
 
@@ -96,19 +110,52 @@ extension AddFolderView {
     }
     
     private var colorPicker : some View {
-        HStack {
-            ColorPicker(selection: $selectedColor){
-                
+        Picker("色を選択", selection:$selectedColor){
+                Text("white").tag(Color.white)
+                    .frame(maxWidth:300)
+                    .background(Color.white)
+                Text("red").tag(Color.red)
+                    .frame(maxWidth:300)
+                    .background(Color.red.opacity(0.7))
+                Text("orange").tag(Color.orange)
+                    .frame(maxWidth:300)
+                    .background(Color.orange.opacity(0.5))
+                Text("yellow").tag(Color.yellow)
+                    .frame(maxWidth:300)
+                    .background(Color.yellow.opacity(0.5))
+                Text("green").tag(Color.green)
+                    .frame(maxWidth:300)
+                    .background(Color.green.opacity(0.5))
+                Text("mint").tag(Color.mint)
+                    .frame(maxWidth:300)
+                    .background(Color.mint.opacity(0.5))
+                Text("teal").tag(Color.teal)
+                    .frame(maxWidth:300)
+                    .background(Color.teal.opacity(0.5))
+                Text("cyan").tag(Color.cyan)
+                    .frame(maxWidth:300)
+                    .background(Color.cyan.opacity(0.6))
+                Text("blue").tag(Color.blue)
+                    .frame(maxWidth:300)
+                    .background(Color.blue.opacity(0.5))
+                Text("indigo").tag(Color.indigo)
+                    .frame(maxWidth:300)
+                    .background(Color.indigo.opacity(0.5))
+                Text("purple").tag(Color.purple)
+                    .frame(maxWidth:300)
+                    .background(Color.purple.opacity(0.5))
+                Text("pink").tag(Color.pink)
+                    .frame(maxWidth:300)
+                    .background(Color.pink.opacity(0.2))
+                Text("brown").tag(Color.brown)
+                    .frame(maxWidth:300)
+                    .background(Color.brown.opacity(0.5))
+                Text("gray").tag(Color.gray)
+                    .frame(maxWidth:300)
+                    .background(Color.gray.opacity(0.3))
             }
-                .font(.title)
-                .labelsHidden()
-                .fixedSize()
-                
-
-            Rectangle()
-                .fill(selectedColor)
-                .frame(width: 300, height: 50)
-        }
-        .padding(.bottom)
+            .pickerStyle(WheelPickerStyle())
+            .frame(maxWidth:.infinity, maxHeight: 90)
+            .padding(.bottom)
     }
 }
