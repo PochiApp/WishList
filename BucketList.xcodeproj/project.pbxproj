@@ -12,7 +12,7 @@
 		395828642B21DB15007E085C /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 395828632B21DB15007E085C /* Preview Assets.xcassets */; };
 		3958286F2B21E148007E085C /* FolderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3958286E2B21E148007E085C /* FolderView.swift */; };
 		395828712B2347FE007E085C /* ListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395828702B2347FE007E085C /* ListView.swift */; };
-		395828752B29C152007E085C /* ListModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 395828732B29C152007E085C /* ListModel.xcdatamodeld */; };
+		395828752B29C152007E085C /* BucketList.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 395828732B29C152007E085C /* BucketList.xcdatamodeld */; };
 		395828792B29C576007E085C /* ListModel+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395828772B29C576007E085C /* ListModel+CoreDataClass.swift */; };
 		3958287A2B29C576007E085C /* ListModel+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395828782B29C576007E085C /* ListModel+CoreDataProperties.swift */; };
 		3958287C2B29C8CE007E085C /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3958287B2B29C8CE007E085C /* Persistence.swift */; };
@@ -22,6 +22,9 @@
 		395828A72B2D75EE007E085C /* AddFolderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395828A62B2D75ED007E085C /* AddFolderView.swift */; };
 		395828A92B2DBF5C007E085C /* FolderModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395828A82B2DBF5C007E085C /* FolderModels.swift */; };
 		39E54C662B2E70E000298D98 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39E54C652B2E70E000298D98 /* Colors.swift */; };
+		39E54C682B2E949100298D98 /* FolderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39E54C672B2E949100298D98 /* FolderViewModel.swift */; };
+		39E54C6B2B3068A800298D98 /* FolderModel+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39E54C692B3068A800298D98 /* FolderModel+CoreDataClass.swift */; };
+		39E54C6C2B3068A800298D98 /* FolderModel+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39E54C6A2B3068A800298D98 /* FolderModel+CoreDataProperties.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -41,6 +44,9 @@
 		395828A62B2D75ED007E085C /* AddFolderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFolderView.swift; sourceTree = "<group>"; };
 		395828A82B2DBF5C007E085C /* FolderModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderModels.swift; sourceTree = "<group>"; };
 		39E54C652B2E70E000298D98 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
+		39E54C672B2E949100298D98 /* FolderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderViewModel.swift; sourceTree = "<group>"; };
+		39E54C692B3068A800298D98 /* FolderModel+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FolderModel+CoreDataClass.swift"; sourceTree = "<group>"; };
+		39E54C6A2B3068A800298D98 /* FolderModel+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FolderModel+CoreDataProperties.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,10 +82,6 @@
 				3958285C2B21DB13007E085C /* BucketListApp.swift */,
 				395828762B29C1CF007E085C /* Models */,
 				395828722B234829007E085C /* Views */,
-				3958286E2B21E148007E085C /* FolderView.swift */,
-				395828A62B2D75ED007E085C /* AddFolderView.swift */,
-				395828702B2347FE007E085C /* ListView.swift */,
-				395828A42B2D2356007E085C /* AddListView.swift */,
 				395828A32B2D1CE0007E085C /* ViewModel */,
 				395828A22B2D1B29007E085C /* CoreDateModels */,
 				395828602B21DB15007E085C /* Assets.xcassets */,
@@ -99,6 +101,10 @@
 		395828722B234829007E085C /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				3958286E2B21E148007E085C /* FolderView.swift */,
+				395828A62B2D75ED007E085C /* AddFolderView.swift */,
+				395828702B2347FE007E085C /* ListView.swift */,
+				395828A42B2D2356007E085C /* AddListView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -106,8 +112,8 @@
 		395828762B29C1CF007E085C /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				395828A02B2D1B07007E085C /* ListModels.swift */,
 				395828A82B2DBF5C007E085C /* FolderModels.swift */,
+				395828A02B2D1B07007E085C /* ListModels.swift */,
 				39E54C652B2E70E000298D98 /* Colors.swift */,
 			);
 			path = Models;
@@ -116,7 +122,9 @@
 		395828A22B2D1B29007E085C /* CoreDateModels */ = {
 			isa = PBXGroup;
 			children = (
-				395828732B29C152007E085C /* ListModel.xcdatamodeld */,
+				395828732B29C152007E085C /* BucketList.xcdatamodeld */,
+				39E54C692B3068A800298D98 /* FolderModel+CoreDataClass.swift */,
+				39E54C6A2B3068A800298D98 /* FolderModel+CoreDataProperties.swift */,
 				395828772B29C576007E085C /* ListModel+CoreDataClass.swift */,
 				395828782B29C576007E085C /* ListModel+CoreDataProperties.swift */,
 				3958287B2B29C8CE007E085C /* Persistence.swift */,
@@ -127,6 +135,7 @@
 		395828A32B2D1CE0007E085C /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				39E54C672B2E949100298D98 /* FolderViewModel.swift */,
 				3958289C2B2B2316007E085C /* ListViewModel.swift */,
 			);
 			path = ViewModel;
@@ -209,12 +218,15 @@
 				3958287C2B29C8CE007E085C /* Persistence.swift in Sources */,
 				395828A92B2DBF5C007E085C /* FolderModels.swift in Sources */,
 				395828A52B2D2356007E085C /* AddListView.swift in Sources */,
+				39E54C6C2B3068A800298D98 /* FolderModel+CoreDataProperties.swift in Sources */,
 				3958289D2B2B2316007E085C /* ListViewModel.swift in Sources */,
 				39E54C662B2E70E000298D98 /* Colors.swift in Sources */,
 				3958287A2B29C576007E085C /* ListModel+CoreDataProperties.swift in Sources */,
-				395828752B29C152007E085C /* ListModel.xcdatamodeld in Sources */,
+				395828752B29C152007E085C /* BucketList.xcdatamodeld in Sources */,
 				395828792B29C576007E085C /* ListModel+CoreDataClass.swift in Sources */,
+				39E54C682B2E949100298D98 /* FolderViewModel.swift in Sources */,
 				395828A12B2D1B07007E085C /* ListModels.swift in Sources */,
+				39E54C6B2B3068A800298D98 /* FolderModel+CoreDataClass.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -422,13 +434,13 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		395828732B29C152007E085C /* ListModel.xcdatamodeld */ = {
+		395828732B29C152007E085C /* BucketList.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
 				395828742B29C152007E085C /* ListModel.xcdatamodel */,
 			);
 			currentVersion = 395828742B29C152007E085C /* ListModel.xcdatamodel */;
-			path = ListModel.xcdatamodeld;
+			path = BucketList.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};

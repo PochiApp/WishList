@@ -7,10 +7,10 @@
 
 import SwiftUI
 
-struct FolderModels {
+struct FolderModels : Identifiable{
     var title: String
-    var startDate: Date
-    var finishDate: Date
-    var backColor = Color.white
-    var backImage : UIImage?
+    var startDate: String
+    var finishDate: String
+    var backColor : Color
+    var id = UUID()
 }

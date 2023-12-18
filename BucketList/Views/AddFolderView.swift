@@ -12,8 +12,11 @@ struct AddFolderView: View {
         
         @State var textFieldTitle: String = ""
         @State var selectedStartDate = Date()
-        @State var selectedColor = Color.white
-        
+        @State var selectedFinishDate = Date()
+    @State var selectedColor = Color.white
+        @Binding var isShowFolderAdd : Bool
+    
+        let fm: FolderViewModel = FolderViewModel()
         
         var body: some View {
             VStack {
@@ -52,8 +55,15 @@ struct AddFolderView: View {
                         ToolbarItem(placement: .principal){
                             Text("新規フォルダ作成")
                                 .font(.title3)
-                                .frame(maxHeight:300)
+                            
                         }
+                        
+                        ToolbarItem(placement: .topBarTrailing) {
+                            
+                            cancelButton
+                            
+                            }
+                            
                     }
                     
                 }
@@ -61,9 +71,7 @@ struct AddFolderView: View {
         }
     }
 
-#Preview {
-    AddFolderView()
-}
+
 
 extension AddFolderView {
     
@@ -92,7 +100,7 @@ extension AddFolderView {
     }
     
     private var finishDatePicker : some View {
-        DatePicker(selection: $selectedStartDate,
+        DatePicker(selection: $selectedFinishDate,
                     displayedComponents: [.date]
             ){
                 HStack {
@@ -157,5 +165,19 @@ extension AddFolderView {
             .pickerStyle(WheelPickerStyle())
             .frame(maxWidth:.infinity, maxHeight: 90)
             .padding(.bottom)
+    }
+    
+    private var cancelButton : some View {
+        Button(action: {
+            isShowFolderAdd = false
+        }, label: {
+            Image(systemName: "clear.fill")
+                .font(.title3)
+                .foregroundColor(.black)
+        })
+    }
+    
+    private func makeNewFolder() {
+//        vm.addNewFolder()
     }
 }

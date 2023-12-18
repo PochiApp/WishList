@@ -29,7 +29,7 @@ struct ListView: View {
                         .toolbarBackground(.gray, for: .navigationBar)
                         .toolbarBackground(.visible, for: .navigationBar)
                         .toolbar {
-                            ToolbarItem(placement: .navigationBarLeading) {
+                            ToolbarItem(placement: .topBarLeading) {
                                 backButton
                             }
                             ToolbarItem(placement: .principal) {
