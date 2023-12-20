@@ -14,11 +14,11 @@ struct PersistenceController {
         let result = PersistenceController(inMemory: true)
         let viewContext = result.container.viewContext
         // MARK: 下2行はEntityの設定によって違う
-        let newListModel = ListModel(context: viewContext)
-        newListModel.text = ""
-        newListModel.category = ""
-        newListModel.number = 1
-        newListModel.achievement = false
+        let newFolderModel = FolderModel(context: viewContext)
+        newFolderModel.title = ""
+        newFolderModel.startDate = Date()
+        newFolderModel.finishDate = Date()
+        newFolderModel.backColor = Int16()
         do {
             try viewContext.save()
         } catch {
@@ -32,7 +32,7 @@ struct PersistenceController {
 
     init(inMemory: Bool = false) {
         // MARK: 下1行はEntityの設定によって違う
-        container = NSPersistentContainer(name: "ListModel")
+        container = NSPersistentContainer(name: "BucketList")
         if inMemory {
             container.persistentStoreDescriptions.first!.url = URL(fileURLWithPath: "/dev/null")
         }

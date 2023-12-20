@@ -8,13 +8,16 @@
 import SwiftUI
 
 struct AddFolderView: View {
-
         
+        @Environment (\.managedObjectContext)private var context
+        @ObservedObject var folderViewModel : FolderViewModel
+    
         @State var textFieldTitle: String = ""
         @State var selectedStartDate = Date()
         @State var selectedFinishDate = Date()
-    @State var selectedColor = Color.white
+        @State var selectedColor = Color.white
         @Binding var isShowFolderAdd : Bool
+        
     
         let fm: FolderViewModel = FolderViewModel()
         
@@ -43,7 +46,9 @@ struct AddFolderView: View {
                     colorPicker
                     
                     
-                    Button(action: {}, label: {
+                    Button(action: {
+                        folderViewModel.addData(context: context)
+                    }, label: {
                         Text("作成")
                             .font(.title2)
                             .foregroundColor(.blue)

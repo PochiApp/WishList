@@ -16,14 +16,10 @@ struct FolderView: View {
         entity: FolderModel.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \FolderModel.title, ascending: true)],
             animation: .default)
         private var fm: FetchedResults<FolderModel>
-    
     @State var isShowListView = false
     @State var isShowFolderAdd : Bool = false
-    var folders: [FolderModels] = [
-        FolderModels(title: "2023年の自分磨きやりたいこと100", startDate: "2023/01/01", finishDate: "2023/12/31", backColor: Color.red),
-        FolderModels(title: "自分を変える1年", startDate: "2023/01/01", finishDate: "2023/12/31", backColor: Color.blue),
-        FolderModels(title: "充実した2023年へ", startDate: "2023/01/01", finishDate: "2023/12/31",backColor: Color.yellow)
-    ]
+    let colorList: [Color] = [.white, .red, .orange, .yellow, .green, .mint, .teal, .cyan, .blue, .indigo, .purple, .pink, .brown, .gray]
+    
     
     var body: some View {
         VStack {
@@ -59,19 +55,19 @@ extension FolderView {
     
     private var folderArea: some View {
         ScrollView{
-            ForEach(folders){ folder in
+            ForEach(fm){ foldermodel in
                 Button(action: {
                     isShowListView.toggle()
                 }, label: {
                     Rectangle()
-                        .fill(folder.backColor)
+                        .fill(colorList[Int(foldermodel.backColor)])
                         .frame(width: 300, height: 150)
                         .overlay(
                             VStack(alignment: .center){
-                                Text("\(folder.startDate) ~ \(folder.finishDate)")
+                                Text("\(foldermodel.startDate!) ~ \(foldermodel.finishDate!)")
                                     .font(.system(size: 16))
                                     .padding(.top)
-                                Text("\(folder.title)")
+                                Text("\(foldermodel.title!)")
                                     .lineLimit(2)
                                     .font(.system(size: 18, weight: .semibold))
                                     .padding(.top)
