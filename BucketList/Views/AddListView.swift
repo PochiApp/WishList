@@ -44,7 +44,7 @@ struct AddListView: View {
                 .toolbarBackground(.visible, for: .navigationBar)
                 .toolbar{
                     ToolbarItem(placement: .principal){
-                        Text("新規フォルダ作成")
+                        Text("やりたいことリスト作成")
                             .font(.title3)
                         
                     }

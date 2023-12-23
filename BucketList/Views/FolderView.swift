@@ -19,6 +19,7 @@ struct FolderView: View {
     @State var isShowListView = false
     @State var isShowFolderAdd : Bool = false
     let colorList: [Color] = [.white, .red, .orange, .yellow, .green, .mint, .teal, .cyan, .blue, .indigo, .purple, .pink, .brown, .gray]
+    @StateObject private var folderViewModel = FolderViewModel()
     
     
     var body: some View {
@@ -47,7 +48,7 @@ struct FolderView: View {
         }
 
 #Preview {
-    FolderView()
+    FolderView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
 }
 
 extension FolderView {
@@ -64,7 +65,7 @@ extension FolderView {
                         .frame(width: 300, height: 150)
                         .overlay(
                             VStack(alignment: .center){
-                                Text("\(foldermodel.startDate!) ~ \(foldermodel.finishDate!)")
+                                Text("\(foldermodel.startDateString!) ~ \(foldermodel.finishDateString!)")
                                     .font(.system(size: 16))
                                     .padding(.top)
                                 Text("\(foldermodel.title!)")
@@ -101,7 +102,7 @@ extension FolderView {
         })
         .sheet(isPresented: $isShowFolderAdd){
             
-            AddFolderView(isShowFolderAdd: $isShowFolderAdd)
+            AddFolderView(folderViewModel: folderViewModel, isShowFolderAdd: $isShowFolderAdd)
                 .presentationDetents([.large, .fraction(0.7)])
                     
             }

@@ -10,20 +10,22 @@ import CoreData
 
 class FolderViewModel : ObservableObject{
     
-    @Published var title = ""
-    @Published var startDate = Date()
-    @Published var finishDate = Date()
+    @Published var textFieldTitle = ""
+    @Published var startDateString = ""
+    @Published var finishDateString = ""
     @Published var backColor = Int16()
     
    
-    func addData (context: NSManagedObjectContext) {
+    func addNewFolder (context: NSManagedObjectContext) {
         let newFolderData = FolderModel(context:context)
-        newFolderData.title = title
-        newFolderData.startDate = formattedStartDateString()
-        newFolderData.finishDate = finishDate
-        newFolderData.backColor = backColor
+        newFolderData.title = textFieldTitle
+        newFolderData.startDateString = startDateString
+        newFolderData.finishDateString = finishDateString
+        newFolderData.backColor = 7
         
-        do { 
+        print(textFieldTitle)
+        
+        do {
             try context.save()
         }
         catch {
@@ -31,11 +33,11 @@ class FolderViewModel : ObservableObject{
         }
     }
     
-    private var formattedStartDateString : String {
+    func formattedDateString(date: Date) -> String {
         let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        formatter.date(from: startDate)
-        return formatter.string(from: startDate)
+        formatter.locale = Locale(identifier:"ja_JP")
+        formatter.dateFormat = "yyyy/MM/dd"
+        return formatter.string(from: date)
         
     }
 }

@@ -16,8 +16,8 @@ struct PersistenceController {
         // MARK: 下2行はEntityの設定によって違う
         let newFolderModel = FolderModel(context: viewContext)
         newFolderModel.title = ""
-        newFolderModel.startDate = Date()
-        newFolderModel.finishDate = Date()
+        newFolderModel.startDateString = ""
+        newFolderModel.finishDateString = ""
         newFolderModel.backColor = Int16()
         do {
             try viewContext.save()
