@@ -10,15 +10,28 @@ import CoreData
 
 struct FolderView: View {
     
-    @Environment(\.managedObjectContext) private var viewContext
+    @Environment(\.managedObjectContext) private var context
     
     @FetchRequest(
-        entity: FolderModel.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \FolderModel.title, ascending: true)],
+        entity: FolderModel.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \FolderModel.startDateString, ascending: true)],
             animation: .default)
         private var fm: FetchedResults<FolderModel>
     @State var isShowListView = false
     @State var isShowFolderAdd : Bool = false
-    let colorList: [Color] = [.white, .red, .orange, .yellow, .green, .mint, .teal, .cyan, .blue, .indigo, .purple, .pink, .brown, .gray]
+    let colorList: [Color] = [.white, 
+                              .red.opacity(0.7),
+                              .orange.opacity(0.5),
+                              .yellow.opacity(0.5),
+                              .green.opacity(0.5),
+                              .mint.opacity(0.5),
+                              .teal.opacity(0.5),
+                              .cyan.opacity(0.6),
+                              .blue.opacity(0.5),
+                              .indigo.opacity(0.5),
+                              .purple.opacity(0.5),
+                              .pink.opacity(0.2),
+                              .brown.opacity(0.5),
+                              .gray.opacity(0.3)]
     @StateObject private var folderViewModel = FolderViewModel()
     
     
@@ -61,7 +74,7 @@ extension FolderView {
                     isShowListView.toggle()
                 }, label: {
                     Rectangle()
-                        .fill(colorList[Int(foldermodel.backColor)])
+                        .fill(colorList[foldermodel.backColor as! Int])
                         .frame(width: 300, height: 150)
                         .overlay(
                             VStack(alignment: .center){
@@ -81,6 +94,17 @@ extension FolderView {
                         )
                         
                 })
+                .contextMenu(ContextMenu(menuItems: {
+                    Button(action: {
+                        context.delete(foldermodel)
+                        try? context.save()
+                    }, label: {
+                        Text("削除")
+                    })
+                    Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/, label: {
+                        Text("編集")
+                    })
+                }))
                 .navigationDestination(isPresented: $isShowListView, destination: {
                     ListView()
                 })
@@ -103,7 +127,7 @@ extension FolderView {
         .sheet(isPresented: $isShowFolderAdd){
             
             AddFolderView(folderViewModel: folderViewModel, isShowFolderAdd: $isShowFolderAdd)
-                .presentationDetents([.large, .fraction(0.7)])
+                .presentationDetents([.large, .fraction(0.9)])
                     
             }
     }
@@ -122,5 +146,6 @@ extension FolderView {
         }
         
     }
+
     
 }

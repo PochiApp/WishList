@@ -18,7 +18,7 @@ struct PersistenceController {
         newFolderModel.title = ""
         newFolderModel.startDateString = ""
         newFolderModel.finishDateString = ""
-        newFolderModel.backColor = Int16()
+        newFolderModel.backColor = NSNumber()
         do {
             try viewContext.save()
         } catch {

@@ -19,7 +19,7 @@ extension FolderModel {
     @NSManaged public var title: String?
     @NSManaged public var startDateString: String?
     @NSManaged public var finishDateString: String?
-    @NSManaged public var backColor: Int16
+    @NSManaged public var backColor: NSNumber?
 
 }
 

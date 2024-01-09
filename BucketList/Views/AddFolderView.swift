@@ -13,15 +13,10 @@ struct AddFolderView: View {
         @Environment (\.managedObjectContext)private var context
         @Environment (\.dismiss) var dismiss
         @ObservedObject var folderViewModel : FolderViewModel
-    
-        @State var textFieldTitle: String = ""
-        @State var selectedStartDate = Date()
-        @State var selectedFinishDate = Date()
-        @State var selectedColor = Int16()
+        @State var inputTitle: String = ""
+        @State var selectedColor = 0
         @Binding var isShowFolderAdd : Bool
-    
-        @State var startDateString = ""
-        @State var finishDateString = ""
+        @FocusState var textIsActive : Bool
         
         var body: some View {
             VStack {
@@ -48,19 +43,9 @@ struct AddFolderView: View {
                     colorPicker
                     
                     
-                    Button(action: {
-                        startDateString = folderViewModel.formattedDateString(date: selectedStartDate)
-                        finishDateString = folderViewModel.formattedDateString(date: selectedFinishDate)
-                        folderViewModel.addNewFolder(context: context)
-                        
-                        dismiss()
-                    }, label: {
-                        Text("作成")
-                            .font(.title2)
-                            .foregroundColor(.blue)
-                    })
+                   addFolderButton
                     .navigationBarTitleDisplayMode(.inline)
-                    .toolbarBackground(.gray, for: .navigationBar)
+                    .toolbarBackground(.gray.opacity(0.5), for: .navigationBar)
                     .toolbarBackground(.visible, for: .navigationBar)
                     .toolbar{
                         ToolbarItem(placement: .principal){
@@ -78,6 +63,9 @@ struct AddFolderView: View {
                     }
                     
                 }
+                .onTapGesture {
+                    textIsActive = false
+                }
             }
         }
     }
@@ -87,14 +75,16 @@ struct AddFolderView: View {
 extension AddFolderView {
     
     private var titleTextField : some View {
-        TextField("", text: $textFieldTitle)
-            .frame(maxHeight: 40, alignment: .leading)
+        TextField("", text: $inputTitle)
+            .frame(maxWidth: 350, maxHeight: 40, alignment: .leading)
             .background(Color(uiColor: .secondarySystemBackground))
+            .textFieldStyle(.roundedBorder)
+            .focused($textIsActive)
             .padding(.bottom,10)
     }
     
     private var startDatePicker : some View {
-        DatePicker(selection: $selectedStartDate,
+        DatePicker(selection: $folderViewModel.selectedStartDate,
                     displayedComponents: [.date]
             ){
                 HStack {
@@ -104,6 +94,7 @@ extension AddFolderView {
                 
                     
             }
+            .datePickerStyle(.compact)
             .environment(\.locale, Locale(identifier: "ja_JP"))
             .fixedSize()
             .accentColor(.gray)
@@ -111,7 +102,7 @@ extension AddFolderView {
     }
     
     private var finishDatePicker : some View {
-        DatePicker(selection: $selectedFinishDate,
+        DatePicker(selection: $folderViewModel.selectedFinishDate,
                     displayedComponents: [.date]
             ){
                 HStack {
@@ -188,5 +179,21 @@ extension AddFolderView {
         })
     }
     
-
+    private var addFolderButton : some View {
+        Button(action: {
+            
+            folderViewModel.backColor = selectedColor
+            folderViewModel.title = inputTitle
+            folderViewModel.addNewFolder(context: context)
+            
+            inputTitle = ""
+            
+            dismiss()
+            
+        }, label: {
+            Text("作成")
+                .font(.title2)
+                .foregroundColor(.blue)
+        })
+    }
 }

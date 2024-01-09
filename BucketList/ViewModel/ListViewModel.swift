@@ -9,7 +9,6 @@ import SwiftUI
 
 class ListViewModel {
     
-    let list1 = ListModels(number: 1, text: "ディズニーに行く", category: "旅行", achievement: false)
     
     var body: some View {
         VStack {
