@@ -22,8 +22,8 @@ class FolderViewModel : ObservableObject{
     func addNewFolder (context: NSManagedObjectContext) {
         let newFolderData = FolderModel(context:context)
         newFolderData.title = title
-        newFolderData.startDateString = formattedDateString(date: selectedStartDate)
-        newFolderData.finishDateString = formattedDateString(date: selectedFinishDate)
+        newFolderData.startDate = selectedStartDate
+        newFolderData.finishDate = selectedFinishDate
         newFolderData.backColor = NSNumber(value: backColor)
         
         do {

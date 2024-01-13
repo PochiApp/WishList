@@ -17,8 +17,8 @@ extension FolderModel {
     }
 
     @NSManaged public var title: String?
-    @NSManaged public var startDateString: String?
-    @NSManaged public var finishDateString: String?
+    @NSManaged public var startDate: Date?
+    @NSManaged public var finishDate: Date?
     @NSManaged public var backColor: NSNumber?
 
 }

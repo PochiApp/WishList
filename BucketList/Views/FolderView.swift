@@ -18,7 +18,9 @@ struct FolderView: View {
         private var fm: FetchedResults<FolderModel>
     @State var isShowListView = false
     @State var isShowFolderAdd : Bool = false
-    let colorList: [Color] = [.white, 
+    @State var isShowEditFolder : Bool = false
+    
+    let colorList: [Color] = [.white,
                               .red.opacity(0.7),
                               .orange.opacity(0.5),
                               .yellow.opacity(0.5),
@@ -78,7 +80,7 @@ extension FolderView {
                         .frame(width: 300, height: 150)
                         .overlay(
                             VStack(alignment: .center){
-                                Text("\(foldermodel.startDateString!) ~ \(foldermodel.finishDateString!)")
+                                Text("\(folderViewModel.formattedDateString(date: foldermodel.startDate)!) ~ \(folderViewModel.formattedDateString(date: foldermodel.startDate)!)")
                                     .font(.system(size: 16))
                                     .padding(.top)
                                 Text("\(foldermodel.title!)")
@@ -101,9 +103,16 @@ extension FolderView {
                     }, label: {
                         Text("削除")
                     })
-                    Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/, label: {
+                    Button(action: {
+                        isShowEditFolder.toggle()
+                    }, label: {
                         Text("編集")
                     })
+                    .sheet(isPresented: $isShowEditFolder) {
+                        
+                        EditFolderView(foldermodel : foldermodel)
+                            .presentationDentents(.large)
+                    }
                 }))
                 .navigationDestination(isPresented: $isShowListView, destination: {
                     ListView()
