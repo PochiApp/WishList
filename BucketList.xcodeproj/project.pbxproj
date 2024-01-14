@@ -18,11 +18,10 @@
 		3958287C2B29C8CE007E085C /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3958287B2B29C8CE007E085C /* Persistence.swift */; };
 		3958289D2B2B2316007E085C /* ListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3958289C2B2B2316007E085C /* ListViewModel.swift */; };
 		395828A52B2D2356007E085C /* AddListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395828A42B2D2356007E085C /* AddListView.swift */; };
-		395828A72B2D75EE007E085C /* AddFolderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395828A62B2D75ED007E085C /* AddFolderView.swift */; };
+		395828A72B2D75EE007E085C /* WriteFolderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395828A62B2D75ED007E085C /* WriteFolderView.swift */; };
 		39E54C682B2E949100298D98 /* FolderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39E54C672B2E949100298D98 /* FolderViewModel.swift */; };
 		39E54C6B2B3068A800298D98 /* FolderModel+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39E54C692B3068A800298D98 /* FolderModel+CoreDataClass.swift */; };
 		39E54C6C2B3068A800298D98 /* FolderModel+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39E54C6A2B3068A800298D98 /* FolderModel+CoreDataProperties.swift */; };
-		39E54C6E2B4D6B6800298D98 /* EditFolderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39E54C6D2B4D6B6800298D98 /* EditFolderView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,11 +37,10 @@
 		3958287B2B29C8CE007E085C /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		3958289C2B2B2316007E085C /* ListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewModel.swift; sourceTree = "<group>"; };
 		395828A42B2D2356007E085C /* AddListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddListView.swift; sourceTree = "<group>"; };
-		395828A62B2D75ED007E085C /* AddFolderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFolderView.swift; sourceTree = "<group>"; };
+		395828A62B2D75ED007E085C /* WriteFolderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WriteFolderView.swift; sourceTree = "<group>"; };
 		39E54C672B2E949100298D98 /* FolderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderViewModel.swift; sourceTree = "<group>"; };
 		39E54C692B3068A800298D98 /* FolderModel+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FolderModel+CoreDataClass.swift"; sourceTree = "<group>"; };
 		39E54C6A2B3068A800298D98 /* FolderModel+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FolderModel+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		39E54C6D2B4D6B6800298D98 /* EditFolderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditFolderView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,8 +95,7 @@
 			isa = PBXGroup;
 			children = (
 				3958286E2B21E148007E085C /* FolderView.swift */,
-				395828A62B2D75ED007E085C /* AddFolderView.swift */,
-				39E54C6D2B4D6B6800298D98 /* EditFolderView.swift */,
+				395828A62B2D75ED007E085C /* WriteFolderView.swift */,
 				395828702B2347FE007E085C /* ListView.swift */,
 				395828A42B2D2356007E085C /* AddListView.swift */,
 			);
@@ -197,7 +194,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				395828A72B2D75EE007E085C /* AddFolderView.swift in Sources */,
+				395828A72B2D75EE007E085C /* WriteFolderView.swift in Sources */,
 				3958286F2B21E148007E085C /* FolderView.swift in Sources */,
 				3958285D2B21DB13007E085C /* BucketListApp.swift in Sources */,
 				395828712B2347FE007E085C /* ListView.swift in Sources */,
@@ -207,7 +204,6 @@
 				3958289D2B2B2316007E085C /* ListViewModel.swift in Sources */,
 				3958287A2B29C576007E085C /* ListModel+CoreDataProperties.swift in Sources */,
 				395828752B29C152007E085C /* BucketList.xcdatamodeld in Sources */,
-				39E54C6E2B4D6B6800298D98 /* EditFolderView.swift in Sources */,
 				395828792B29C576007E085C /* ListModel+CoreDataClass.swift in Sources */,
 				39E54C682B2E949100298D98 /* FolderViewModel.swift in Sources */,
 				39E54C6B2B3068A800298D98 /* FolderModel+CoreDataClass.swift in Sources */,

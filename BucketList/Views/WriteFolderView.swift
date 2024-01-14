@@ -1,5 +1,5 @@
 //
-//  AddFolderView.swift
+//  WriteFolderView.swift
 //  BucketList
 //
 //  Created by 嶺澤美帆 on 2023/12/16.
@@ -8,15 +8,14 @@
 import SwiftUI
 import CoreData
 
-struct AddFolderView: View {
+struct WriteFolderView: View {
         
         @Environment (\.managedObjectContext)private var context
         @Environment (\.dismiss) var dismiss
         @ObservedObject var folderViewModel : FolderViewModel
         @State var inputTitle: String = ""
-        @State var selectedColor = 0
-        @Binding var isShowFolderAdd : Bool
-        @FocusState var textIsActive : Bool
+        @Binding var isShowFolderWrite: Bool
+        @FocusState var textIsActive: Bool
         
         var body: some View {
             VStack {
@@ -72,10 +71,10 @@ struct AddFolderView: View {
 
 
 
-extension AddFolderView {
+extension WriteFolderView {
     
     private var titleTextField : some View {
-        TextField("", text: $inputTitle)
+        TextField("", text: $folderViewModel.title)
             .frame(maxWidth: 350, maxHeight: 40, alignment: .leading)
             .background(Color(uiColor: .secondarySystemBackground))
             .textFieldStyle(.roundedBorder)
@@ -120,7 +119,7 @@ extension AddFolderView {
     }
     
     private var colorPicker : some View {
-        Picker("色を選択", selection:$selectedColor){
+        Picker("色を選択", selection:$folderViewModel.backColor){
                 Text("white").tag(0)
                     .frame(maxWidth:300)
                     .background(Color.white)
@@ -171,7 +170,7 @@ extension AddFolderView {
     
     private var cancelButton : some View {
         Button(action: {
-            isShowFolderAdd = false
+            isShowFolderWrite = false
         }, label: {
             Image(systemName: "clear.fill")
                 .font(.title3)
@@ -182,16 +181,12 @@ extension AddFolderView {
     private var addFolderButton : some View {
         Button(action: {
             
-            folderViewModel.backColor = selectedColor
-            folderViewModel.title = inputTitle
-            folderViewModel.addNewFolder(context: context)
-            
-            inputTitle = ""
+            folderViewModel.writeFolder(context: context)
             
             dismiss()
             
         }, label: {
-            Text("作成")
+            Text("保存")
                 .font(.title2)
                 .foregroundColor(.blue)
         })

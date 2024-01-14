@@ -13,13 +13,13 @@ struct FolderView: View {
     @Environment(\.managedObjectContext) private var context
     
     @FetchRequest(
-        entity: FolderModel.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \FolderModel.startDateString, ascending: true)],
+        entity: FolderModel.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \FolderModel.startDate, ascending: true)],
             animation: .default)
         private var fm: FetchedResults<FolderModel>
+    @StateObject var folderViewModel = FolderViewModel()
     @State var isShowListView = false
-    @State var isShowFolderAdd : Bool = false
-    @State var isShowEditFolder : Bool = false
-    
+    @State var isShowFolderWrite: Bool = false
+   
     let colorList: [Color] = [.white,
                               .red.opacity(0.7),
                               .orange.opacity(0.5),
@@ -34,8 +34,6 @@ struct FolderView: View {
                               .pink.opacity(0.2),
                               .brown.opacity(0.5),
                               .gray.opacity(0.3)]
-    @StateObject private var folderViewModel = FolderViewModel()
-    
     
     var body: some View {
         VStack {
@@ -76,7 +74,7 @@ extension FolderView {
                     isShowListView.toggle()
                 }, label: {
                     Rectangle()
-                        .fill(colorList[foldermodel.backColor as! Int])
+                        .fill(colorList[foldermodel.backColor])
                         .frame(width: 300, height: 150)
                         .overlay(
                             VStack(alignment: .center){
@@ -104,14 +102,15 @@ extension FolderView {
                         Text("削除")
                     })
                     Button(action: {
-                        isShowEditFolder.toggle()
+                        isShowFolderWrite.toggle()
+                        folderViewModel.editFolder(upFolder: foldermodel)
                     }, label: {
                         Text("編集")
                     })
-                    .sheet(isPresented: $isShowEditFolder) {
+                    .sheet(isPresented: $isShowFolderWrite) {
                         
-                        EditFolderView(foldermodel : foldermodel)
-                            .presentationDentents(.large)
+                        WriteFolderView(foldermodel : foldermodel)
+                            .presentationDentents([.large])
                     }
                 }))
                 .navigationDestination(isPresented: $isShowListView, destination: {
@@ -126,16 +125,16 @@ extension FolderView {
     
     private var floatingButton: some View {
         Button(action: {
-            isShowFolderAdd.toggle()
+            isShowFolderWrite.toggle()
         }, label: {
             Image(systemName: "plus.circle.fill")
                 .foregroundColor(.black)
                 .font(.largeTitle)
                 .padding()
         })
-        .sheet(isPresented: $isShowFolderAdd){
+        .sheet(isPresented: $isShowFolderWrite){
             
-            AddFolderView(folderViewModel: folderViewModel, isShowFolderAdd: $isShowFolderAdd)
+            WriteFolderView(folderViewModel: folderViewModel, isShowFolderWrite: $isShowFolderWrite)
                 .presentationDetents([.large, .fraction(0.9)])
                     
             }

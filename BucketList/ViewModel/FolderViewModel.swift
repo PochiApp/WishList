@@ -13,21 +13,45 @@ class FolderViewModel : ObservableObject{
     @Published var title = ""
     @Published var selectedStartDate = Date()
     @Published var selectedFinishDate = Date()
-    @Published var backColor = 0
+    @Published var backColor = Int16(0)
+    @Published var updateFolder: FolderModel!
     
     @State var startDateString = ""
     @State var finishDateString = ""
     
    
-    func addNewFolder (context: NSManagedObjectContext) {
+    func writeFolder (context: NSManagedObjectContext) {
+        
+        if updateFolder != nil {
+            
+            updateFolder.title = title
+            updateFolder.startDate = selectedStartDate
+            updateFolder.finishDate = selectedFinishDate
+            updateFolder.backColor = Int16(backColor)
+            
+            try! context.save()
+            
+            updateFolder = nil
+            
+            title = ""
+            selectedStartDate = Date()
+            selectedFinishDate = Date()
+            backColor = Int16(0)
+            
+        }
         let newFolderData = FolderModel(context:context)
         newFolderData.title = title
         newFolderData.startDate = selectedStartDate
         newFolderData.finishDate = selectedFinishDate
-        newFolderData.backColor = NSNumber(value: backColor)
+        newFolderData.backColor = Int16(backColor)
         
         do {
             try context.save()
+            
+            title = ""
+            selectedStartDate = Date()
+            selectedFinishDate = Date()
+            backColor = Int16(0)
         }
         catch {
             print("新しいフォルダーが作れません")
@@ -42,18 +66,14 @@ class FolderViewModel : ObservableObject{
         
     }
     
-    func editFolder (updateFolder: FolderModel) {
-        let newFolderData = FolderModel(context:context)
-        newFolderData.title = title
-        newFolderData.startDateString = formattedDateString(date: selectedStartDate)
-        newFolderData.finishDateString = formattedDateString(date: selectedFinishDate)
-        newFolderData.backColor = NSNumber(value: backColor)
+    func editFolder (upFolder: FolderModel) {
+        updateFolder = upFolder
         
-        do {
-            try context.save()
-        }
-        catch {
-            print("新しいフォルダーが作れません")
-        }
+        title = updateFolder.title ?? ""
+        selectedStartDate = updateFolder.startDate ?? Date()
+        selectedFinishDate = updateFolder.finishDate ?? Date()
+        backColor = updateFolder.backColor
+        
+        
     }
 }
