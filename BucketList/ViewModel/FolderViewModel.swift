@@ -38,6 +38,7 @@ class FolderViewModel : ObservableObject{
             selectedFinishDate = Date()
             backColor = Int16(0)
             
+            return
         }
         let newFolderData = FolderModel(context:context)
         newFolderData.title = title
@@ -58,7 +59,7 @@ class FolderViewModel : ObservableObject{
         }
     }
     
-    private func formattedDateString(date: Date) -> String {
+    func formattedDateString(date: Date) -> String {
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier:"ja_JP")
         formatter.dateFormat = "yyyy/MM/dd"

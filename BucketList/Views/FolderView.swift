@@ -69,16 +69,16 @@ extension FolderView {
     
     private var folderArea: some View {
         ScrollView{
-            ForEach(fm){ foldermodel in
+            ForEach(fm){foldermodel in
                 Button(action: {
                     isShowListView.toggle()
                 }, label: {
                     Rectangle()
-                        .fill(colorList[foldermodel.backColor])
+                        .fill(colorList[Int(foldermodel.backColor)])
                         .frame(width: 300, height: 150)
                         .overlay(
                             VStack(alignment: .center){
-                                Text("\(folderViewModel.formattedDateString(date: foldermodel.startDate)!) ~ \(folderViewModel.formattedDateString(date: foldermodel.startDate)!)")
+                                Text("\(folderViewModel.formattedDateString(date: foldermodel.startDate ?? Date())) ~ \(folderViewModel.formattedDateString(date: foldermodel.finishDate ?? Date()))")
                                     .font(.system(size: 16))
                                     .padding(.top)
                                 Text("\(foldermodel.title!)")
@@ -109,8 +109,8 @@ extension FolderView {
                     })
                     .sheet(isPresented: $isShowFolderWrite) {
                         
-                        WriteFolderView(foldermodel : foldermodel)
-                            .presentationDentents([.large])
+                        WriteFolderView(folderViewModel : folderViewModel, isShowFolderWrite: $isShowFolderWrite)
+                            .presentationDetents([.large])
                     }
                 }))
                 .navigationDestination(isPresented: $isShowListView, destination: {
