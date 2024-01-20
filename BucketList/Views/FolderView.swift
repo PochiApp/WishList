@@ -13,10 +13,10 @@ struct FolderView: View {
     @Environment(\.managedObjectContext) private var context
     
     @FetchRequest(
-        entity: FolderModel.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \FolderModel.startDate, ascending: true)],
+        entity: FolderModel.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \FolderModel.writeDate, ascending: false)],
             animation: .default)
         private var fm: FetchedResults<FolderModel>
-    @StateObject var folderViewModel = FolderViewModel()
+    @StateObject var bucketViewModel = BucketViewModel()
     @State var isShowListView = false
     @State var isShowFolderWrite: Bool = false
    
@@ -78,7 +78,7 @@ extension FolderView {
                         .frame(width: 300, height: 150)
                         .overlay(
                             VStack(alignment: .center){
-                                Text("\(folderViewModel.formattedDateString(date: foldermodel.startDate ?? Date())) ~ \(folderViewModel.formattedDateString(date: foldermodel.finishDate ?? Date()))")
+                                Text("\(bucketViewModel.formattedDateString(date: foldermodel.startDate ?? Date())) ~ \(bucketViewModel.formattedDateString(date: foldermodel.finishDate ?? Date()))")
                                     .font(.system(size: 16))
                                     .padding(.top)
                                 Text("\(foldermodel.title!)")
@@ -103,18 +103,19 @@ extension FolderView {
                     })
                     Button(action: {
                         isShowFolderWrite.toggle()
-                        folderViewModel.editFolder(upFolder: foldermodel)
+                        bucketViewModel.editFolder(upFolder: foldermodel)
                     }, label: {
                         Text("編集")
                     })
                     .sheet(isPresented: $isShowFolderWrite) {
                         
-                        WriteFolderView(folderViewModel : folderViewModel, isShowFolderWrite: $isShowFolderWrite)
+                        WriteFolderView(bucketViewModel : bucketViewModel, isShowFolderWrite: $isShowFolderWrite)
                             .presentationDetents([.large])
                     }
                 }))
                 .navigationDestination(isPresented: $isShowListView, destination: {
-                    ListView()
+                    ListView(bucketViewModel: bucketViewModel, selectedFolder: foldermodel)
+                    
                 })
             }
             
@@ -134,7 +135,7 @@ extension FolderView {
         })
         .sheet(isPresented: $isShowFolderWrite){
             
-            WriteFolderView(folderViewModel: folderViewModel, isShowFolderWrite: $isShowFolderWrite)
+            WriteFolderView(bucketViewModel: bucketViewModel, isShowFolderWrite: $isShowFolderWrite)
                 .presentationDetents([.large, .fraction(0.9)])
                     
             }

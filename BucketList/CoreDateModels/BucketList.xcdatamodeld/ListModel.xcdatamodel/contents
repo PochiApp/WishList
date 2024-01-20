@@ -5,11 +5,13 @@
         <attribute name="finishDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="startDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="title" optional="YES" attributeType="String"/>
+        <attribute name="writeDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
     </entity>
     <entity name="ListModel" representedClassName="ListModel" syncable="YES">
         <attribute name="achievement" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="category" optional="YES" attributeType="String"/>
-        <attribute name="number" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="folderDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="listNumber" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="text" optional="YES" attributeType="String"/>
     </entity>
 </model>

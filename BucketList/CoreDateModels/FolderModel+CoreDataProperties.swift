@@ -20,6 +20,7 @@ extension FolderModel {
     @NSManaged public var startDate: Date?
     @NSManaged public var finishDate: Date?
     @NSManaged public var backColor: Int16
+    @NSManaged public var writeDate: Date?
 
 }
 

@@ -12,8 +12,7 @@ struct WriteFolderView: View {
         
         @Environment (\.managedObjectContext)private var context
         @Environment (\.dismiss) var dismiss
-        @ObservedObject var folderViewModel : FolderViewModel
-        @State var inputTitle: String = ""
+        @ObservedObject var bucketViewModel : BucketViewModel
         @Binding var isShowFolderWrite: Bool
         @FocusState var textIsActive: Bool
         
@@ -40,6 +39,7 @@ struct WriteFolderView: View {
                     
                     
                     colorPicker
+                    
                     
                     
                    addFolderButton
@@ -74,7 +74,7 @@ struct WriteFolderView: View {
 extension WriteFolderView {
     
     private var titleTextField : some View {
-        TextField("", text: $folderViewModel.title)
+        TextField("", text: $bucketViewModel.title)
             .frame(maxWidth: 350, maxHeight: 40, alignment: .leading)
             .background(Color(uiColor: .secondarySystemBackground))
             .textFieldStyle(.roundedBorder)
@@ -83,8 +83,8 @@ extension WriteFolderView {
     }
     
     private var startDatePicker : some View {
-        DatePicker(selection: $folderViewModel.selectedStartDate,
-                    displayedComponents: [.date]
+        DatePicker(selection: $bucketViewModel.selectedStartDate,
+                   displayedComponents: [.date]
             ){
                 HStack {
                     Image(systemName: "calendar")
@@ -101,8 +101,9 @@ extension WriteFolderView {
     }
     
     private var finishDatePicker : some View {
-        DatePicker(selection: $folderViewModel.selectedFinishDate,
-                    displayedComponents: [.date]
+        DatePicker(selection: $bucketViewModel.selectedFinishDate,
+                   in: bucketViewModel.selectedStartDate...,
+                   displayedComponents: [.date]
             ){
                 HStack {
                     Image(systemName: "calendar")
@@ -119,7 +120,7 @@ extension WriteFolderView {
     }
     
     private var colorPicker : some View {
-        Picker("色を選択", selection:$folderViewModel.backColor){
+        Picker("色を選択", selection:$bucketViewModel.backColor){
                 Text("white").tag(0)
                     .frame(maxWidth:300)
                     .background(Color.white)
@@ -171,6 +172,9 @@ extension WriteFolderView {
     private var cancelButton : some View {
         Button(action: {
             isShowFolderWrite = false
+            
+            bucketViewModel.resetFolder()
+            
         }, label: {
             Image(systemName: "clear.fill")
                 .font(.title3)
@@ -181,9 +185,10 @@ extension WriteFolderView {
     private var addFolderButton : some View {
         Button(action: {
             
-            folderViewModel.writeFolder(context: context)
+            bucketViewModel.writeFolder(context: context)
             
             dismiss()
+            
             
         }, label: {
             Text("保存")

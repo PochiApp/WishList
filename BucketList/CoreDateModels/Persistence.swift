@@ -19,6 +19,14 @@ struct PersistenceController {
         newFolderModel.startDate = Date()
         newFolderModel.finishDate = Date()
         newFolderModel.backColor = Int16(0)
+        newFolderModel.writeDate = Date()
+        
+        let newListModel = ListModel(context: viewContext)
+        newListModel.text = ""
+        newListModel.category = ""
+        newListModel.listNumber = Int16(0)
+        newListModel.achievement = false
+        newListModel.folderDate = Date()
        
         do {
             try viewContext.save()

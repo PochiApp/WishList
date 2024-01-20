@@ -9,8 +9,11 @@ import SwiftUI
 
 struct AddListView: View {
     
+    @Environment (\.managedObjectContext)private var context
+    @Environment (\.dismiss) var dismiss
+    let categoryList = ["旅行","仕事","美容","お金"]
     @State private var textFieldText: String = ""
-    @State private var selectionValue = 1
+    @ObservedObject var bucketViewModel : BucketViewModel
     @Binding var isShowListAdd: Bool
     
     var body: some View {
@@ -34,7 +37,12 @@ struct AddListView: View {
                     .frame(maxWidth: .infinity, alignment: .center)
                     .padding(.bottom,30)
                 
-                Button(action: {}, label: {
+                Button(action: {
+                    bucketViewModel.writeList(context: context)
+                    
+                    dismiss()
+                    
+                }, label: {
                     Text("作成")
                         .font(.title2)
                 })
@@ -59,19 +67,19 @@ struct AddListView: View {
 
 extension AddListView {
     private var bucketTextField: some View {
-        TextField("", text: $textFieldText)
+        TextField("", text: $bucketViewModel.text)
             .frame(maxHeight: 40, alignment: .leading)
             .background(Color(uiColor: .secondarySystemBackground))
             .padding(.bottom,10)
     }
     
     private var categoryPicker: some View {
-        Picker("カテゴリーを選択", selection: $selectionValue) {
-            Text("旅行").tag(1)
-            Text("仕事").tag(2)
-            Text("美容").tag(3)
-            
+        Picker("カテゴリーを選択", selection: $bucketViewModel.category) {
+            ForEach(categoryList, id: \.self) { category in
+                Text(category)
+            }
         }
+        .foregroundColor(.black)
         .frame(maxWidth: .infinity, maxHeight: 40, alignment: .center)
         .background(Color(uiColor: .secondarySystemBackground))
 
