@@ -44,12 +44,16 @@ struct WriteFolderView: View {
                     
                    addFolderButton
                     .navigationBarTitleDisplayMode(.inline)
-                    .toolbarBackground(.gray.opacity(0.5), for: .navigationBar)
+                    .toolbarBackground(bucketViewModel.colorList[bucketViewModel.backColor], for: .navigationBar)
                     .toolbarBackground(.visible, for: .navigationBar)
                     .toolbar{
                         ToolbarItem(placement: .principal){
-                            Text("新規フォルダ作成")
-                                .font(.title3)
+                            if bucketViewModel.updateFolder == nil {
+                                Text("新規フォルダ作成")
+                                    .font(.title3)
+                            } else {
+                                Text("フォルダ編集")
+                            }
                             
                         }
                         

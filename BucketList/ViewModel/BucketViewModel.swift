@@ -21,9 +21,24 @@ class BucketViewModel : ObservableObject{
     
     @Published var text = ""
     @Published var listNumber = 0
-    @Published var category = ""
+    @Published var category = "未分類"
     @Published var folderDate = Date()
     @Published var achievement = false
+    
+    let colorList: [Color] = [.white,
+                              .red.opacity(0.7),
+                              .orange.opacity(0.5),
+                              .yellow.opacity(0.5),
+                              .green.opacity(0.5),
+                              .mint.opacity(0.5),
+                              .teal.opacity(0.5),
+                              .cyan.opacity(0.6),
+                              .blue.opacity(0.5),
+                              .indigo.opacity(0.5),
+                              .purple.opacity(0.5),
+                              .pink.opacity(0.2),
+                              .brown.opacity(0.5),
+                              .gray.opacity(0.3)]
     
     
    
@@ -89,6 +104,8 @@ class BucketViewModel : ObservableObject{
     
     func resetFolder () {
         
+        updateFolder = nil
+        
         title =  ""
         selectedStartDate =  Date()
         selectedFinishDate = Date()
@@ -107,6 +124,12 @@ class BucketViewModel : ObservableObject{
         
         do {
             try context.save()
+            
+            text = ""
+            listNumber = 0
+            category = "未分類"
+            folderDate = Date()
+            achievement = false
         }
         catch {
             print("新しいメモが作れません")

@@ -19,21 +19,6 @@ struct FolderView: View {
     @StateObject var bucketViewModel = BucketViewModel()
     @State var isShowListView = false
     @State var isShowFolderWrite: Bool = false
-   
-    let colorList: [Color] = [.white,
-                              .red.opacity(0.7),
-                              .orange.opacity(0.5),
-                              .yellow.opacity(0.5),
-                              .green.opacity(0.5),
-                              .mint.opacity(0.5),
-                              .teal.opacity(0.5),
-                              .cyan.opacity(0.6),
-                              .blue.opacity(0.5),
-                              .indigo.opacity(0.5),
-                              .purple.opacity(0.5),
-                              .pink.opacity(0.2),
-                              .brown.opacity(0.5),
-                              .gray.opacity(0.3)]
     
     var body: some View {
         VStack {
@@ -70,11 +55,9 @@ extension FolderView {
     private var folderArea: some View {
         ScrollView{
             ForEach(fm){foldermodel in
-                Button(action: {
-                    isShowListView.toggle()
-                }, label: {
+                NavigationLink(destination: ListView(bucketViewModel: bucketViewModel, selectedFolder: foldermodel)){
                     Rectangle()
-                        .fill(colorList[Int(foldermodel.backColor)])
+                        .fill(bucketViewModel.colorList[Int(foldermodel.backColor)])
                         .frame(width: 300, height: 150)
                         .overlay(
                             VStack(alignment: .center){
@@ -88,12 +71,14 @@ extension FolderView {
                                 Text("達成率：20/100")
                                     .padding(.top)
                                     .font(.system(size: 15))
+                                
                             }
                                 .foregroundColor(.black)
                             , alignment: .top
                         )
-                        
-                })
+       
+            
+        }
                 .contextMenu(ContextMenu(menuItems: {
                     Button(action: {
                         context.delete(foldermodel)
@@ -113,14 +98,7 @@ extension FolderView {
                             .presentationDetents([.large])
                     }
                 }))
-                .navigationDestination(isPresented: $isShowListView, destination: {
-                    ListView(bucketViewModel: bucketViewModel, selectedFolder: foldermodel)
-                    
-                })
             }
-            
-            
-            
         }
     }
     

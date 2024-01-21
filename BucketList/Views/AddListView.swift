@@ -11,7 +11,7 @@ struct AddListView: View {
     
     @Environment (\.managedObjectContext)private var context
     @Environment (\.dismiss) var dismiss
-    let categoryList = ["旅行","仕事","美容","お金"]
+    let categoryList = ["未分類","旅行","仕事","美容","お金"]
     @State private var textFieldText: String = ""
     @ObservedObject var bucketViewModel : BucketViewModel
     @Binding var isShowListAdd: Bool
