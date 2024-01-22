@@ -13,14 +13,21 @@ struct ListView: View {
     @Environment(\.managedObjectContext) private var context
     @Environment(\.editMode) var editMode
     
-    @FetchRequest(
-            sortDescriptors: [NSSortDescriptor(keyPath: \ListModel.listNumber, ascending: true)],
-//            predicate: NSPredicate(format: "ListModel.folderDate == selectedFolder.writeDate"),
-            animation: .default)
-        private var listModels: FetchedResults<ListModel>
-    @State var isShowListAdd = false
     @ObservedObject var bucketViewModel : BucketViewModel
     @State var selectedFolder : FolderModel
+    @FetchRequest private var listModels: FetchedResults<ListModel>
+    @State var isShowListAdd = false
+    
+    init(bucketViewModel: BucketViewModel, selectedFolder: FolderModel){
+        self.bucketViewModel = bucketViewModel
+        _selectedFolder = State(initialValue: selectedFolder)
+
+        _listModels = FetchRequest<ListModel>(entity: ListModel.entity(),
+                                              sortDescriptors: [NSSortDescriptor(keyPath: \ListModel.listNumber, ascending: true)],
+                                              predicate: nil,
+                                              animation: .default)
+        
+    }
     
     var body: some View {
         VStack{
@@ -32,6 +39,11 @@ struct ListView: View {
                         .toolbarBackground(bucketViewModel.colorList[bucketViewModel.backColor], for: .navigationBar)
                         .toolbarBackground(.visible, for: .navigationBar)
                         .toolbar {
+                            ToolbarItem(placement: .topBarTrailing) {
+                                if editMode?.wrappedValue == .active {
+                                    Button("完了", action: {editMode?.wrappedValue = .inactive})
+                                    }
+                            }
                             ToolbarItem(placement: .topBarLeading) {
                                 backButton
                             }
@@ -148,7 +160,7 @@ extension ListView {
     private var plusFloatingButton: some View {
         Button(action: {
             isShowListAdd.toggle()
-            selectedFolder.writeDate = bucketViewModel.folderDate
+            bucketViewModel.folderDate = selectedFolder.writeDate ?? Date()
             bucketViewModel.listNumber = listModels.count + 1
         }, label: {
             Image(systemName: "plus.circle.fill")

@@ -13,8 +13,9 @@ struct FolderView: View {
     @Environment(\.managedObjectContext) private var context
     
     @FetchRequest(
-        entity: FolderModel.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \FolderModel.writeDate, ascending: false)],
-            animation: .default)
+        entity: FolderModel.entity(), 
+        sortDescriptors: [NSSortDescriptor(keyPath: \FolderModel.writeDate, ascending: false)],
+        animation: .default)
         private var fm: FetchedResults<FolderModel>
     @StateObject var bucketViewModel = BucketViewModel()
     @State var isShowListView = false
