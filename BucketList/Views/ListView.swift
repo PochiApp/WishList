@@ -8,6 +8,7 @@
 import SwiftUI
 import CoreData
 
+
 struct ListView: View {
     
     @Environment(\.managedObjectContext) private var context
@@ -18,16 +19,7 @@ struct ListView: View {
     @FetchRequest private var listModels: FetchedResults<ListModel>
     @State var isShowListAdd = false
     
-    init(bucketViewModel: BucketViewModel, selectedFolder: FolderModel){
-        self.bucketViewModel = bucketViewModel
-        _selectedFolder = State(initialValue: selectedFolder)
-
-        _listModels = FetchRequest<ListModel>(entity: ListModel.entity(),
-                                              sortDescriptors: [NSSortDescriptor(keyPath: \ListModel.listNumber, ascending: true)],
-                                              predicate: nil,
-                                              animation: .default)
-        
-    }
+    
     
     var body: some View {
         VStack{
@@ -103,7 +95,7 @@ extension ListView {
             .onDelete(perform: deleteList)
             
         }
-
+        
     }
     
     private var navigationArea : some View {
@@ -195,6 +187,14 @@ extension ListView {
                 print("移動失敗")
             }
         }
+    }
+    
+    private mutating func fetchList() {
+        _listModels = FetchRequest<ListModel>(
+            entity: ListModel.entity(),
+            sortDescriptors: [NSSortDescriptor(keyPath: \ListModel.listNumber, ascending: true)],
+            predicate: NSPredicate(format: "folderDate == %@", selectedFolder.writeDate! as NSDate),
+            animation: .default)
     }
     
 }
