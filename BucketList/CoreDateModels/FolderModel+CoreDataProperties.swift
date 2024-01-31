@@ -21,7 +21,7 @@ extension FolderModel {
     @NSManaged public var finishDate: Date?
     @NSManaged public var backColor: Int16
     @NSManaged public var writeDate: Date?
-
+    @NSManaged public var lists: NSArray?
 }
 
 extension FolderModel : Identifiable {

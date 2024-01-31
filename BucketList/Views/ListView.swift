@@ -16,7 +16,11 @@ struct ListView: View {
     
     @ObservedObject var bucketViewModel : BucketViewModel
     @State var selectedFolder : FolderModel
-    @FetchRequest private var listModels: FetchedResults<ListModel>
+    @State private var listArray : [ListModel] = []
+    @FetchRequest (entity: ListModel.entity(),
+                   sortDescriptors: [NSSortDescriptor(keyPath: \ListModel.listNumber, ascending: true)],
+                   animation: .default)
+    private var listModels: FetchedResults<ListModel>
     @State var isShowListAdd = false
     
     
@@ -62,37 +66,41 @@ struct ListView: View {
                 
             }
   }
+        
 }
 
 extension ListView {
     
     private var listArea : some View {
         List {
-            ForEach(Array(listModels.enumerated()), id: \.element){ index, listmodel in
-                HStack(spacing: 10){
-                    
-                    Button(action: {
-                        listmodel.achievement.toggle()
-                    }, label: {
-                        Image(systemName: listmodel.achievement ? "checkmark.square" : "square")
-                    })
-                    .buttonStyle(.plain)
-                    
-                    Text("\(index + 1)"+".")
-                        .padding(.trailing,20)
-                    Text("\(listmodel.text!)")
-                        .listRowSeparatorTint(.blue, edges: /*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
-                    
-                    Spacer()
-                    
-                    Text("\(listmodel.category!)")
-                        .font(.caption)
+            if let lists = selectedFolder.lists as? Array<ListModel> {
+                ForEach(Array(lists.enumerated()), id: \.element){ index, list in
+                    HStack(spacing: 10){
+                        
+                        Button(action: {
+                            list.achievement.toggle()
+                        }, label: {
+                            Image(systemName: list.achievement ? "checkmark.square" : "square")
+                        })
+                        .buttonStyle(.plain)
+                        
+                        Text("\(index + 1)"+".")
+                            .padding(.trailing,20)
+                        Text("\(list.text!)")
+                            .listRowSeparatorTint(.blue, edges: /*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
+                        
+                        Spacer()
+                        
+                        Text("\(list.category!)")
+                            .font(.caption)
+                        
+                    }
                     
                 }
-                
+                .onMove(perform: moveList)
+                .onDelete(perform: deleteList)
             }
-            .onMove(perform: moveList)
-            .onDelete(perform: deleteList)
+            
             
         }
         
@@ -174,12 +182,12 @@ extension ListView {
     
     private func moveList (offSets: IndexSet, destination: Int) {
         withAnimation {
-            var revisedLists: [ListModel] = listModels.map{ $0 }
-            revisedLists.move(fromOffsets: offSets, toOffset: destination)
+            var revisedLists = selectedFolder.lists as? Array<ListModel>
+            revisedLists?.move(fromOffsets: offSets, toOffset: destination)
             
-            for reverseIndex in stride(from: revisedLists.count - 1, through: 0, by: -1){
-                revisedLists[reverseIndex].listNumber = Int16(reverseIndex)
-            }
+//            for reverseIndex in stride(from: revisedLists.count - 1, through: 0, by: -1){
+//                revisedLists[reverseIndex].listNumber = Int16(reverseIndex)
+//            }
             do {
                 try context.save()
             }
@@ -189,12 +197,6 @@ extension ListView {
         }
     }
     
-    private mutating func fetchList() {
-        _listModels = FetchRequest<ListModel>(
-            entity: ListModel.entity(),
-            sortDescriptors: [NSSortDescriptor(keyPath: \ListModel.listNumber, ascending: true)],
-            predicate: NSPredicate(format: "folderDate == %@", selectedFolder.writeDate! as NSDate),
-            animation: .default)
-    }
+    
     
 }
