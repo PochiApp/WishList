@@ -32,7 +32,7 @@ struct ListView: View {
                     listArea
                         .scrollContentBackground(.hidden)
                         .navigationBarTitleDisplayMode(.inline)
-                        .toolbarBackground(bucketViewModel.colorList[bucketViewModel.backColor], for: .navigationBar)
+                        .toolbarBackground(bucketViewModel.colorList[Int(selectedFolder.backColor)], for: .navigationBar)
                         .toolbarBackground(.visible, for: .navigationBar)
                         .toolbar {
                             ToolbarItem(placement: .topBarTrailing) {
@@ -73,8 +73,7 @@ extension ListView {
     
     private var listArea : some View {
         List {
-            if let lists = selectedFolder.lists as? Array<ListModel> {
-                ForEach(Array(lists.enumerated()), id: \.element){ index, list in
+                ForEach(Array(listModels.enumerated()), id: \.element){ index, list in
                     HStack(spacing: 10){
                         
                         Button(action: {
@@ -104,7 +103,7 @@ extension ListView {
             
         }
         
-    }
+    
     
     private var navigationArea : some View {
         
@@ -182,12 +181,13 @@ extension ListView {
     
     private func moveList (offSets: IndexSet, destination: Int) {
         withAnimation {
-            var revisedLists = selectedFolder.lists as? Array<ListModel>
-            revisedLists?.move(fromOffsets: offSets, toOffset: destination)
+            var revisedLists = listModels.map {$0}
+            revisedLists.move(fromOffsets: offSets, toOffset: destination)
             
-//            for reverseIndex in stride(from: revisedLists.count - 1, through: 0, by: -1){
-//                revisedLists[reverseIndex].listNumber = Int16(reverseIndex)
-//            }
+            
+            for reverseIndex in stride(from: revisedLists.count - 1, through: 0, by: -1){
+             revisedLists[reverseIndex].listNumber = Int16(reverseIndex)
+          }
             do {
                 try context.save()
             }
