@@ -21,6 +21,7 @@ struct FolderView: View {
     @State var isShowListView = false
     @State var isShowFolderWrite: Bool = false
     
+    
     var body: some View {
         VStack {
             NavigationStack{

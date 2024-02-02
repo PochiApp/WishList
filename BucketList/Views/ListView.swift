@@ -15,13 +15,28 @@ struct ListView: View {
     @Environment(\.editMode) var editMode
     
     @ObservedObject var bucketViewModel : BucketViewModel
-    @State var selectedFolder : FolderModel
-    @State private var listArray : [ListModel] = []
-    @FetchRequest (entity: ListModel.entity(),
-                   sortDescriptors: [NSSortDescriptor(keyPath: \ListModel.listNumber, ascending: true)],
-                   animation: .default)
+    private let selectedFolder : FolderModel
+    @FetchRequest(
+                entity: ListModel.entity(),
+                sortDescriptors: [NSSortDescriptor(keyPath: \ListModel.listNumber, ascending: true)], 
+                animation:.default)
     private var listModels: FetchedResults<ListModel>
     @State var isShowListAdd = false
+    
+    init(bucketViewModel: BucketViewModel, selectedFolder: FolderModel){
+        self.bucketViewModel = bucketViewModel
+        self.selectedFolder = selectedFolder
+        
+        guard selectedFolder.writeDate != nil else{
+            return
+        }
+        let listPredicate = NSPredicate(format: "folderDate == %@", selectedFolder.writeDate! as CVarArg)
+        
+        let fetchRequest: NSFetchRequest<ListModel> = ListModel.fetchRequest()
+        fetchRequest.sortDescriptors = [NSSortDescriptor(keyPath: \ListModel.listNumber, ascending: true)]
+        fetchRequest.predicate = listPredicate
+        _listModels = FetchRequest(fetchRequest: fetchRequest)
+    }
     
     
     
@@ -78,6 +93,7 @@ extension ListView {
                         
                         Button(action: {
                             list.achievement.toggle()
+                            
                         }, label: {
                             Image(systemName: list.achievement ? "checkmark.square" : "square")
                         })
