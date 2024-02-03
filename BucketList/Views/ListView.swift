@@ -27,10 +27,10 @@ struct ListView: View {
         self.bucketViewModel = bucketViewModel
         self.selectedFolder = selectedFolder
         
-        guard selectedFolder.writeDate != nil else{
+        guard let selectedFolderDate = selectedFolder.writeDate else{
             return
         }
-        let listPredicate = NSPredicate(format: "folderDate == %@", selectedFolder.writeDate! as CVarArg)
+        let listPredicate = NSPredicate(format: "folderDate == %@", selectedFolderDate as CVarArg)
         
         let fetchRequest: NSFetchRequest<ListModel> = ListModel.fetchRequest()
         fetchRequest.sortDescriptors = [NSSortDescriptor(keyPath: \ListModel.listNumber, ascending: true)]
@@ -88,37 +88,45 @@ extension ListView {
     
     private var listArea : some View {
         List {
-                ForEach(Array(listModels.enumerated()), id: \.element){ index, list in
-                    HStack(spacing: 10){
+            ForEach(Array(listModels.enumerated()), id: \.element){ index, list in
+                HStack(spacing: 10){
+                    
+                    Button(action: {
+                        list.achievement.toggle()
+                        do {
+                            try context.save()
+                        }
+                        catch {
+                            print("達成チェックつけられません")
+                        }
                         
-                        Button(action: {
-                            list.achievement.toggle()
-                            
-                        }, label: {
-                            Image(systemName: list.achievement ? "checkmark.square" : "square")
-                        })
-                        .buttonStyle(.plain)
-                        
-                        Text("\(index + 1)"+".")
-                            .padding(.trailing,20)
-                        Text("\(list.text!)")
-                            .listRowSeparatorTint(.blue, edges: /*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
-                        
-                        Spacer()
-                        
-                        Text("\(list.category!)")
-                            .font(.caption)
-                        
-                    }
+                    }, label: {
+                        Image(systemName: list.achievement ? "checkmark.square" : "square")
+                    })
+                    .buttonStyle(.plain)
+                    
+                    Text("\(index + 1)"+".")
+                        .padding(.trailing,20)
+                    Text("\(list.text!)")
+                        .listRowSeparatorTint(.blue, edges: /*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
+                    
+                    Spacer()
+                    
+                    Text("\(list.listNumber)")
+                    
+                    Text("\(list.category!)")
+                        .font(.caption)
                     
                 }
-                .onMove(perform: moveList)
-                .onDelete(perform: deleteList)
+                
             }
-            
-            
+            .onMove(perform: moveList)
+            .onDelete(perform: deleteList)
         }
         
+        
+    }
+    
     
     
     private var navigationArea : some View {
@@ -169,7 +177,7 @@ extension ListView {
                 .foregroundColor(.black)
                 .font(.largeTitle)
         }
-    
+        
     }
     
     private var plusFloatingButton: some View {
@@ -193,26 +201,55 @@ extension ListView {
     
     private func deleteList (offSets: IndexSet) {
         offSets.map { listModels[$0] }.forEach(context.delete)
+        
+        
+        do {
+           try context.save()
+            
+            updateListNumber()
+        }
+         catch {
+           print("削除失敗")
+      }
+     
+        
+        }
+    private func updateListNumber(){
+        let sortedListModels = Array(listModels)
+
+        for reverseIndex in stride(from: sortedListModels.count - 1, through: 0, by: -1){
+            sortedListModels[reverseIndex].listNumber = Int16(reverseIndex + 1)
+            
+        }
+        do {
+           try context.save()
+            
+        }
+         catch {
+           print("listNumber変更失敗")
+      }
     }
     
-    private func moveList (offSets: IndexSet, destination: Int) {
-        withAnimation {
-            var revisedLists = listModels.map {$0}
-            revisedLists.move(fromOffsets: offSets, toOffset: destination)
-            
-            
-            for reverseIndex in stride(from: revisedLists.count - 1, through: 0, by: -1){
-             revisedLists[reverseIndex].listNumber = Int16(reverseIndex)
-          }
-            do {
-                try context.save()
-            }
-            catch {
-                print("移動失敗")
+        
+        private func moveList (offSets: IndexSet, destination: Int) {
+            withAnimation {
+                var revisedLists = Array(listModels)
+                revisedLists.move(fromOffsets: offSets, toOffset: destination)
+                
+                
+                for reverseIndex in stride(from: revisedLists.count - 1, through: 0, by: -1){
+                    revisedLists[reverseIndex].listNumber = Int16(reverseIndex + 1)
+                }
+                do {
+                    try context.save()
+                }
+                catch {
+                    print("移動失敗")
+                }
             }
         }
+        
+        
+        
     }
-    
-    
-    
-}
+
