@@ -22,6 +22,42 @@ struct ListView: View {
                 animation:.default)
     private var listModels: FetchedResults<ListModel>
     @State var isShowListAdd = false
+    @State var numberSort = true
+    @State var achievementCheck = false
+    @State var categoryName = ""
+    @State var sort = ""
+    let categoryList = ["未分類","旅行","仕事","美容","お金"]
+    
+        
+    private func listSort(){
+            
+            let listNumberSorted: NSSortDescriptor = NSSortDescriptor(keyPath: \ListModel.listNumber, ascending: false)
+            
+            let achievementPredicate: NSPredicate = NSPredicate(format: "achievement == %@ and folderDate == %@", NSNumber(value:achievementCheck),selectedFolder.writeDate! as CVarArg)
+            
+            let categoryPredicate: NSPredicate = NSPredicate(format: "category == %@ and folderDate == %@", categoryName, selectedFolder.writeDate! as CVarArg)
+                                                             
+            switch sort{
+            case "listNumberSort":
+                listModels.nsSortDescriptors = [listNumberSorted]
+                listModels.nsPredicate = NSPredicate(format: "folderDate == %@", selectedFolder.writeDate! as CVarArg)
+                print("sort")
+            
+            case "achievementSort":
+                listModels.nsSortDescriptors = [listNumberSorted]
+                listModels.nsPredicate = achievementPredicate
+                
+            case "categorySort":
+                listModels.nsSortDescriptors = [listNumberSorted]
+                listModels.nsPredicate = categoryPredicate
+                
+            default:
+                listModels.nsSortDescriptors = [NSSortDescriptor(keyPath: \ListModel.listNumber, ascending: true)]
+                listModels.nsPredicate = NSPredicate(format: "folderDate == %@", selectedFolder.writeDate! as CVarArg)
+            }
+        }
+        
+    
     
     init(bucketViewModel: BucketViewModel, selectedFolder: FolderModel){
         self.bucketViewModel = bucketViewModel
@@ -171,14 +207,62 @@ extension ListView {
     
     private var sortFloatingButton: some View {
         Menu{
-            Button("編集", action: {editMode?.wrappedValue = .active})
-        }label: {
-            Image(systemName: "list.bullet.circle.fill")
-                .foregroundColor(.black)
-                .font(.largeTitle)
+            Button("全表示",
+                   action: {
+                sort = ""
+                listSort()})
+            
+            Button("昇順",
+                   action: {
+                numberSort = true
+                sort = "listNumberSort"
+                listSort()})
+            
+            Button("降順",
+                   action: {
+                numberSort = false
+                sort = "listNumberSort"
+                listSort()
+                })
+            
+            Menu("達成別") {
+                Button("達成",
+                       action: {
+                    numberSort = true
+                    achievementCheck = true
+                    sort = "achievementSort"
+                    listSort()})
+                
+                Button("未達成",
+                       action: {
+                    numberSort = true
+                    achievementCheck = false
+                    sort = "achievementSort"
+                    listSort()})
+                
+            }
+            Menu("カテゴリー別") {
+                ForEach(categoryList, id: \.self) { selectCategory in
+                    Button(action: {
+                        numberSort = true
+                        categoryName = selectCategory
+                        sort = "categorySort"
+                        listSort()
+                    }, label: {
+                        Text(selectCategory)
+                    })
+                    
+                }
+            }
         }
+                label: {
+                    Image(systemName: "list.bullet.circle.fill")
+                        .foregroundColor(.black)
+                        .font(.largeTitle)
+                }
         
     }
+                       
     
     private var plusFloatingButton: some View {
         Button(action: {
@@ -204,52 +288,52 @@ extension ListView {
         
         
         do {
-           try context.save()
+            try context.save()
             
             updateListNumber()
         }
-         catch {
-           print("削除失敗")
-      }
-     
-        
+        catch {
+            print("削除失敗")
         }
+        
+        
+    }
+        
     private func updateListNumber(){
         let sortedListModels = Array(listModels)
-
+        
         for reverseIndex in stride(from: sortedListModels.count - 1, through: 0, by: -1){
             sortedListModels[reverseIndex].listNumber = Int16(reverseIndex + 1)
             
         }
         do {
-           try context.save()
+            try context.save()
             
         }
-         catch {
-           print("listNumber変更失敗")
-      }
+        catch {
+            print("listNumber変更失敗")
+        }
     }
     
-        
-        private func moveList (offSets: IndexSet, destination: Int) {
-            withAnimation {
-                var revisedLists = Array(listModels)
-                revisedLists.move(fromOffsets: offSets, toOffset: destination)
-                
-                
-                for reverseIndex in stride(from: revisedLists.count - 1, through: 0, by: -1){
-                    revisedLists[reverseIndex].listNumber = Int16(reverseIndex + 1)
-                }
-                do {
-                    try context.save()
-                }
-                catch {
-                    print("移動失敗")
-                }
+    
+    private func moveList (offSets: IndexSet, destination: Int) {
+        withAnimation {
+            var revisedLists = Array(listModels)
+            revisedLists.move(fromOffsets: offSets, toOffset: destination)
+            
+            
+            for reverseIndex in stride(from: revisedLists.count - 1, through: 0, by: -1){
+                revisedLists[reverseIndex].listNumber = Int16(reverseIndex + 1)
+            }
+            do {
+                try context.save()
+            }
+            catch {
+                print("移動失敗")
             }
         }
-        
-        
-        
     }
-
+    
+    
+    
+}
