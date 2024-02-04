@@ -11,10 +11,16 @@ struct AddListView: View {
     
     @Environment (\.managedObjectContext)private var context
     @Environment (\.dismiss) var dismiss
-    let categoryList = ["未分類","旅行","仕事","美容","お金"]
+    @FetchRequest(
+        entity: CategoryEntity.entity(),
+        sortDescriptors: [NSSortDescriptor(keyPath: \CategoryEntity.categoryAddDate, ascending: true)],
+        animation: .default)
+    private var categorys: FetchedResults<CategoryEntity>
+    
     @State private var textFieldText: String = ""
     @ObservedObject var bucketViewModel : BucketViewModel
     @Binding var isShowListAdd: Bool
+    @State var listColor: Color
     
     var body: some View {
         VStack {
@@ -32,10 +38,12 @@ struct AddListView: View {
                 
                 categoryPicker
                 
-                Text("＞カテゴリー追加")
-                    .font(.headline)
-                    .frame(maxWidth: .infinity, alignment: .center)
-                    .padding(.bottom,30)
+                NavigationLink(destination: CategoryAddView()){
+                    Text("＞カテゴリー追加")
+                        .font(.headline)
+                        .frame(maxWidth: .infinity, alignment: .center)
+                    .padding(.bottom,30)}
+                
                 
                 Button(action: {
                     bucketViewModel.writeList(context: context)
@@ -48,7 +56,7 @@ struct AddListView: View {
                 })
                 
                 .navigationBarTitleDisplayMode(.inline)
-                .toolbarBackground(.gray, for: .navigationBar)
+                .toolbarBackground(listColor, for: .navigationBar)
                 .toolbarBackground(.visible, for: .navigationBar)
                 .toolbar{
                     ToolbarItem(placement: .principal){
@@ -75,8 +83,8 @@ extension AddListView {
     
     private var categoryPicker: some View {
         Picker("カテゴリーを選択", selection: $bucketViewModel.category) {
-            ForEach(categoryList, id: \.self) { category in
-                Text(category)
+            ForEach(categorys, id: \.self) { category in
+                Text("\(category.categoryName!)")
             }
         }
         .foregroundColor(.black)

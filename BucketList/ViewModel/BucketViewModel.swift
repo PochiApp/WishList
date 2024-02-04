@@ -137,5 +137,20 @@ class BucketViewModel : ObservableObject{
         
         
     }
-
+    
+    func setupDefaultCategory(context: NSManagedObjectContext) {
+        
+        let newCategoryEntity = CategoryEntity(context: context)
+        newCategoryEntity.categoryName = "未分類"
+        newCategoryEntity.categoryAddDate = Date()
+        
+        do {
+            try context.save()
+            
+        }
+        catch {
+            print("カテゴリー初期値設定できませんでした")
+        }
+        
+    }
 }

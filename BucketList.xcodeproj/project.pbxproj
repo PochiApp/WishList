@@ -18,6 +18,9 @@
 		3958287C2B29C8CE007E085C /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3958287B2B29C8CE007E085C /* Persistence.swift */; };
 		395828A52B2D2356007E085C /* AddListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395828A42B2D2356007E085C /* AddListView.swift */; };
 		395828A72B2D75EE007E085C /* WriteFolderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395828A62B2D75ED007E085C /* WriteFolderView.swift */; };
+		39CC4ABF2B6F602500F070D9 /* CategoryAddView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39CC4ABE2B6F602500F070D9 /* CategoryAddView.swift */; };
+		39CC4AC62B6F748E00F070D9 /* CategoryEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39CC4AC42B6F748E00F070D9 /* CategoryEntity+CoreDataClass.swift */; };
+		39CC4AC72B6F748E00F070D9 /* CategoryEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39CC4AC52B6F748E00F070D9 /* CategoryEntity+CoreDataProperties.swift */; };
 		39E54C682B2E949100298D98 /* BucketViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39E54C672B2E949100298D98 /* BucketViewModel.swift */; };
 		39E54C6B2B3068A800298D98 /* FolderModel+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39E54C692B3068A800298D98 /* FolderModel+CoreDataClass.swift */; };
 		39E54C6C2B3068A800298D98 /* FolderModel+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39E54C6A2B3068A800298D98 /* FolderModel+CoreDataProperties.swift */; };
@@ -36,6 +39,9 @@
 		3958287B2B29C8CE007E085C /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		395828A42B2D2356007E085C /* AddListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddListView.swift; sourceTree = "<group>"; };
 		395828A62B2D75ED007E085C /* WriteFolderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WriteFolderView.swift; sourceTree = "<group>"; };
+		39CC4ABE2B6F602500F070D9 /* CategoryAddView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryAddView.swift; sourceTree = "<group>"; };
+		39CC4AC42B6F748E00F070D9 /* CategoryEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CategoryEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
+		39CC4AC52B6F748E00F070D9 /* CategoryEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CategoryEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		39E54C672B2E949100298D98 /* BucketViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BucketViewModel.swift; sourceTree = "<group>"; };
 		39E54C692B3068A800298D98 /* FolderModel+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FolderModel+CoreDataClass.swift"; sourceTree = "<group>"; };
 		39E54C6A2B3068A800298D98 /* FolderModel+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FolderModel+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -96,6 +102,7 @@
 				395828A62B2D75ED007E085C /* WriteFolderView.swift */,
 				395828702B2347FE007E085C /* ListView.swift */,
 				395828A42B2D2356007E085C /* AddListView.swift */,
+				39CC4ABE2B6F602500F070D9 /* CategoryAddView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -108,6 +115,8 @@
 				39E54C6A2B3068A800298D98 /* FolderModel+CoreDataProperties.swift */,
 				395828772B29C576007E085C /* ListModel+CoreDataClass.swift */,
 				395828782B29C576007E085C /* ListModel+CoreDataProperties.swift */,
+				39CC4AC42B6F748E00F070D9 /* CategoryEntity+CoreDataClass.swift */,
+				39CC4AC52B6F748E00F070D9 /* CategoryEntity+CoreDataProperties.swift */,
 				3958287B2B29C8CE007E085C /* Persistence.swift */,
 			);
 			path = CoreDateModels;
@@ -194,14 +203,17 @@
 				395828A72B2D75EE007E085C /* WriteFolderView.swift in Sources */,
 				3958286F2B21E148007E085C /* FolderView.swift in Sources */,
 				3958285D2B21DB13007E085C /* BucketListApp.swift in Sources */,
+				39CC4AC72B6F748E00F070D9 /* CategoryEntity+CoreDataProperties.swift in Sources */,
 				395828712B2347FE007E085C /* ListView.swift in Sources */,
 				3958287C2B29C8CE007E085C /* Persistence.swift in Sources */,
+				39CC4ABF2B6F602500F070D9 /* CategoryAddView.swift in Sources */,
 				395828A52B2D2356007E085C /* AddListView.swift in Sources */,
 				39E54C6C2B3068A800298D98 /* FolderModel+CoreDataProperties.swift in Sources */,
 				3958287A2B29C576007E085C /* ListModel+CoreDataProperties.swift in Sources */,
 				395828752B29C152007E085C /* BucketList.xcdatamodeld in Sources */,
 				395828792B29C576007E085C /* ListModel+CoreDataClass.swift in Sources */,
 				39E54C682B2E949100298D98 /* BucketViewModel.swift in Sources */,
+				39CC4AC62B6F748E00F070D9 /* CategoryEntity+CoreDataClass.swift in Sources */,
 				39E54C6B2B3068A800298D98 /* FolderModel+CoreDataClass.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

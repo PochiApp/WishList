@@ -12,7 +12,6 @@ import CoreData
 struct ListView: View {
     
     @Environment(\.managedObjectContext) private var context
-    @Environment(\.editMode) var editMode
     
     @ObservedObject var bucketViewModel : BucketViewModel
     private let selectedFolder : FolderModel
@@ -21,11 +20,17 @@ struct ListView: View {
                 sortDescriptors: [NSSortDescriptor(keyPath: \ListModel.listNumber, ascending: true)], 
                 animation:.default)
     private var listModels: FetchedResults<ListModel>
+    
+    @FetchRequest(
+        entity: CategoryEntity.entity(),
+        sortDescriptors: [NSSortDescriptor(keyPath: \CategoryEntity.categoryAddDate, ascending: true)],
+        animation: .default)
+    private var categorys: FetchedResults<CategoryEntity>
+    
     @State var isShowListAdd = false
     @State var numberSort = true
     @State var achievementCheck = false
     @State var categoryName = ""
-    let categoryList = ["未分類","旅行","仕事","美容","お金"]
     
     enum Sort {
         case ascending
@@ -90,11 +95,6 @@ struct ListView: View {
                         .toolbarBackground(bucketViewModel.colorList[Int(selectedFolder.backColor)], for: .navigationBar)
                         .toolbarBackground(.visible, for: .navigationBar)
                         .toolbar {
-                            ToolbarItem(placement: .topBarTrailing) {
-                                if editMode?.wrappedValue == .active {
-                                    Button("完了", action: {editMode?.wrappedValue = .inactive})
-                                    }
-                            }
                             ToolbarItem(placement: .topBarLeading) {
                                 backButton
                             }
@@ -210,12 +210,12 @@ extension ListView {
     private var sortFloatingButton: some View {
         Menu{
             Menu("カテゴリー別") {
-                ForEach(categoryList, id: \.self) { selectCategory in
+                ForEach(categorys, id: \.self) { selectCategory in
                     Button(action: {
-                        categoryName = selectCategory
+                        categoryName = selectCategory.categoryName ?? ""
                         listSort(sort: .categorySort)
                     }, label: {
-                        Text(selectCategory)
+                        Text("\(selectCategory.categoryName!)")
                     })
                     
                 }
@@ -252,7 +252,7 @@ extension ListView {
            
         }
                 label: {
-                    Image(systemName: "list.bullet.circle.fill")
+                    Image(systemName: "line.3.horizontal.decrease.circle")
                         .foregroundColor(.black)
                         .font(.largeTitle)
                 }
@@ -273,7 +273,7 @@ extension ListView {
         })
         .sheet(isPresented: $isShowListAdd){
             
-            AddListView(bucketViewModel: bucketViewModel ,isShowListAdd: $isShowListAdd)
+            AddListView(bucketViewModel: bucketViewModel ,isShowListAdd: $isShowListAdd, listColor: bucketViewModel.colorList[Int(selectedFolder.backColor)])
                 .presentationDetents([.large])
             
         }

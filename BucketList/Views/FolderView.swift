@@ -11,6 +11,7 @@ import CoreData
 struct FolderView: View {
     
     @Environment(\.managedObjectContext) private var context
+    @AppStorage ("isFirstLaunchKey") var launchKey = false
     
     @FetchRequest(
         entity: FolderModel.entity(), 
@@ -43,8 +44,17 @@ struct FolderView: View {
                         }
                     }
             .navigationBarBackButtonHidden(true)
+            .onAppear(perform: {
+                if launchKey == false {
+                    bucketViewModel.setupDefaultCategory(context: context)
+                    
+                    launchKey = true
+                }
+                
+            })
                 }
              }
+        
         }
 
 #Preview {
