@@ -25,12 +25,10 @@ struct ListView: View {
     @State var numberSort = true
     @State var achievementCheck = false
     @State var categoryName = ""
-    @State var sort = ""
     let categoryList = ["未分類","旅行","仕事","美容","お金"]
     
     enum Sort {
         case ascending
-        case descending
         case achievementSort
         case categorySort
         case all
@@ -38,7 +36,7 @@ struct ListView: View {
         
     private func listSort(sort: Sort){
             
-            let listNumberSorted: NSSortDescriptor = NSSortDescriptor(keyPath: \ListModel.listNumber, ascending: true)
+            let listNumberSorted: NSSortDescriptor = NSSortDescriptor(keyPath: \ListModel.listNumber, ascending: numberSort)
             
             let achievementPredicate: NSPredicate = NSPredicate(format: "achievement == %@ and folderDate == %@", NSNumber(value:achievementCheck),selectedFolder.writeDate! as CVarArg)
             
@@ -47,9 +45,6 @@ struct ListView: View {
             switch sort{
             case .ascending:
                 listModels.nsSortDescriptors = [listNumberSorted]
-            
-            case .descending:
-                listModels.nsSortDescriptors = [NSSortDescriptor(keyPath: \ListModel.listNumber, ascending: false)]
 
             case .achievementSort:
                 listModels.nsSortDescriptors = [listNumberSorted]
@@ -241,15 +236,18 @@ extension ListView {
             
             Button("降順",
                    action: {
-                listSort(sort: .descending)
+                numberSort = false
+                listSort(sort: .ascending)
                 })
             
             Button("昇順",
                    action: {
+                numberSort = true
                 listSort(sort: .ascending)})
             
             Button("全表示",
                    action: {
+                numberSort = true
                 listSort(sort: .all)})
            
         }
@@ -319,9 +317,15 @@ extension ListView {
             var revisedLists = Array(listModels)
             revisedLists.move(fromOffsets: offSets, toOffset: destination)
             
+            if (numberSort == true) {
+                for reverseIndex in stride(from: revisedLists.count - 1, through: 0, by: -1){
+                    revisedLists[reverseIndex].listNumber = Int16(reverseIndex + 1)
+                }} else {
+                    revisedLists.reverse()
+                    for reverseIndex in stride(from: revisedLists.count - 1, through: 0, by: -1){
+                        revisedLists[reverseIndex].listNumber = Int16(reverseIndex + 1)
+                }
             
-            for reverseIndex in stride(from: revisedLists.count - 1, through: 0, by: -1){
-                revisedLists[reverseIndex].listNumber = Int16(reverseIndex + 1)
             }
             do {
                 try context.save()
