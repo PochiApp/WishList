@@ -28,32 +28,41 @@ struct ListView: View {
     @State var sort = ""
     let categoryList = ["未分類","旅行","仕事","美容","お金"]
     
+    enum Sort {
+        case ascending
+        case descending
+        case achievementSort
+        case categorySort
+        case all
+    }
         
-    private func listSort(){
+    private func listSort(sort: Sort){
             
-            let listNumberSorted: NSSortDescriptor = NSSortDescriptor(keyPath: \ListModel.listNumber, ascending: false)
+            let listNumberSorted: NSSortDescriptor = NSSortDescriptor(keyPath: \ListModel.listNumber, ascending: true)
             
             let achievementPredicate: NSPredicate = NSPredicate(format: "achievement == %@ and folderDate == %@", NSNumber(value:achievementCheck),selectedFolder.writeDate! as CVarArg)
             
             let categoryPredicate: NSPredicate = NSPredicate(format: "category == %@ and folderDate == %@", categoryName, selectedFolder.writeDate! as CVarArg)
                                                              
             switch sort{
-            case "listNumberSort":
+            case .ascending:
                 listModels.nsSortDescriptors = [listNumberSorted]
-                listModels.nsPredicate = NSPredicate(format: "folderDate == %@", selectedFolder.writeDate! as CVarArg)
-                print("sort")
             
-            case "achievementSort":
+            case .descending:
+                listModels.nsSortDescriptors = [NSSortDescriptor(keyPath: \ListModel.listNumber, ascending: false)]
+
+            case .achievementSort:
                 listModels.nsSortDescriptors = [listNumberSorted]
                 listModels.nsPredicate = achievementPredicate
                 
-            case "categorySort":
+            case .categorySort:
                 listModels.nsSortDescriptors = [listNumberSorted]
                 listModels.nsPredicate = categoryPredicate
-                
-            default:
-                listModels.nsSortDescriptors = [NSSortDescriptor(keyPath: \ListModel.listNumber, ascending: true)]
+            
+            case .all:
+                listModels.nsSortDescriptors = [listNumberSorted]
                 listModels.nsPredicate = NSPredicate(format: "folderDate == %@", selectedFolder.writeDate! as CVarArg)
+               
             }
         }
         
@@ -141,14 +150,12 @@ extension ListView {
                     })
                     .buttonStyle(.plain)
                     
-                    Text("\(index + 1)"+".")
+                    Text("\(list.listNumber)"+".")
                         .padding(.trailing,20)
                     Text("\(list.text!)")
                         .listRowSeparatorTint(.blue, edges: /*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
                     
                     Spacer()
-                    
-                    Text("\(list.listNumber)")
                     
                     Text("\(list.category!)")
                         .font(.caption)
@@ -207,53 +214,44 @@ extension ListView {
     
     private var sortFloatingButton: some View {
         Menu{
-            Button("全表示",
-                   action: {
-                sort = ""
-                listSort()})
-            
-            Button("昇順",
-                   action: {
-                numberSort = true
-                sort = "listNumberSort"
-                listSort()})
-            
-            Button("降順",
-                   action: {
-                numberSort = false
-                sort = "listNumberSort"
-                listSort()
-                })
-            
-            Menu("達成別") {
-                Button("達成",
-                       action: {
-                    numberSort = true
-                    achievementCheck = true
-                    sort = "achievementSort"
-                    listSort()})
-                
-                Button("未達成",
-                       action: {
-                    numberSort = true
-                    achievementCheck = false
-                    sort = "achievementSort"
-                    listSort()})
-                
-            }
             Menu("カテゴリー別") {
                 ForEach(categoryList, id: \.self) { selectCategory in
                     Button(action: {
-                        numberSort = true
                         categoryName = selectCategory
-                        sort = "categorySort"
-                        listSort()
+                        listSort(sort: .categorySort)
                     }, label: {
                         Text(selectCategory)
                     })
                     
                 }
             }
+            
+            Menu("達成別") {
+                Button("達成",
+                       action: {
+                    achievementCheck = true
+                    listSort(sort: .achievementSort)})
+                
+                Button("未達成",
+                       action: {
+                    achievementCheck = false
+                    listSort(sort: .achievementSort)})
+                
+            }
+            
+            Button("降順",
+                   action: {
+                listSort(sort: .descending)
+                })
+            
+            Button("昇順",
+                   action: {
+                listSort(sort: .ascending)})
+            
+            Button("全表示",
+                   action: {
+                listSort(sort: .all)})
+           
         }
                 label: {
                     Image(systemName: "list.bullet.circle.fill")
