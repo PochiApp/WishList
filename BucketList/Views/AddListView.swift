@@ -38,7 +38,7 @@ struct AddListView: View {
                 
                 categoryPicker
                 
-                NavigationLink(destination: CategoryAddView()){
+                NavigationLink(destination: CategoryView(bucketViewModel: bucketViewModel)){
                     Text("＞カテゴリー追加")
                         .font(.headline)
                         .frame(maxWidth: .infinity, alignment: .center)
@@ -82,15 +82,16 @@ extension AddListView {
     }
     
     private var categoryPicker: some View {
+
         Picker("カテゴリーを選択", selection: $bucketViewModel.category) {
             ForEach(categorys, id: \.self) { category in
-                Text("\(category.categoryName!)")
+                Text("\(category.categoryName ?? "")")
+                    .tag(category.categoryName ?? "")
             }
         }
         .foregroundColor(.black)
         .frame(maxWidth: .infinity, maxHeight: 40, alignment: .center)
         .background(Color(uiColor: .secondarySystemBackground))
-
     }
     
     private var cancelButton: some View {

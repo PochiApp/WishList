@@ -133,9 +133,11 @@ extension FolderView {
     
     private var bottomArea: some View {
         HStack(spacing:90) {
-            
-            Image(systemName: "folder")
-                .font(.title2)
+            NavigationLink(destination: FolderView()) {
+                Image(systemName: "folder")
+                    .font(.title2)
+                    .foregroundColor(.black)
+            }
             
             Image(systemName: "gearshape")
                 .font(.title2)
@@ -143,8 +145,9 @@ extension FolderView {
             Image(systemName: "square.and.arrow.up")
                 .font(.title2)
         }
+        }
         
     }
 
     
-}
+

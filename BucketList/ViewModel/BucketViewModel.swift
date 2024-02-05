@@ -25,6 +25,10 @@ class BucketViewModel : ObservableObject{
     @Published var folderDate = Date()
     @Published var achievement = false
     
+    @Published var categoryName = ""
+    @Published var categoryAddDate = Date()
+    
+    
     let colorList: [Color] = [.white,
                               .red.opacity(0.7),
                               .orange.opacity(0.5),
@@ -152,5 +156,23 @@ class BucketViewModel : ObservableObject{
             print("カテゴリー初期値設定できませんでした")
         }
         
+    }
+    
+    func addCategory(context: NSManagedObjectContext) {
+        
+        let newCategoryEntity = CategoryEntity(context: context)
+        newCategoryEntity.categoryName = categoryName
+        newCategoryEntity.categoryAddDate = Date()
+        
+        
+        do {
+            try context.save()
+            
+            categoryName = ""
+            
+        }
+        catch {
+            print("カテゴリー追加できませんでした")
+        }
     }
 }

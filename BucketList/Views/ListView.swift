@@ -222,16 +222,16 @@ extension ListView {
             }
             
             Menu("達成別") {
-                Button("達成",
-                       action: {
-                    achievementCheck = true
-                    listSort(sort: .achievementSort)})
                 
                 Button("未達成",
                        action: {
                     achievementCheck = false
                     listSort(sort: .achievementSort)})
                 
+                Button("達成",
+                       action: {
+                    achievementCheck = true
+                    listSort(sort: .achievementSort)})
             }
             
             Button("降順",
