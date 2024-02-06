@@ -80,7 +80,7 @@ extension FolderView {
                                     .lineLimit(2)
                                     .font(.system(size: 18, weight: .semibold))
                                     .padding(.top)
-                                Text("達成率：20/100")
+                                Text("達成率：20/\(foldermodel.lists!.count)")
                                     .padding(.top)
                                     .font(.system(size: 15))
                                 

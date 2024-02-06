@@ -20,6 +20,7 @@ struct PersistenceController {
         newFolderModel.finishDate = Date()
         newFolderModel.backColor = Int16(0)
         newFolderModel.writeDate = Date()
+        newFolderModel.lists = []
         
         let newListModel = ListModel(context: viewContext)
         newListModel.text = ""

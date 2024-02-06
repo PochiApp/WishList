@@ -10,6 +10,9 @@
         <attribute name="startDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="title" optional="YES" attributeType="String"/>
         <attribute name="writeDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <fetchedProperty name="lists" optional="YES">
+            <fetchRequest name="fetchedPropertyFetchRequest" entity="ListModel" predicateString="folderDate == $FETCH_SOURCE.writeDate"/>
+        </fetchedProperty>
     </entity>
     <entity name="ListModel" representedClassName="ListModel" syncable="YES">
         <attribute name="achievement" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
