@@ -19,30 +19,31 @@ struct WriteFolderView: View {
         var body: some View {
             VStack {
                 NavigationStack{
-                    Text("タイトル")
-                        .font(.title3)
-                        .frame(maxWidth: .infinity, alignment: .center)
-                    
-                    titleTextField
-                    
-                    Text("期限")
-                        .font(.title3)
-                        .frame(maxWidth: .infinity, alignment: .center)
-        
-                    startDatePicker
+                    Form {
                         
-                    finishDatePicker
+                        Section {
+                            
+                            titleTextField
+                        }
+                        
+                        
+                        Section {
+                            startDatePicker
+                            
+                            finishDatePicker
+                        } header: {
+                            Text("期間")
+                        }
+                        
+                        Section {
+                            colorPicker
+                        } header: {
+                            Text("背景色")
+                        }
+                        
 
-                    Text("背景色")
-                        .font(.title3)
-                        .frame(maxWidth: .infinity, alignment: .center)
+                    }
                     
-                    
-                    colorPicker
-                    
-                    
-                    
-                   addFolderButton
                     .navigationBarTitleDisplayMode(.inline)
                     .toolbarBackground(bucketViewModel.colorList[bucketViewModel.backColor], for: .navigationBar)
                     .toolbarBackground(.visible, for: .navigationBar)
@@ -57,9 +58,14 @@ struct WriteFolderView: View {
                             
                         }
                         
-                        ToolbarItem(placement: .topBarTrailing) {
+                        ToolbarItem(placement: .topBarLeading) {
                             
                             cancelButton
+                            
+                            }
+                        ToolbarItem(placement: .topBarTrailing) {
+                            
+                            addFolderButton
                             
                             }
                             
@@ -78,49 +84,26 @@ struct WriteFolderView: View {
 extension WriteFolderView {
     
     private var titleTextField : some View {
-        TextField("", text: $bucketViewModel.title)
-            .frame(maxWidth: 350, maxHeight: 40, alignment: .leading)
-            .background(Color(uiColor: .secondarySystemBackground))
-            .textFieldStyle(.roundedBorder)
+        TextField("フォルダータイトル", text: $bucketViewModel.title)
             .focused($textIsActive)
-            .padding(.bottom,10)
+
     }
     
     private var startDatePicker : some View {
-        DatePicker(selection: $bucketViewModel.selectedStartDate,
-                   displayedComponents: [.date]
-            ){
-                HStack {
-                    Image(systemName: "calendar")
-                    Text("開始")
-                }
-                
-                    
-            }
-            .datePickerStyle(.compact)
-            .environment(\.locale, Locale(identifier: "ja_JP"))
-            .fixedSize()
-            .accentColor(.gray)
-            .frame(maxWidth: .infinity, maxHeight: 40, alignment: .center)
+        DisclosureGroup("開始  \(bucketViewModel.formattedDateString(date: bucketViewModel.selectedStartDate))"){
+            DatePicker("開始",selection: $bucketViewModel.selectedStartDate, displayedComponents: [.date])
+                .datePickerStyle(.wheel)
+                .environment(\.locale, Locale(identifier: "ja_JP"))
+        }
+        
     }
     
     private var finishDatePicker : some View {
-        DatePicker(selection: $bucketViewModel.selectedFinishDate,
-                   in: bucketViewModel.selectedStartDate...,
-                   displayedComponents: [.date]
-            ){
-                HStack {
-                    Image(systemName: "calendar")
-                    Text("終了")
-                }
-                
-                    
-            }
-            .environment(\.locale, Locale(identifier: "ja_JP"))
-            .fixedSize()
-            .accentColor(.gray)
-            .frame(maxWidth: .infinity, maxHeight: 40, alignment: .center)
-            .padding(.bottom)
+        DisclosureGroup("終了  \(bucketViewModel.formattedDateString(date: bucketViewModel.selectedFinishDate))"){
+            DatePicker("終了",selection: $bucketViewModel.selectedFinishDate, in: bucketViewModel.selectedStartDate..., displayedComponents: [.date])
+                .datePickerStyle(.wheel)
+                .environment(\.locale, Locale(identifier: "ja_JP"))
+        }
     }
     
     private var colorPicker : some View {
@@ -195,9 +178,9 @@ extension WriteFolderView {
             
             
         }, label: {
-            Text("保存")
-                .font(.title2)
-                .foregroundColor(.blue)
+            Text("追加")
+                .font(.title3)
+                .foregroundColor(.black)
         })
     }
 }

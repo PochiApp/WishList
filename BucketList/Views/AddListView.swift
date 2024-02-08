@@ -26,34 +26,29 @@ struct AddListView: View {
         VStack {
             
             NavigationStack{
-                Text("やりたいこと")
-                    .font(.title3)
-                    .frame(maxWidth: .infinity, alignment: .center)
-                
-                bucketTextField
-                
-                Text("カテゴリー")
-                    .font(.title3)
-                    .frame(maxWidth: .infinity, alignment: .center)
-                
-                categoryPicker
-                
-                NavigationLink(destination: CategoryView(bucketViewModel: bucketViewModel)){
-                    Text("＞カテゴリー追加")
-                        .font(.headline)
-                        .frame(maxWidth: .infinity, alignment: .center)
-                    .padding(.bottom,30)}
-                
-                
-                Button(action: {
-                    bucketViewModel.writeList(context: context)
+                Form {
+                    Section {
+                        bucketTextField
+                    }
                     
-                    dismiss()
+                    Section {
+                        categoryPicker
+                        
+                        NavigationLink(destination: CategoryView(bucketViewModel: bucketViewModel)){
+                            Text("カテゴリー追加へ")
+                                .font(.subheadline)
+                        }
+                    }
                     
-                }, label: {
-                    Text("作成")
-                        .font(.title2)
-                })
+                    
+                }
+//                Text("やりたいこと")
+//                    .font(.title3)
+//                    .frame(maxWidth: .infinity, alignment: .center)
+
+//                Text("カテゴリー")
+//                    .font(.title3)
+//                    .frame(maxWidth: .infinity, alignment: .center)
                 
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbarBackground(listColor, for: .navigationBar)
@@ -64,8 +59,21 @@ struct AddListView: View {
                             .font(.title3)
                         
                     }
-                    ToolbarItem(placement: .topBarTrailing){
+                    ToolbarItem(placement: .topBarLeading){
                         cancelButton
+                    }
+                    
+                    ToolbarItem(placement: .topBarTrailing){
+                        Button(action: {
+                            bucketViewModel.writeList(context: context)
+                            
+                            dismiss()
+                            
+                        }, label: {
+                            Text("作成")
+                                .font(.title3)
+                                .foregroundColor(.black)
+                        })
                     }
                 }
             }
@@ -75,23 +83,18 @@ struct AddListView: View {
 
 extension AddListView {
     private var bucketTextField: some View {
-        TextField("", text: $bucketViewModel.text)
-            .frame(maxHeight: 40, alignment: .leading)
-            .background(Color(uiColor: .secondarySystemBackground))
-            .padding(.bottom,10)
+        TextField("やりたいこと", text: $bucketViewModel.text)
+            
     }
     
     private var categoryPicker: some View {
 
-        Picker("カテゴリーを選択", selection: $bucketViewModel.category) {
+        Picker("カテゴリー", selection: $bucketViewModel.category) {
             ForEach(categorys, id: \.self) { category in
                 Text("\(category.categoryName ?? "")")
                     .tag(category.categoryName ?? "")
             }
         }
-        .foregroundColor(.black)
-        .frame(maxWidth: .infinity, maxHeight: 40, alignment: .center)
-        .background(Color(uiColor: .secondarySystemBackground))
     }
     
     private var cancelButton: some View {

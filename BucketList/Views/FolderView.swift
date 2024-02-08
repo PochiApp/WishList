@@ -51,6 +51,7 @@ struct FolderView: View {
                     launchKey = true
                 }
                 
+                
             })
                 }
              }
@@ -146,6 +147,8 @@ extension FolderView {
                 .font(.title2)
         }
         }
+    
+
         
     }
 
