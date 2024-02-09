@@ -94,7 +94,7 @@ extension WriteFolderView {
     }
     
     private var startDatePicker : some View {
-        DisclosureGroup(daySetting ?"開始  \(bucketViewModel.formattedDateString(date: bucketViewModel.selectedStartDate))" : "開始　未設定"){
+        DisclosureGroup(daySetting ?"開始　未設定" :"開始  \(bucketViewModel.formattedDateString(date: bucketViewModel.selectedStartDate))"){
                 DatePicker("開始",selection: $bucketViewModel.selectedStartDate, displayedComponents: [.date])
                     .datePickerStyle(.wheel)
                     .environment(\.locale, Locale(identifier: "ja_JP"))
@@ -104,7 +104,7 @@ extension WriteFolderView {
     }
     
     private var finishDatePicker : some View {
-        DisclosureGroup(daySetting ?"終了  \(bucketViewModel.formattedDateString(date: bucketViewModel.selectedStartDate))" : "終了　未設定"){
+        DisclosureGroup(daySetting ?"終了　未設定" :"終了  \(bucketViewModel.formattedDateString(date: bucketViewModel.selectedStartDate))"){
             DatePicker("終了",selection: $bucketViewModel.selectedFinishDate, in: bucketViewModel.selectedStartDate..., displayedComponents: [.date])
                 .datePickerStyle(.wheel)
                 .environment(\.locale, Locale(identifier: "ja_JP"))
