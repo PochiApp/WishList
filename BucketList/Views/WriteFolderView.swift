@@ -15,7 +15,7 @@ struct WriteFolderView: View {
         @ObservedObject var bucketViewModel : BucketViewModel
         @Binding var isShowFolderWrite: Bool
         @FocusState var textIsActive: Bool
-        @State private var daySetting = true
+        @State private var daySetting = false
         
         var body: some View {
             VStack {
@@ -100,7 +100,7 @@ extension WriteFolderView {
                     .environment(\.locale, Locale(identifier: "ja_JP"))
             
         }
-                     .disabled(!daySetting)
+                     .disabled(daySetting)
     }
     
     private var finishDatePicker : some View {
@@ -109,7 +109,7 @@ extension WriteFolderView {
                 .datePickerStyle(.wheel)
                 .environment(\.locale, Locale(identifier: "ja_JP"))
         }
-                    .disabled(!daySetting)
+                    .disabled(daySetting)
     }
                 
     
