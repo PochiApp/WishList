@@ -42,13 +42,6 @@ struct AddListView: View {
                     
                     
                 }
-//                Text("やりたいこと")
-//                    .font(.title3)
-//                    .frame(maxWidth: .infinity, alignment: .center)
-
-//                Text("カテゴリー")
-//                    .font(.title3)
-//                    .frame(maxWidth: .infinity, alignment: .center)
                 
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbarBackground(listColor, for: .navigationBar)

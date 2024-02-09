@@ -15,6 +15,7 @@ struct WriteFolderView: View {
         @ObservedObject var bucketViewModel : BucketViewModel
         @Binding var isShowFolderWrite: Bool
         @FocusState var textIsActive: Bool
+        @State private var daySetting = true
         
         var body: some View {
             VStack {
@@ -31,6 +32,9 @@ struct WriteFolderView: View {
                             startDatePicker
                             
                             finishDatePicker
+                            
+                            Toggle("期間設定なし", isOn: $daySetting)
+                            
                         } header: {
                             Text("期間")
                         }
@@ -90,21 +94,24 @@ extension WriteFolderView {
     }
     
     private var startDatePicker : some View {
-        DisclosureGroup("開始  \(bucketViewModel.formattedDateString(date: bucketViewModel.selectedStartDate))"){
-            DatePicker("開始",selection: $bucketViewModel.selectedStartDate, displayedComponents: [.date])
-                .datePickerStyle(.wheel)
-                .environment(\.locale, Locale(identifier: "ja_JP"))
+        DisclosureGroup(daySetting ?"開始  \(bucketViewModel.formattedDateString(date: bucketViewModel.selectedStartDate))" : "開始　未設定"){
+                DatePicker("開始",selection: $bucketViewModel.selectedStartDate, displayedComponents: [.date])
+                    .datePickerStyle(.wheel)
+                    .environment(\.locale, Locale(identifier: "ja_JP"))
+            
         }
-        
+                     .disabled(!daySetting)
     }
     
     private var finishDatePicker : some View {
-        DisclosureGroup("終了  \(bucketViewModel.formattedDateString(date: bucketViewModel.selectedFinishDate))"){
+        DisclosureGroup(daySetting ?"終了  \(bucketViewModel.formattedDateString(date: bucketViewModel.selectedStartDate))" : "終了　未設定"){
             DatePicker("終了",selection: $bucketViewModel.selectedFinishDate, in: bucketViewModel.selectedStartDate..., displayedComponents: [.date])
                 .datePickerStyle(.wheel)
                 .environment(\.locale, Locale(identifier: "ja_JP"))
         }
+                    .disabled(!daySetting)
     }
+                
     
     private var colorPicker : some View {
         Picker("色を選択", selection:$bucketViewModel.backColor){
