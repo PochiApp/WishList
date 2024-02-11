@@ -74,7 +74,7 @@ extension FolderView {
                         .frame(width: 300, height: 150)
                         .overlay(
                             VStack(alignment: .center){
-                                Text("\(bucketViewModel.formattedDateString(date: foldermodel.startDate ?? Date())) ~ \(bucketViewModel.formattedDateString(date: foldermodel.finishDate ?? Date()))")
+                                Text(foldermodel.notDaySetting ? "" : "\(bucketViewModel.formattedDateString(date: foldermodel.startDate ?? Date())) ~ \(bucketViewModel.formattedDateString(date: foldermodel.finishDate ?? Date()))")
                                     .font(.system(size: 16))
                                     .padding(.top)
                                 Text("\(foldermodel.title!)")

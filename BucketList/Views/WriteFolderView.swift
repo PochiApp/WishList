@@ -15,7 +15,6 @@ struct WriteFolderView: View {
         @ObservedObject var bucketViewModel : BucketViewModel
         @Binding var isShowFolderWrite: Bool
         @FocusState var textIsActive: Bool
-        @State private var daySetting = false
         
         var body: some View {
             VStack {
@@ -33,7 +32,7 @@ struct WriteFolderView: View {
                             
                             finishDatePicker
                             
-                            Toggle("期間設定なし", isOn: $daySetting)
+                            Toggle("期間設定なし", isOn: $bucketViewModel.notDaySetting)
                             
                         } header: {
                             Text("期間")
@@ -88,28 +87,28 @@ struct WriteFolderView: View {
 extension WriteFolderView {
     
     private var titleTextField : some View {
-        TextField("フォルダータイトル", text: $bucketViewModel.title)
+        TextField("フォルダタイトル", text: $bucketViewModel.title)
             .focused($textIsActive)
 
     }
     
     private var startDatePicker : some View {
-        DisclosureGroup(daySetting ?"開始　未設定" :"開始  \(bucketViewModel.formattedDateString(date: bucketViewModel.selectedStartDate))"){
+        DisclosureGroup(bucketViewModel.notDaySetting ?"開始　未設定" :"開始  \(bucketViewModel.formattedDateString(date: bucketViewModel.selectedStartDate))"){
                 DatePicker("開始",selection: $bucketViewModel.selectedStartDate, displayedComponents: [.date])
                     .datePickerStyle(.wheel)
                     .environment(\.locale, Locale(identifier: "ja_JP"))
             
         }
-                     .disabled(daySetting)
+        .disabled(bucketViewModel.notDaySetting)
     }
     
     private var finishDatePicker : some View {
-        DisclosureGroup(daySetting ?"終了　未設定" :"終了  \(bucketViewModel.formattedDateString(date: bucketViewModel.selectedStartDate))"){
+        DisclosureGroup(bucketViewModel.notDaySetting ?"終了　未設定" :"終了  \(bucketViewModel.formattedDateString(date: bucketViewModel.selectedFinishDate))"){
             DatePicker("終了",selection: $bucketViewModel.selectedFinishDate, in: bucketViewModel.selectedStartDate..., displayedComponents: [.date])
                 .datePickerStyle(.wheel)
                 .environment(\.locale, Locale(identifier: "ja_JP"))
         }
-                    .disabled(daySetting)
+        .disabled(bucketViewModel.notDaySetting)
     }
                 
     

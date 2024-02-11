@@ -7,6 +7,7 @@
     <entity name="FolderModel" representedClassName="FolderModel" syncable="YES">
         <attribute name="backColor" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="finishDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="notDaySetting" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="startDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="title" optional="YES" attributeType="String"/>
         <attribute name="writeDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>

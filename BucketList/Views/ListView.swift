@@ -128,7 +128,7 @@ extension ListView {
     
     private var listArea : some View {
         List {
-            ForEach(Array(listModels.enumerated()), id: \.element){ index, list in
+            ForEach(listModels){ list in
                 HStack(spacing: 10){
                     
                     Button(action: {
@@ -174,7 +174,7 @@ extension ListView {
             Text("\(selectedFolder.title!)")
                 .font(.headline)
             HStack{
-                Text("\(bucketViewModel.formattedDateString(date: selectedFolder.startDate ?? Date())) ~ \(bucketViewModel.formattedDateString(date: selectedFolder.finishDate ?? Date()))")
+                Text(selectedFolder.notDaySetting ? "" : "\(bucketViewModel.formattedDateString(date: selectedFolder.startDate ?? Date())) ~ \(bucketViewModel.formattedDateString(date: selectedFolder.finishDate ?? Date()))")
                     .font(.subheadline)
                     .padding(.trailing)
             }
