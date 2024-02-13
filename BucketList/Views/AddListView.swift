@@ -21,6 +21,7 @@ struct AddListView: View {
     @ObservedObject var bucketViewModel : BucketViewModel
     @Binding var isShowListAdd: Bool
     @State var listColor: Color
+    @FocusState var textIsActive: Bool
     
     var body: some View {
         VStack {
@@ -42,7 +43,6 @@ struct AddListView: View {
                     
                     
                 }
-                
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbarBackground(listColor, for: .navigationBar)
                 .toolbarBackground(.visible, for: .navigationBar)
@@ -70,6 +70,7 @@ struct AddListView: View {
                     }
                 }
             }
+            
         }
     }
 }
@@ -77,7 +78,7 @@ struct AddListView: View {
 extension AddListView {
     private var bucketTextField: some View {
         TextField("やりたいこと", text: $bucketViewModel.text)
-            
+
     }
     
     private var categoryPicker: some View {
@@ -93,6 +94,7 @@ extension AddListView {
     private var cancelButton: some View {
         Button(action: {
             isShowListAdd = false
+            bucketViewModel.resetList()
         }, label: {
             Image(systemName: "clear.fill")
                 .font(.title2)

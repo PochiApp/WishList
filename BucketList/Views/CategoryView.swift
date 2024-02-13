@@ -34,6 +34,7 @@ struct CategoryView: View {
                 
                 Button(action: {
                     isShowCategoryAdd.toggle()
+                    
                 }, label: {
                     Image(systemName: "plus.circle.fill")
                         .foregroundColor(.black)
@@ -41,7 +42,9 @@ struct CategoryView: View {
                         .padding()
                 })
                 
-                .sheet(isPresented: $isShowCategoryAdd){
+                .sheet(isPresented: $isShowCategoryAdd, onDismiss: {
+                    firstCategoryGet()
+                }){
                     
                     AddCategoryView(bucketViewModel: bucketViewModel, isShowCategoryAdd: $isShowCategoryAdd)
                         .presentationDetents([.large, .fraction(0.9)])
@@ -54,21 +57,29 @@ struct CategoryView: View {
         }
         .navigationTitle("カテゴリー一覧")
         .font(.title3)
+//        .onAppear(){
+//          firstCategoryGet()
+//        }
         
     }
     
     private func deleteCategory (offSets: IndexSet) {
         offSets.map { categorys[$0] }.forEach(context.delete)
         
-        
         do {
             try context.save()
-
+            bucketViewModel.firstCategory = categorys.first?.categoryName ?? ""
+            
         }
         catch {
             print("削除失敗")
         }
         
         
+    }
+    
+    private func firstCategoryGet () {
+        let categoryArray = Array(categorys)
+        bucketViewModel.firstCategory = categoryArray.first?.categoryName ?? ""
     }
 }

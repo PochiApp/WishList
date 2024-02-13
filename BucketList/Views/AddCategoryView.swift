@@ -62,6 +62,7 @@ extension AddCategoryView {
             .padding(.bottom,10)
     }
     
+    
     private var cancelButton: some View {
         Button(action: {
             isShowCategoryAdd = false

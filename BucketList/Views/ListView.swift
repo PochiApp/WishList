@@ -120,6 +120,7 @@ struct ListView: View {
                 
                 
             }
+        
   }
         
 }
@@ -156,10 +157,19 @@ extension ListView {
                         .font(.caption)
                     
                 }
-                
+                .onTapGesture(perform: {
+                    isShowListAdd.toggle()
+                    bucketViewModel.editList(upList: list)
+                })
+                .sheet(isPresented: $isShowListAdd) {
+                    
+                    AddListView(bucketViewModel : bucketViewModel, isShowListAdd: $isShowListAdd, listColor:bucketViewModel.colorList[Int(selectedFolder.backColor)])
+                        .presentationDetents([.large])
+                }
             }
             .onMove(perform: moveList)
             .onDelete(perform: deleteList)
+            
         }
         
         

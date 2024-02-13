@@ -20,9 +20,12 @@ class BucketViewModel : ObservableObject{
     
     @Published var text = ""
     @Published var listNumber = 0
-    @Published var category = "未分類"
+    @Published var category = ""
     @Published var folderDate = Date()
     @Published var achievement = false
+    @Published var updateList: ListModel!
+    
+    @AppStorage ("firstCategoryKey") var firstCategory = "未分類"
     
     @Published var categoryName = ""
     @Published var categoryAddDate = Date()
@@ -123,6 +126,20 @@ class BucketViewModel : ObservableObject{
     
     func writeList (context: NSManagedObjectContext) {
         
+        if updateList != nil {
+            updateList.text = text
+            updateList.category = category
+            updateList.achievement = achievement
+            
+            try! context.save()
+            
+            text = ""
+            category = firstCategory
+            
+            return
+            
+        }
+        
         let newListData = ListModel(context:context)
         newListData.text = text
         newListData.listNumber = Int16(listNumber)
@@ -135,7 +152,7 @@ class BucketViewModel : ObservableObject{
             
             text = ""
             listNumber = 0
-            category = "未分類"
+            category = firstCategory
             folderDate = Date()
             achievement = false
         }
@@ -143,6 +160,27 @@ class BucketViewModel : ObservableObject{
             print("新しいメモが作れません")
         }
         
+        
+    }
+    
+    func editList (upList: ListModel) {
+        updateList = upList
+        
+        text = updateList.text ?? ""
+        category = updateList.category ?? ""
+        achievement = updateList.achievement
+        
+    }
+    
+    func resetList () {
+        
+        updateList = nil
+        
+        text =  ""
+        listNumber = 0
+        category = firstCategory
+        folderDate = Date()
+        achievement = false
         
     }
     
