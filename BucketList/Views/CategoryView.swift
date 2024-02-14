@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CoreData
 
 struct CategoryView: View {
     
@@ -42,12 +43,11 @@ struct CategoryView: View {
                         .padding()
                 })
                 
-                .sheet(isPresented: $isShowCategoryAdd, onDismiss: {
-                    firstCategoryGet()
-                }){
+                .sheet(isPresented: $isShowCategoryAdd){
                     
                     AddCategoryView(bucketViewModel: bucketViewModel, isShowCategoryAdd: $isShowCategoryAdd)
                         .presentationDetents([.large, .fraction(0.9)])
+                
                             
                     }
                 
@@ -57,9 +57,9 @@ struct CategoryView: View {
         }
         .navigationTitle("カテゴリー一覧")
         .font(.title3)
-//        .onAppear(){
-//          firstCategoryGet()
-//        }
+        .onDisappear(){
+        firstCategoryGet()
+       }
         
     }
     
@@ -68,7 +68,8 @@ struct CategoryView: View {
         
         do {
             try context.save()
-            bucketViewModel.firstCategory = categorys.first?.categoryName ?? ""
+            
+            firstCategoryGet()
             
         }
         catch {
@@ -79,7 +80,11 @@ struct CategoryView: View {
     }
     
     private func firstCategoryGet () {
-        let categoryArray = Array(categorys)
-        bucketViewModel.firstCategory = categoryArray.first?.categoryName ?? ""
+        let arrayCategory = Array(categorys)
+        let firstCategoryName = arrayCategory.first?.categoryName ?? ""
+        bucketViewModel.firstCategory = firstCategoryName
+        
+        bucketViewModel.category = firstCategoryName
+        
     }
 }

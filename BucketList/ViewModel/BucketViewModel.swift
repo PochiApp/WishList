@@ -25,7 +25,7 @@ class BucketViewModel : ObservableObject{
     @Published var achievement = false
     @Published var updateList: ListModel!
     
-    @AppStorage ("firstCategoryKey") var firstCategory = "未分類"
+    @AppStorage ("isFirstCategory") var firstCategory = "未分類"
     
     @Published var categoryName = ""
     @Published var categoryAddDate = Date()

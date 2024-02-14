@@ -170,6 +170,7 @@ extension ListView {
             .onMove(perform: moveList)
             .onDelete(perform: deleteList)
             
+            Spacer()
         }
         
         
