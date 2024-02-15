@@ -31,7 +31,7 @@ struct CategoryView: View {
                     }
                     .onDelete(perform: deleteCategory)
                 }
-                
+                .background(Color.gray.opacity(0.1))
                 
                 Button(action: {
                     isShowCategoryAdd.toggle()
@@ -39,6 +39,7 @@ struct CategoryView: View {
                 }, label: {
                     Image(systemName: "plus.circle.fill")
                         .foregroundColor(.black)
+                        .shadow(color: .gray.opacity(0.4), radius: 3, x: 2, y: 2)
                         .font(.largeTitle)
                         .padding()
                 })

@@ -146,21 +146,27 @@ extension ListView {
                     })
                     .buttonStyle(.plain)
                     
-                    Text("\(list.listNumber)"+".")
-                        .padding(.trailing,20)
-                    Text("\(list.text!)")
-                        .listRowSeparatorTint(.blue, edges: /*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
+                    Button(action: {
+                        isShowListAdd.toggle()
+                        bucketViewModel.editList(upList: list)
+                    }, label: {
+                        HStack {
+                            Text("\(list.listNumber)"+".")
+                                .padding(.trailing,20)
+                            Text("\(list.text!)")
+                                .listRowSeparatorTint(.blue, edges: /*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
+                            
+                            Spacer()
+                            
+                            Text("\(list.category!)")
+                                .font(.caption)
+                        }
+                        .foregroundColor(.black)
+                        
+                    })
                     
-                    Spacer()
-                    
-                    Text("\(list.category!)")
-                        .font(.caption)
                     
                 }
-                .onTapGesture(perform: {
-                    isShowListAdd.toggle()
-                    bucketViewModel.editList(upList: list)
-                })
                 .sheet(isPresented: $isShowListAdd) {
                     
                     AddListView(bucketViewModel : bucketViewModel, isShowListAdd: $isShowListAdd, listColor:bucketViewModel.colorList[Int(selectedFolder.backColor)])
@@ -265,6 +271,7 @@ extension ListView {
                 label: {
                     Image(systemName: "line.3.horizontal.decrease.circle")
                         .foregroundColor(.black)
+                        .shadow(color: .gray.opacity(0.4), radius: 3, x: 2, y: 2)
                         .font(.largeTitle)
                 }
         
@@ -279,13 +286,14 @@ extension ListView {
         }, label: {
             Image(systemName: "plus.circle.fill")
                 .foregroundColor(.black)
+                .shadow(color: .gray.opacity(0.4), radius: 3, x: 2, y: 2)
                 .font(.largeTitle)
                 .padding()
         })
         .sheet(isPresented: $isShowListAdd){
             
             AddListView(bucketViewModel: bucketViewModel ,isShowListAdd: $isShowListAdd, listColor: bucketViewModel.colorList[Int(selectedFolder.backColor)])
-                .presentationDetents([.large])
+                .presentationDetents([.large, .fraction(0.9)])
             
         }
     }

@@ -24,6 +24,8 @@ struct WriteFolderView: View {
                         Section {
                             
                             titleTextField
+                        } header: {
+                            Text("フォルダータイトル")
                         }
                         
                         
@@ -46,7 +48,6 @@ struct WriteFolderView: View {
                         
 
                     }
-                    
                     .navigationBarTitleDisplayMode(.inline)
                     .toolbarBackground(bucketViewModel.colorList[bucketViewModel.backColor], for: .navigationBar)
                     .toolbarBackground(.visible, for: .navigationBar)
@@ -87,7 +88,7 @@ struct WriteFolderView: View {
 extension WriteFolderView {
     
     private var titleTextField : some View {
-        TextField("フォルダタイトル", text: $bucketViewModel.title)
+        TextField("フォルダ-タイトル", text: $bucketViewModel.title)
             .focused($textIsActive)
 
     }

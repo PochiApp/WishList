@@ -66,12 +66,15 @@ extension FolderView {
     
     
     private var folderArea: some View {
-        ScrollView{
+        ScrollView(.vertical, showsIndicators: false){
+            Spacer()
+            
             ForEach(fm){foldermodel in
                 NavigationLink(destination: ListView(bucketViewModel: bucketViewModel, selectedFolder: foldermodel)){
-                    Rectangle()
+                    RoundedRectangle(cornerRadius: 16)
                         .fill(bucketViewModel.colorList[Int(foldermodel.backColor)])
                         .frame(width: 300, height: 150)
+                        .shadow(color: .gray, radius: 3, x: 5, y: 5)
                         .overlay(
                             VStack(alignment: .center){
                                 Text(foldermodel.notDaySetting ? "" : "\(bucketViewModel.formattedDateString(date: foldermodel.startDate ?? Date())) ~ \(bucketViewModel.formattedDateString(date: foldermodel.finishDate ?? Date()))")
@@ -92,6 +95,9 @@ extension FolderView {
        
             
         }
+                .onAppear {
+                    
+                }
                 .contextMenu(ContextMenu(menuItems: {
                     Button(action: {
                         context.delete(foldermodel)
@@ -121,6 +127,7 @@ extension FolderView {
         }, label: {
             Image(systemName: "plus.circle.fill")
                 .foregroundColor(.black)
+                .shadow(color: .gray.opacity(0.4), radius: 3, x: 2, y: 2)
                 .font(.largeTitle)
                 .padding()
         })

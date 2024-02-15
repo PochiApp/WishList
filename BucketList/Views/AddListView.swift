@@ -21,15 +21,15 @@ struct AddListView: View {
     @ObservedObject var bucketViewModel : BucketViewModel
     @Binding var isShowListAdd: Bool
     @State var listColor: Color
-    @FocusState var textIsActive: Bool
     
     var body: some View {
         VStack {
-            
             NavigationStack{
                 Form {
                     Section {
                         bucketTextField
+                    } header: {
+                        Text("やりたいこと")
                     }
                     
                     Section {
@@ -39,17 +39,44 @@ struct AddListView: View {
                             Text("カテゴリー追加へ")
                                 .font(.subheadline)
                         }
+                    } header: {
+                        Text("カテゴリー")
                     }
                     
+                    if bucketViewModel.updateList !== nil {
+                        Section {
+                            Button(action: {
+                                bucketViewModel.achievement.toggle()
+                                do {
+                                    try context.save()
+                                }
+                                catch {
+                                    print("達成チェックつけられません")
+                                }
+                                
+                            }, label: {
+                                Image(systemName: bucketViewModel.achievement ? "checkmark.square" : "square")
+                            })
+                            .buttonStyle(.plain)
+                        } header: {
+                            Text("達成チェック")
+                        }
+                    }
                     
                 }
+                .background(Color.gray.opacity(0.1))
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbarBackground(listColor, for: .navigationBar)
                 .toolbarBackground(.visible, for: .navigationBar)
                 .toolbar{
                     ToolbarItem(placement: .principal){
-                        Text("やりたいことリスト作成")
-                            .font(.title3)
+                        if bucketViewModel.updateList == nil {
+                            Text("やりたいことリスト作成")
+                                .font(.title3)
+                        } else {
+                            Text("やりたいことリスト編集")
+                                .font(.title3)
+                        }
                         
                     }
                     ToolbarItem(placement: .topBarLeading){
@@ -57,20 +84,10 @@ struct AddListView: View {
                     }
                     
                     ToolbarItem(placement: .topBarTrailing){
-                        Button(action: {
-                            bucketViewModel.writeList(context: context)
-                            
-                            dismiss()
-                            
-                        }, label: {
-                            Text("作成")
-                                .font(.title3)
-                                .foregroundColor(.black)
-                        })
+                        writeListButton
                     }
                 }
             }
-            
         }
     }
 }
@@ -78,7 +95,7 @@ struct AddListView: View {
 extension AddListView {
     private var bucketTextField: some View {
         TextField("やりたいこと", text: $bucketViewModel.text)
-
+            
     }
     
     private var categoryPicker: some View {
@@ -89,6 +106,19 @@ extension AddListView {
                     .tag(category.categoryName ?? "")
             }
         }
+    }
+    
+    private var writeListButton: some View {
+        Button(action: {
+            bucketViewModel.writeList(context: context)
+            
+            dismiss()
+            
+        }, label: {
+            Text("作成")
+                .font(.title3)
+                .foregroundColor(.black)
+        })
     }
     
     private var cancelButton: some View {
