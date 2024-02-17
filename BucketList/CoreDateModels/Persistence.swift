@@ -29,6 +29,8 @@ struct PersistenceController {
         newListModel.listNumber = Int16(0)
         newListModel.achievement = false
         newListModel.folderDate = Date()
+        newListModel.image1 = Data.init()
+        newListModel.image2 = Data.init()
         
         let newCategoryEntity = CategoryEntity(context: viewContext)
         newCategoryEntity.categoryName = ""

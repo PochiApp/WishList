@@ -21,6 +21,9 @@ extension ListModel {
     @NSManaged public var listNumber: Int16
     @NSManaged public var achievement: Bool
     @NSManaged public var folderDate: Date?
+    @NSManaged public var image1: Data?
+    @NSManaged public var image2: Data?
+    
 
 }
 

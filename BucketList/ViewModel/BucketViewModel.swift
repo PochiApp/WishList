@@ -7,6 +7,7 @@
 
 import SwiftUI
 import CoreData
+import PhotosUI
 
 class BucketViewModel : ObservableObject{
     
@@ -23,6 +24,11 @@ class BucketViewModel : ObservableObject{
     @Published var category = ""
     @Published var folderDate = Date()
     @Published var achievement = false
+    @State var datas: [Data] = []
+    @State var image1: Data = Data.init()
+    @State var image2: Data = Data.init()
+    @Published var selectedPhoto: [PhotosPickerItem] = []
+    @Published var images: [UIImage?] = []
     @Published var updateList: ListModel!
     
     @AppStorage ("isFirstCategory") var firstCategory = "未分類"
@@ -130,11 +136,16 @@ class BucketViewModel : ObservableObject{
             updateList.text = text
             updateList.category = category
             updateList.achievement = achievement
+            updateList.image1 = image1
+            updateList.image2 = image2
             
             try! context.save()
             
             text = ""
             category = firstCategory
+            achievement = false
+            image1 = Data.init()
+            image2 = Data.init()
             
             return
             
@@ -146,6 +157,8 @@ class BucketViewModel : ObservableObject{
         newListData.category = category
         newListData.folderDate = folderDate
         newListData.achievement = false
+        newListData.image1 = image1
+        newListData.image2 = image2
         
         do {
             try context.save()
@@ -155,6 +168,9 @@ class BucketViewModel : ObservableObject{
             category = firstCategory
             folderDate = Date()
             achievement = false
+            image1 = Data.init()
+            image2 = Data.init()
+            
         }
         catch {
             print("新しいメモが作れません")
@@ -169,6 +185,8 @@ class BucketViewModel : ObservableObject{
         text = updateList.text ?? ""
         category = updateList.category ?? ""
         achievement = updateList.achievement
+        image1 = updateList.image1 ?? Data.init()
+        image2 = updateList.image2 ?? Data.init()
         
     }
     
@@ -181,8 +199,46 @@ class BucketViewModel : ObservableObject{
         category = firstCategory
         folderDate = Date()
         achievement = false
+        image1 = Data.init()
+        image2 = Data.init()
         
     }
+    
+    func convertDataimages (photos: [PhotosPickerItem]) async {
+        for photo in photos {
+            guard let data = try? await photo.loadTransferable(type: Data.self) else { continue }
+            self.datas.append(data)
+        }
+        
+        let dataCount = datas.count
+        
+        switch dataCount {
+        case 1 :
+            image1 = datas[0]
+        case 2 :
+            image1 = datas[0]
+            image2 = datas[1]
+        default :
+            return
+            
+        }
+    }
+    
+    func convertUiimages () async {
+        if !self.images.isEmpty {
+            DispatchQueue.main.async {
+                self.images.removeAll()
+            }
+        }
+        for data in datas {
+            
+            guard let uiimage = UIImage(data: data) else { continue }
+            DispatchQueue.main.async {
+                self.images.append(uiimage)
+                }
+            }
+        }
+    
     
     func setupDefaultCategory(context: NSManagedObjectContext) {
         

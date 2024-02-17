@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import PhotosUI
 
 struct AddListView: View {
     
@@ -24,46 +25,76 @@ struct AddListView: View {
     
     var body: some View {
         VStack {
+            
             NavigationStack{
                 Form {
-                    Section {
+                    Section(header: Text("やりたいこと")) {
                         bucketTextField
-                    } header: {
-                        Text("やりたいこと")
                     }
                     
-                    Section {
+                    Section(header: Text("カテゴリー")) {
                         categoryPicker
                         
                         NavigationLink(destination: CategoryView(bucketViewModel: bucketViewModel)){
                             Text("カテゴリー追加へ")
                                 .font(.subheadline)
                         }
-                    } header: {
-                        Text("カテゴリー")
                     }
                     
-                    if bucketViewModel.updateList !== nil {
-                        Section {
-                            Button(action: {
-                                bucketViewModel.achievement.toggle()
-                                do {
-                                    try context.save()
-                                }
-                                catch {
-                                    print("達成チェックつけられません")
+                    Section(header: Text("画像")) {
+                        
+                        PhotosPicker(selection: $bucketViewModel.selectedPhoto, maxSelectionCount: 2, matching: .images) {
+                            if bucketViewModel.images.isEmpty {
+                                Image("noimage")
+                                    .resizable()
+                            } else {
+                                HStack {
+                                    ForEach(bucketViewModel.images, id:\.self) { image in
+                                        if let image {
+                                            Image(uiImage: image)
+                                                .resizable()
+                                                .scaledToFit()
+                                            
+                                        }
+                                        
+                                    }
+                                    
                                 }
                                 
-                            }, label: {
-                                Image(systemName: bucketViewModel.achievement ? "checkmark.square" : "square")
-                            })
-                            .buttonStyle(.plain)
-                        } header: {
-                            Text("達成チェック")
+                            }
                         }
+                        .onChange(of: bucketViewModel.selectedPhoto) {
+                            
+                            Task {
+                                await bucketViewModel.convertDataimages(photos: bucketViewModel.selectedPhoto)
+                                
+                            }
+                        }
+                        
+                        
                     }
-                    
-                }
+                                
+                            
+                            if bucketViewModel.updateList !== nil {
+                                Section(header: Text("達成チェック")) {
+                                    Button(action: {
+                                        bucketViewModel.achievement.toggle()
+                                        do {
+                                            try context.save()
+                                        }
+                                        catch {
+                                            print("達成チェックつけられません")
+                                        }
+                                        
+                                    }, label: {
+                                        Image(systemName: bucketViewModel.achievement ? "checkmark.square" : "square")
+                                    })
+                                    .buttonStyle(.plain)
+                                }
+                            }
+                            
+                        }
+                        
                 .background(Color.gray.opacity(0.1))
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbarBackground(listColor, for: .navigationBar)
@@ -87,48 +118,56 @@ struct AddListView: View {
                         writeListButton
                     }
                 }
+                
+                    
+                    }
+                
+                }
+            }
+        
+        }
+    
+    
+
+    
+    extension AddListView {
+        private var bucketTextField: some View {
+            TextField("やりたいこと", text: $bucketViewModel.text)
+            
+        }
+        
+        private var categoryPicker: some View {
+            
+            Picker("カテゴリー", selection: $bucketViewModel.category) {
+                ForEach(categorys, id: \.self) { category in
+                    Text("\(category.categoryName ?? "")")
+                        .tag(category.categoryName ?? "")
+                }
             }
         }
-    }
-}
-
-extension AddListView {
-    private var bucketTextField: some View {
-        TextField("やりたいこと", text: $bucketViewModel.text)
-            
-    }
-    
-    private var categoryPicker: some View {
-
-        Picker("カテゴリー", selection: $bucketViewModel.category) {
-            ForEach(categorys, id: \.self) { category in
-                Text("\(category.categoryName ?? "")")
-                    .tag(category.categoryName ?? "")
-            }
+        
+        private var writeListButton: some View {
+            Button(action: {
+                bucketViewModel.writeList(context: context)
+                
+                dismiss()
+                
+            }, label: {
+                Text("作成")
+                    .font(.title3)
+                    .foregroundColor(.black)
+            })
+        }
+        
+        private var cancelButton: some View {
+            Button(action: {
+                isShowListAdd = false
+                bucketViewModel.resetList()
+            }, label: {
+                Image(systemName: "clear.fill")
+                    .font(.title2)
+                    .foregroundColor(.black)
+            })
         }
     }
-    
-    private var writeListButton: some View {
-        Button(action: {
-            bucketViewModel.writeList(context: context)
-            
-            dismiss()
-            
-        }, label: {
-            Text("作成")
-                .font(.title3)
-                .foregroundColor(.black)
-        })
-    }
-    
-    private var cancelButton: some View {
-        Button(action: {
-            isShowListAdd = false
-            bucketViewModel.resetList()
-        }, label: {
-            Image(systemName: "clear.fill")
-                .font(.title2)
-                .foregroundColor(.black)
-        })
-    }
-}
+
