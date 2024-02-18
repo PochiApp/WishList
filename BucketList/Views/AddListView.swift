@@ -67,7 +67,7 @@ struct AddListView: View {
                             
                             Task {
                                 await bucketViewModel.convertDataimages(photos: bucketViewModel.selectedPhoto)
-                                
+                                await bucketViewModel.convertUiimages()
                             }
                         }
                         

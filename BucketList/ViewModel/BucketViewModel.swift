@@ -24,9 +24,9 @@ class BucketViewModel : ObservableObject{
     @Published var category = ""
     @Published var folderDate = Date()
     @Published var achievement = false
-    @State var datas: [Data] = []
-    @State var image1: Data = Data.init()
-    @State var image2: Data = Data.init()
+    @Published var datas: [Data] = []
+    @Published var image1: Data = Data.init()
+    @Published var image2: Data = Data.init()
     @Published var selectedPhoto: [PhotosPickerItem] = []
     @Published var images: [UIImage?] = []
     @Published var updateList: ListModel!
@@ -205,19 +205,28 @@ class BucketViewModel : ObservableObject{
     }
     
     func convertDataimages (photos: [PhotosPickerItem]) async {
+        
         for photo in photos {
-            guard let data = try? await photo.loadTransferable(type: Data.self) else { continue }
-            self.datas.append(data)
+                
+                guard let data = try? await photo.loadTransferable(type: Data.self) else { continue }
+            DispatchQueue.main.async {
+                self.datas.append(data)
+            }
+            
         }
         
         let dataCount = datas.count
         
         switch dataCount {
         case 1 :
-            image1 = datas[0]
+            DispatchQueue.main.async {
+                self.image1 = self.datas[0]
+            }
         case 2 :
-            image1 = datas[0]
-            image2 = datas[1]
+            DispatchQueue.main.async {
+                self.image1 = self.datas[0]
+                self.image2 = self.datas[1]
+            }
         default :
             return
             
@@ -225,18 +234,19 @@ class BucketViewModel : ObservableObject{
     }
     
     func convertUiimages () async {
+        print("\(image1)")
         if !self.images.isEmpty {
             DispatchQueue.main.async {
                 self.images.removeAll()
             }
         }
-        for data in datas {
-            
-            guard let uiimage = UIImage(data: data) else { continue }
+        
+            guard let uiimage1 = UIImage(data: image1) else { return }
+            guard let uiimage2 = UIImage(data: image2) else { return }
             DispatchQueue.main.async {
-                self.images.append(uiimage)
+                self.images.append(contentsOf:[uiimage1,uiimage2])
                 }
-            }
+            
         }
     
     
