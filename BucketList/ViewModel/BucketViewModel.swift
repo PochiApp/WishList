@@ -202,6 +202,8 @@ class BucketViewModel : ObservableObject{
         image1 = Data.init()
         image2 = Data.init()
         
+        images = []
+        
     }
     
     func convertDataimages (photos: [PhotosPickerItem]) async {
@@ -210,40 +212,29 @@ class BucketViewModel : ObservableObject{
                 
                 guard let data = try? await photo.loadTransferable(type: Data.self) else { continue }
             DispatchQueue.main.async {
+                print("最初\(data)")
                 self.datas.append(data)
             }
             
         }
         
-        let dataCount = datas.count
         
-        switch dataCount {
-        case 1 :
-            DispatchQueue.main.async {
-                self.image1 = self.datas[0]
-            }
-        case 2 :
-            DispatchQueue.main.async {
-                self.image1 = self.datas[0]
-                self.image2 = self.datas[1]
-            }
-        default :
-            return
-            
-        }
     }
     
     func convertUiimages () async {
-        print("\(image1)")
+        
         if !self.images.isEmpty {
             DispatchQueue.main.async {
                 self.images.removeAll()
             }
         }
-        
-            guard let uiimage1 = UIImage(data: image1) else { return }
-            guard let uiimage2 = UIImage(data: image2) else { return }
+
             DispatchQueue.main.async {
+                guard let uiimage1 = UIImage(data: self.image1) else { print("uiimage失敗1"); return }
+                guard let uiimage2 = UIImage(data: self.image2) else { print("uiimage失敗2");return }
+                
+                print("ui1 : \(uiimage1)")
+                print("ui2 : \(uiimage2)")
                 self.images.append(contentsOf:[uiimage1,uiimage2])
                 }
             

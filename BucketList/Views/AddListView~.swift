@@ -47,7 +47,6 @@ struct AddListView: View {
                             if bucketViewModel.images.isEmpty {
                                 Image("noimage")
                                     .resizable()
-                                    .scaledToFit()
                             } else {
                                 HStack {
                                     ForEach(bucketViewModel.images, id:\.self) { image in
