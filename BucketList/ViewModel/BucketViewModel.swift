@@ -185,6 +185,7 @@ class BucketViewModel : ObservableObject{
         text = updateList.text ?? ""
         category = updateList.category ?? ""
         achievement = updateList.achievement
+        selectedPhoto = []
         image1 = updateList.image1 ?? Data.init()
         image2 = updateList.image2 ?? Data.init()
         
@@ -202,6 +203,7 @@ class BucketViewModel : ObservableObject{
         image1 = Data.init()
         image2 = Data.init()
         
+        selectedPhoto = []
         images = []
         
     }
@@ -213,6 +215,7 @@ class BucketViewModel : ObservableObject{
                 guard let data = try? await photo.loadTransferable(type: Data.self) else { continue }
             DispatchQueue.main.async {
                 print("最初\(data)")
+                
                 self.datas.append(data)
             }
             
@@ -231,11 +234,13 @@ class BucketViewModel : ObservableObject{
 
             DispatchQueue.main.async {
                 guard let uiimage1 = UIImage(data: self.image1) else { print("uiimage失敗1"); return }
-                guard let uiimage2 = UIImage(data: self.image2) else { print("uiimage失敗2");return }
-                
+                self.images.append(uiimage1)
                 print("ui1 : \(uiimage1)")
+                guard let uiimage2 = UIImage(data: self.image2) else { print("uiimage失敗2");return }
+                self.images.append(uiimage2)
                 print("ui2 : \(uiimage2)")
-                self.images.append(contentsOf:[uiimage1,uiimage2])
+                
+
                 }
             
         }

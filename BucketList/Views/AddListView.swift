@@ -31,6 +31,12 @@ struct AddListView: View {
                     Section(header: Text("やりたいこと")) {
                         bucketTextField
                     }
+                    .onChange(of: bucketViewModel.text){
+                        
+                        
+                            print("\(bucketViewModel.text)")
+                        
+                    }
                     
                     Section(header: Text("カテゴリー")) {
                         categoryPicker
@@ -64,10 +70,11 @@ struct AddListView: View {
                                 
                             }
                         }
-                        .onChange(of: bucketViewModel.selectedPhoto) {
-                            
+                        .onChange(of: bucketViewModel.selectedPhoto){
+                        
                             if !bucketViewModel.datas.isEmpty {
                                 bucketViewModel.datas.removeAll()
+                                print("datas removeしました")
                             }
                             
                             Task {
@@ -92,7 +99,7 @@ struct AddListView: View {
                                     DispatchQueue.main.async {
                                         bucketViewModel.image1 = Data.init()
                                         bucketViewModel.image2 = Data.init()
-                                        print("case1")
+                                        print("default")
                                     }
                                     return
                                     
@@ -101,7 +108,13 @@ struct AddListView: View {
                                 await bucketViewModel.convertUiimages()
                             }
                         }
-                        
+                        .onAppear() {
+                            print("appear")
+                            Task {
+                                await bucketViewModel.convertUiimages()
+                            }
+                            
+                        }
                         
                     }
                                 
