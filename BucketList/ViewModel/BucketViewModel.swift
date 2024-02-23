@@ -207,20 +207,17 @@ class BucketViewModel : ObservableObject{
     
     func convertDataimages (photos: [PhotosPickerItem]) async {
         
-    var newDatas: [Data] = []
-        
         for photo in photos {
             guard let data = try? await photo.loadTransferable(type: Data.self) else { continue }
-            newDatas.append(data)
-        }
-        
-        let appendData = Array(Set(newDatas))
-        
+            
             DispatchQueue.main.async {
-                print("最初\(appendData.count)")
-                self.datas.append(contentsOf: appendData)
+                print("最初")
+                self.datas.append(data)
                 print("3")
             }
+        }
+        
+            
             
     }
     
