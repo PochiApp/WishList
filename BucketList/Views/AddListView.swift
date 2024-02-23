@@ -22,6 +22,8 @@ struct AddListView: View {
     @ObservedObject var bucketViewModel : BucketViewModel
     @Binding var isShowListAdd: Bool
     @State var listColor: Color
+    @State var selectedPhoto: [PhotosPickerItem] = []
+    
     
     var body: some View {
         VStack {
@@ -30,12 +32,6 @@ struct AddListView: View {
                 Form {
                     Section(header: Text("やりたいこと")) {
                         bucketTextField
-                    }
-                    .onChange(of: bucketViewModel.text){
-                        
-                        
-                            print("\(bucketViewModel.text)")
-                        
                     }
                     
                     Section(header: Text("カテゴリー")) {
@@ -49,7 +45,7 @@ struct AddListView: View {
                     
                     Section(header: Text("画像")) {
                         
-                        PhotosPicker(selection: $bucketViewModel.selectedPhoto, maxSelectionCount: 2, matching: .images) {
+                        PhotosPicker(selection: $selectedPhoto, maxSelectionCount: 2, matching: .images) {
                             if bucketViewModel.images.isEmpty {
                                 Image("noimage")
                                     .resizable()
@@ -70,7 +66,9 @@ struct AddListView: View {
                                 
                             }
                         }
-                        .onChange(of: bucketViewModel.selectedPhoto){
+                        .onChange(of: selectedPhoto){
+                            
+                            
                         
                             if !bucketViewModel.datas.isEmpty {
                                 bucketViewModel.datas.removeAll()
@@ -78,9 +76,9 @@ struct AddListView: View {
                             }
                             
                             Task {
-                                await bucketViewModel.convertDataimages(photos: bucketViewModel.selectedPhoto)
+                                await bucketViewModel.convertDataimages(photos: selectedPhoto)
                                 
-                                print("datas count :\(bucketViewModel.datas.count)")
+                                
                                 
                                 switch bucketViewModel.datas.count {
                                 case 1 :
@@ -106,6 +104,8 @@ struct AddListView: View {
                                 }
                                 
                                 await bucketViewModel.convertUiimages()
+                                
+                                
                             }
                         }
                         .onAppear() {

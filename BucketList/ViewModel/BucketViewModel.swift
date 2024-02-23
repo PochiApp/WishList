@@ -27,7 +27,6 @@ class BucketViewModel : ObservableObject{
     @Published var datas: [Data] = []
     @Published var image1: Data = Data.init()
     @Published var image2: Data = Data.init()
-    @Published var selectedPhoto: [PhotosPickerItem] = []
     @Published var images: [UIImage?] = []
     @Published var updateList: ListModel!
     
@@ -185,7 +184,6 @@ class BucketViewModel : ObservableObject{
         text = updateList.text ?? ""
         category = updateList.category ?? ""
         achievement = updateList.achievement
-        selectedPhoto = []
         image1 = updateList.image1 ?? Data.init()
         image2 = updateList.image2 ?? Data.init()
         
@@ -203,7 +201,6 @@ class BucketViewModel : ObservableObject{
         image1 = Data.init()
         image2 = Data.init()
         
-        selectedPhoto = []
         images = []
         
     }
@@ -225,8 +222,6 @@ class BucketViewModel : ObservableObject{
                 print("3")
             }
             
-        
-        
     }
     
     func convertUiimages () async {
