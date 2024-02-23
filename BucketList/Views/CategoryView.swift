@@ -33,6 +33,15 @@ struct CategoryView: View {
                 }
                 .background(Color.gray.opacity(0.1))
                 
+                
+                
+                
+            }
+            
+        }
+        .navigationTitle("カテゴリー一覧")
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing){
                 Button(action: {
                     isShowCategoryAdd.toggle()
                     
@@ -40,27 +49,22 @@ struct CategoryView: View {
                     Image(systemName: "plus.circle.fill")
                         .foregroundColor(.black)
                         .shadow(color: .gray.opacity(0.4), radius: 3, x: 2, y: 2)
-                        .font(.largeTitle)
                         .padding()
                 })
                 
-                .sheet(isPresented: $isShowCategoryAdd){
-                    
-                    AddCategoryView(bucketViewModel: bucketViewModel, isShowCategoryAdd: $isShowCategoryAdd)
-                        .presentationDetents([.large, .fraction(0.9)])
-                
-                            
-                    }
-                
-                
             }
-            
         }
-        .navigationTitle("カテゴリー一覧")
         .font(.title3)
         .onDisappear(){
         firstCategoryGet()
        }
+        .sheet(isPresented: $isShowCategoryAdd){
+            
+            AddCategoryView(bucketViewModel: bucketViewModel, isShowCategoryAdd: $isShowCategoryAdd)
+                .presentationDetents([.large, .fraction(0.9)])
+        
+                    
+            }
         
     }
     

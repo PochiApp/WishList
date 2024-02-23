@@ -158,6 +158,10 @@ extension ListView {
                             
                             Spacer()
                             
+                            if list.image1 != Data() || list.image2 != Data() {
+                                Image(systemName: "photo.on.rectangle.angled")
+                            }
+                            
                             Text("\(list.category!)")
                                 .font(.caption)
                         }
