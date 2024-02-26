@@ -24,6 +24,7 @@ struct FolderView: View {
     
     
     var body: some View {
+        
         VStack {
             NavigationStack{
                 ZStack(alignment: .bottomTrailing) {
@@ -34,14 +35,7 @@ struct FolderView: View {
                     floatingButton
                         
                         }
-                .toolbar{
-                    ToolbarItemGroup(placement: .bottomBar) {
-                        
-                        bottomArea
-                    }
-                    
-                    
-                        }
+
                     }
             .navigationBarBackButtonHidden(true)
             .onAppear(perform: {
@@ -100,7 +94,9 @@ extension FolderView {
                 }
                 .contextMenu(ContextMenu(menuItems: {
                     Button(action: {
-                        context.delete(foldermodel)
+                        withAnimation {
+                            context.delete(foldermodel)
+                        }
                         try? context.save()
                     }, label: {
                         Text("削除")
@@ -117,6 +113,8 @@ extension FolderView {
                             .presentationDetents([.large])
                     }
                 }))
+                .transition(
+                    AnyTransition.asymmetric(insertion: AnyTransition.slide.combined(with: AnyTransition.opacity), removal: AnyTransition.identity))
             }
         }
     }
@@ -138,25 +136,7 @@ extension FolderView {
                     
             }
     }
-    
-    private var bottomArea: some View {
-        HStack(spacing:90) {
-            NavigationLink(destination: FolderView()) {
-                Image(systemName: "folder")
-                    .font(.title2)
-                    .foregroundColor(.black)
-            }
-            
-            Image(systemName: "gearshape")
-                .font(.title2)
-            
-            Image(systemName: "square.and.arrow.up")
-                .font(.title2)
-        }
-        }
-    
-
-        
+     
     }
 
     

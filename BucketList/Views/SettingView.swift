@@ -9,11 +9,25 @@ import SwiftUI
 
 struct SettingView: View {
     var body: some View {
-        Form {
-            Section(header: Text("設定")) {
-                Text("アプリバージョン情報")
+        NavigationStack {
+            Form {
+                Section(header: Text("設定")) {
+                    
+                    Text("カテゴリー編集")
+                    
+                    
+                }
+                
+                Section(header: Text("アプリ情報")) {
+                    Text("アプリバージョン情報")
+                    
+                    Text("レビューを書く")
+                    
+                    
+                }
             }
         }
+        
     }
 }
 

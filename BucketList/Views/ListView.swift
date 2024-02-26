@@ -102,9 +102,9 @@ struct ListView: View {
                                 navigationArea
                             }
                             
-                            ToolbarItemGroup(placement: .bottomBar){
-                                bottomArea
-                            }
+//                            ToolbarItemGroup(placement: .bottomBar){
+//                                bottomArea
+//                            }
                         }
                     }
                     
@@ -209,22 +209,6 @@ extension ListView {
             Image(systemName: "arrowshape.turn.up.backward")
                 .foregroundColor(.black)
                 .navigationBarBackButtonHidden(true)
-        }
-    }
-    
-    private var bottomArea: some View {
-        HStack(spacing:90) {
-            NavigationLink(destination: FolderView()) {
-                Image(systemName: "folder")
-                    .font(.title2)
-                    .foregroundColor(.black)
-            }
-            
-            Image(systemName: "gearshape")
-                .font(.title2)
-            
-            Image(systemName: "square.and.arrow.up")
-                .font(.title2)
         }
     }
     

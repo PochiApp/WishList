@@ -72,13 +72,10 @@ struct AddListView: View {
                         
                             if !bucketViewModel.datas.isEmpty {
                                 bucketViewModel.datas.removeAll()
-                                print("datas removeしました")
                             }
                             
                             Task {
                                 await bucketViewModel.convertDataimages(photos: selectedPhoto)
-                                
-                                
                                 
                                 switch bucketViewModel.datas.count {
                                 case 1 :

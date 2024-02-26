@@ -13,7 +13,7 @@ struct BucketListApp: App {
     private let persistence = PersistenceController.shared
         var body: some Scene {
             WindowGroup {
-                FolderView()
+                FirstTabView()
                     .environment(\.managedObjectContext, persistence.container.viewContext)
             }
         }

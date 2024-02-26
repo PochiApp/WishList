@@ -211,9 +211,9 @@ class BucketViewModel : ObservableObject{
             guard let data = try? await photo.loadTransferable(type: Data.self) else { continue }
             
             DispatchQueue.main.async {
-                print("最初")
+                
                 self.datas.append(data)
-                print("3")
+              
             }
         }
         
@@ -232,10 +232,10 @@ class BucketViewModel : ObservableObject{
             DispatchQueue.main.async {
                 guard let uiimage1 = UIImage(data: self.image1) else { print("uiimage失敗1"); return }
                 self.images.append(uiimage1)
-                print("ui1 : \(uiimage1)")
+//                print("ui1 : \(uiimage1)")
                 guard let uiimage2 = UIImage(data: self.image2) else { print("uiimage失敗2");return }
                 self.images.append(uiimage2)
-                print("ui2 : \(uiimage2)")
+//                print("ui2 : \(uiimage2)")
                 
 
                 }
