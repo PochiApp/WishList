@@ -18,7 +18,7 @@ struct FolderView: View {
         sortDescriptors: [NSSortDescriptor(keyPath: \FolderModel.writeDate, ascending: false)],
         animation: .default)
         private var fm: FetchedResults<FolderModel>
-    @StateObject var bucketViewModel = BucketViewModel()
+    @ObservedObject var bucketViewModel : BucketViewModel
     @State var isShowListView = false
     @State var isShowFolderWrite: Bool = false
     
@@ -52,9 +52,7 @@ struct FolderView: View {
         
         }
 
-#Preview {
-    FolderView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
-}
+
 
 extension FolderView {
     

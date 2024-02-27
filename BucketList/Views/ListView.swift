@@ -205,7 +205,7 @@ extension ListView {
     }
     
     private var backButton : some View {
-        NavigationLink(destination: FolderView()) {
+        NavigationLink(destination: FolderView(bucketViewModel: bucketViewModel)) {
             Image(systemName: "arrowshape.turn.up.backward")
                 .foregroundColor(.black)
                 .navigationBarBackButtonHidden(true)

@@ -8,15 +8,17 @@
 import SwiftUI
 
 struct FirstTabView: View {
+    @StateObject var bucketViewModel = BucketViewModel()
+    
     var body: some View {
         TabView {
-            FolderView()
+            FolderView(bucketViewModel: bucketViewModel)
                 .tabItem {
                     Label("フォルダー", systemImage: "folder")
 
                 }
             
-            SettingView()
+            SettingView(bucketViewModel: bucketViewModel)
                 .tabItem {
                     Label("設定", systemImage: "gearshape")
                 }
@@ -32,5 +34,5 @@ struct FirstTabView: View {
 }
 
 #Preview {
-    FirstTabView()
+    FirstTabView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
 }
