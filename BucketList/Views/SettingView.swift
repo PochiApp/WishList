@@ -46,7 +46,9 @@ struct SettingView: View {
                     
                     Text("レビューを書く")
                     
-                    Text("お問い合わせ")
+                    Link(destination: URL(string: "mailto:pochi.app.dp@gmail.com")!) {
+                        Text("お問い合わせ")
+                    }
                     
                     Link(destination: URL(string: "https://summer-argon-e25.notion.site/54b9aa4f4e1b4139b4e52b8c732d153a?pvs=4")!) {
                         Text("プライバシーポリシー")
