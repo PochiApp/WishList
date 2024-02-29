@@ -157,10 +157,12 @@ extension ListView {
                                 .listRowSeparatorTint(.blue, edges: /*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
                             
                             Spacer()
-                            
-                            if list.image1 != Data() || list.image2 != Data() {
-                                Image(systemName: "photo.on.rectangle.angled")
+                            if let image1 = list.image1, let image2 = list.image2 {
+                                if !image1.isEmpty || !image2.isEmpty {
+                                    Image(systemName: "photo.on.rectangle.angled")
+                                }
                             }
+                            
                             
                             Text("\(list.category!)")
                                 .font(.caption)
