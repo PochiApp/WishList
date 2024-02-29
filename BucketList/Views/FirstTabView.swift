@@ -23,11 +23,7 @@ struct FirstTabView: View {
                     Label("設定", systemImage: "gearshape")
                 }
             
-            ShareView()
-                .tabItem {
-                    Label("共有", systemImage: "square.and.arrow.up")
-                 
-                }
+            
         }
         .accentColor(.black)
     }

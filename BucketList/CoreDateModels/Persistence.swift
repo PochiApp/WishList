@@ -22,6 +22,7 @@ struct PersistenceController {
         newFolderModel.writeDate = Date()
         newFolderModel.notDaySetting = false
         newFolderModel.lists = []
+        newFolderModel.achievedLists = []
         
         let newListModel = ListModel(context: viewContext)
         newListModel.text = ""

@@ -23,6 +23,7 @@ extension FolderModel {
     @NSManaged public var writeDate: Date?
     @NSManaged public var notDaySetting: Bool
     @NSManaged public var lists: NSArray?
+    @NSManaged public var achievedLists: NSArray?
 }
 
 extension FolderModel : Identifiable {

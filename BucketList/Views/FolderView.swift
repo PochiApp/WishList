@@ -66,7 +66,7 @@ extension FolderView {
                     RoundedRectangle(cornerRadius: 16)
                         .fill(bucketViewModel.colorList[Int(foldermodel.backColor)])
                         .frame(width: 300, height: 150)
-                        .shadow(color: .gray, radius: 3, x: 5, y: 5)
+                        .shadow(color: .gray, radius: 5, x: 5, y: 5)
                         .overlay(
                             VStack(alignment: .center){
                                 Text(foldermodel.notDaySetting ? "" : "\(bucketViewModel.formattedDateString(date: foldermodel.startDate ?? Date())) ~ \(bucketViewModel.formattedDateString(date: foldermodel.finishDate ?? Date()))")
@@ -76,9 +76,9 @@ extension FolderView {
                                     .lineLimit(2)
                                     .font(.system(size: 18, weight: .semibold))
                                     .padding(.top)
-                                Text("達成率：20/\(foldermodel.lists!.count)")
+                                Text("達成：\(foldermodel.achievedLists!.count)/\(foldermodel.lists!.count)")
                                     .padding(.top)
-                                    .font(.system(size: 15))
+                                    .font(.system(size: 11))
                                 
                             }
                                 .foregroundColor(.black)
@@ -88,7 +88,7 @@ extension FolderView {
             
         }
                 .onAppear {
-                    
+                    self.context.refreshAllObjects()
                 }
                 .contextMenu(ContextMenu(menuItems: {
                     Button(action: {
@@ -137,5 +137,9 @@ extension FolderView {
      
     }
 
-    
+struct emptyFolderView: View {
+    var body: some View {
+        Text("")
+    }
+}
 

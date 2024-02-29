@@ -154,6 +154,7 @@ extension ListView {
                             Text("\(list.listNumber)"+".")
                                 .padding(.trailing,20)
                             Text("\(list.text!)")
+//                                .underline(true, color: .red)
                                 .listRowSeparatorTint(.blue, edges: /*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
                             
                             Spacer()
