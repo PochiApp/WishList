@@ -102,9 +102,6 @@ struct ListView: View {
                                 navigationArea
                             }
                             
-//                            ToolbarItemGroup(placement: .bottomBar){
-//                                bottomArea
-//                            }
                         }
                     }
                     
@@ -115,6 +112,7 @@ struct ListView: View {
                     plusFloatingButton
                     
                     }
+                .padding(EdgeInsets(top: 0, leading: 0, bottom: 25, trailing: 25))
   
                 }
                 
@@ -154,15 +152,13 @@ extension ListView {
                             Text("\(list.listNumber)"+".")
                                 .padding(.trailing,20)
                             Text("\(list.text!)")
-//                                .underline(true, color: .red)
                                 .listRowSeparatorTint(.blue, edges: /*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
                             
                             Spacer()
-                            if let image1 = list.image1, let image2 = list.image2 {
-                                if !image1.isEmpty || !image2.isEmpty {
+                            if list.unwrappedImage1.isEmpty || list.unwrappedImage2.isEmpty {
                                     Image(systemName: "photo.on.rectangle.angled")
                                 }
-                            }
+                    
                             
                             
                             Text("\(list.category!)")
@@ -195,10 +191,10 @@ extension ListView {
         
         
         VStack{
-            Text("\(selectedFolder.title!)")
+            Text("\(selectedFolder.unwrappedTitle)")
                 .font(.headline)
             HStack{
-                Text(selectedFolder.notDaySetting ? "" : "\(bucketViewModel.formattedDateString(date: selectedFolder.startDate ?? Date())) ~ \(bucketViewModel.formattedDateString(date: selectedFolder.finishDate ?? Date()))")
+                Text(selectedFolder.notDaySetting ? "" : "\(bucketViewModel.formattedDateString(date: selectedFolder.unwrappedStartDate)) ~ \(bucketViewModel.formattedDateString(date: selectedFolder.unwrappedFinishDate))")
                     .font(.subheadline)
                     .padding(.trailing)
             }
@@ -263,7 +259,7 @@ extension ListView {
                     Image(systemName: "line.3.horizontal.decrease.circle")
                         .foregroundColor(.black)
                         .shadow(color: .gray.opacity(0.4), radius: 3, x: 2, y: 2)
-                        .font(.largeTitle)
+                        .font(.system(size: 40))
                 }
         
     }
@@ -278,7 +274,7 @@ extension ListView {
             Image(systemName: "plus.circle.fill")
                 .foregroundColor(.black)
                 .shadow(color: .gray.opacity(0.4), radius: 3, x: 2, y: 2)
-                .font(.largeTitle)
+                .font(.system(size: 40))
                 .padding()
         })
         .sheet(isPresented: $isShowListAdd){

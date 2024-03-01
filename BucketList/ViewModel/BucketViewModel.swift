@@ -108,10 +108,10 @@ class BucketViewModel : ObservableObject{
     func editFolder (upFolder: FolderModel) {
         updateFolder = upFolder
         
-        title = updateFolder.title ?? ""
+        title = updateFolder.unwrappedTitle
         notDaySetting = updateFolder.notDaySetting
-        selectedStartDate = updateFolder.startDate ?? Date()
-        selectedFinishDate = updateFolder.finishDate ?? Date()
+        selectedStartDate = updateFolder.unwrappedStartDate
+        selectedFinishDate = updateFolder.unwrappedFinishDate
         backColor = Int(updateFolder.backColor)
         
         

@@ -24,3 +24,10 @@ extension CategoryEntity {
 extension CategoryEntity : Identifiable {
 
 }
+
+extension CategoryEntity {
+    
+    public var unwrappedCategoryName: String { categoryName ?? "" }
+    public var unwrappedCategoryAddDate: Date { categoryAddDate ?? Date() }
+    
+}

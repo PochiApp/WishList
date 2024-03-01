@@ -30,3 +30,12 @@ extension ListModel {
 extension ListModel : Identifiable {
 
 }
+
+extension ListModel {
+    public var unwrappedText: String { text ?? "" }
+    public var unwrappedCategory: String { category ?? "" }
+    public var unwrappedFolderDate: Date { folderDate ?? Date() }
+    public var unwrappedImage1: Data { image1 ?? Data.init() }
+    public var unwrappedImage2: Data { image2 ?? Data.init() }
+    
+}

@@ -25,7 +25,7 @@ struct CategoryView: View {
             ZStack{
                 List {
                     ForEach(categorys){ category in
-                        Text("\(category.categoryName ?? "")")
+                        Text("\(category.unwrappedCategoryName)")
                             .font(.title3)
         
                     }

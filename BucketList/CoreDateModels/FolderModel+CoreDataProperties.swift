@@ -29,3 +29,13 @@ extension FolderModel {
 extension FolderModel : Identifiable {
 
 }
+
+extension FolderModel {
+    public var unwrappedTitle: String { title ?? "" }
+    public var unwrappedStartDate: Date { startDate ?? Date() }
+    public var unwrappedFinishDate: Date { finishDate ?? Date() }
+    public var unwrappedWriteDate: Date { writeDate ?? Date() }
+    public var unwrappedLists: [ListModel]  { lists as? [ListModel] ?? [] }
+    public var unwrappedAchievedLists: [ListModel]  { achievedLists as? [ListModel] ?? [] }
+    
+}
