@@ -45,7 +45,7 @@ struct AddListView: View {
                     
                     Section(header: Text("画像")) {
                         
-                        PhotosPicker(selection: $selectedPhoto, maxSelectionCount: 2, matching: .images) {
+                        PhotosPicker(selection: $selectedPhoto, maxSelectionCount: 2, selectionBehavior: .ordered, matching: .images) {
                             if bucketViewModel.images.isEmpty {
                                 Image("noimage")
                                     .resizable()
@@ -63,7 +63,15 @@ struct AddListView: View {
                                     }
                                     
                                 }
-                                
+                            
+                                    Button(action: {
+                                        selectedPhoto = []
+                                        bucketViewModel.resetImages()
+                                    }) {
+                                        Text("画像削除")
+                                            .foregroundColor(.red)
+                                    }
+
                             }
                         }
                         .onChange(of: selectedPhoto){
@@ -100,17 +108,16 @@ struct AddListView: View {
                                     
                                 }
                                 
-                                await bucketViewModel.convertUiimages()
+                               await bucketViewModel.convertUiimages()
                                 
                                 
                             }
                         }
                         .onAppear() {
-                            print("appear")
                             Task {
                                 await bucketViewModel.convertUiimages()
                             }
-                            
+                          
                         }
                         
                     }

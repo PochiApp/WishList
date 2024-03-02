@@ -86,40 +86,47 @@ struct ListView: View {
     
     
     var body: some View {
-        VStack{
-            ZStack(alignment: .bottomTrailing){
-                NavigationStack {
-                    listArea
-                        .scrollContentBackground(.hidden)
-                        .navigationBarTitleDisplayMode(.inline)
-                        .toolbarBackground(bucketViewModel.colorList[Int(selectedFolder.backColor)], for: .navigationBar)
-                        .toolbarBackground(.visible, for: .navigationBar)
-                        .toolbar {
-                            ToolbarItem(placement: .topBarLeading) {
-                                backButton
+        NavigationStack {
+            ZStack {
+                    if listModels.isEmpty {
+                        emptyListView
+                    } else {
+                        listArea
+                            .scrollContentBackground(.hidden)
+                            .navigationBarTitleDisplayMode(.inline)
+                            .toolbarBackground(bucketViewModel.colorList[Int(selectedFolder.backColor)], for: .navigationBar)
+                            .toolbarBackground(.visible, for: .navigationBar)
+                            .toolbar {
+                                ToolbarItem(placement: .topBarLeading) {
+                                    backButton
+                                }
+                                ToolbarItem(placement: .principal) {
+                                    navigationArea
+                                }
+                                
                             }
-                            ToolbarItem(placement: .principal) {
-                                navigationArea
-                            }
+                    }
+                VStack {
+                    Spacer()
+                        HStack {
+                            Spacer()
                             
-                        }
+                            sortFloatingButton
+                            
+                            plusFloatingButton
+                    }
+                        .padding(EdgeInsets(top: 0, leading: 0, bottom: 25, trailing: 25))
+                    
                     }
                     
-                HStack{
-                    
-                    sortFloatingButton
-                    
-                    plusFloatingButton
-                    
-                    }
-                .padding(EdgeInsets(top: 0, leading: 0, bottom: 25, trailing: 25))
-  
+
                 }
                 
                 
             }
         
   }
+        
         
 }
 
@@ -155,12 +162,26 @@ extension ListView {
                                 .listRowSeparatorTint(.blue, edges: /*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
                             
                             Spacer()
-                            if list.unwrappedImage1.isEmpty || list.unwrappedImage2.isEmpty {
-                                    Image(systemName: "photo.on.rectangle.angled")
-                                }
+                            if (!list.unwrappedImage1.isEmpty) {
+                                
+                                if let uiImage1 = UIImage(data: list.unwrappedImage1) {
+                                        Image(uiImage: uiImage1)
+                                            .resizable()
+                                            .frame(width: 25, height:25)
+                                            .clipShape(Circle())
+                                    }
+                            }
+                            
+                            if (!list.unwrappedImage2.isEmpty) {
+                                
+                                if let uiImage2 = UIImage(data: list.unwrappedImage2) {
+                                        Image(uiImage: uiImage2)
+                                            .resizable()
+                                            .frame(width: 25, height:25)
+                                            .clipShape(Circle())
+                                    }
+                            }
                     
-                            
-                            
                             Text("\(list.category!)")
                                 .font(.caption)
                         }
@@ -175,6 +196,7 @@ extension ListView {
                     AddListView(bucketViewModel : bucketViewModel, isShowListAdd: $isShowListAdd, listColor:bucketViewModel.colorList[Int(selectedFolder.backColor)])
                         .presentationDetents([.large])
                 }
+
             }
             .onMove(perform: moveList)
             .onDelete(perform: deleteList)
@@ -342,6 +364,19 @@ extension ListView {
         }
     }
     
-    
+    private var emptyListView: some View {
+        
+            VStack(alignment: .center) {
+                Image(systemName: "pencil.and.list.clipboard")
+                    .font(.system(size: 100))
+                    .foregroundColor(Color.gray.opacity(0.5))
+                    .padding(.bottom)
+                
+                Text("右下＋ボタンから、リストを作成してみましょう")
+                    .font(.caption)
+                    .foregroundColor(Color.gray)
+                    .lineLimit(1)
+            }
+    }
     
 }

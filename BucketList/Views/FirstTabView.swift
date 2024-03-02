@@ -10,6 +10,10 @@ import SwiftUI
 struct FirstTabView: View {
     @StateObject var bucketViewModel = BucketViewModel()
     
+    init() {
+        UITabBar.appearance().backgroundColor = .white
+    }
+    
     var body: some View {
         TabView {
             FolderView(bucketViewModel: bucketViewModel)
@@ -25,6 +29,7 @@ struct FirstTabView: View {
             
             
         }
+        .background(.white)
         .accentColor(.black)
     }
 }

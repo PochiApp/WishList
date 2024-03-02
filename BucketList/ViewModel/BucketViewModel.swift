@@ -140,6 +140,8 @@ class BucketViewModel : ObservableObject{
             
             try! context.save()
             
+            updateList = nil
+            
             text = ""
             category = firstCategory
             achievement = false
@@ -205,6 +207,13 @@ class BucketViewModel : ObservableObject{
         
     }
     
+    func resetImages () {
+        datas = []
+        images = []
+        image1 = Data.init()
+        image2 = Data.init()
+    }
+    
     func convertDataimages (photos: [PhotosPickerItem]) async {
         
         for photo in photos {
@@ -220,22 +229,23 @@ class BucketViewModel : ObservableObject{
             
             
     }
+
     
     func convertUiimages () async {
         
         if !self.images.isEmpty {
-            DispatchQueue.main.async {
+           DispatchQueue.main.async {
                 self.images.removeAll()
-            }
+           }
         }
 
             DispatchQueue.main.async {
                 guard let uiimage1 = UIImage(data: self.image1) else { print("uiimage失敗1"); return }
                 self.images.append(uiimage1)
-//                print("ui1 : \(uiimage1)")
+
                 guard let uiimage2 = UIImage(data: self.image2) else { print("uiimage失敗2");return }
                 self.images.append(uiimage2)
-//                print("ui2 : \(uiimage2)")
+
                 
 
                 }

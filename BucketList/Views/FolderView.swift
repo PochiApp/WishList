@@ -26,6 +26,7 @@ struct FolderView: View {
     var body: some View {
         NavigationStack {
                 ZStack {
+                    Color.gray.opacity(0.08).edgesIgnoringSafeArea(.all)
                     if fm.isEmpty {
                         emptyFolderView
                     }
@@ -69,7 +70,7 @@ extension FolderView {
                     RoundedRectangle(cornerRadius: 16)
                         .fill(bucketViewModel.colorList[Int(foldermodel.backColor)])
                         .frame(width: 300, height: 150)
-                        .shadow(color: .gray, radius: 5, x: 5, y: 5)
+                        .shadow(color: .gray.opacity(0.9), radius: 1, x: 2, y: 2)
                         .overlay(
                             VStack(alignment: .center){
                                 Text(foldermodel.notDaySetting ? "" : "\(bucketViewModel.formattedDateString(date: foldermodel.unwrappedStartDate)) ~ \(bucketViewModel.formattedDateString(date: foldermodel.unwrappedFinishDate))")
@@ -118,20 +119,7 @@ extension FolderView {
                     AnyTransition.asymmetric(insertion: AnyTransition.slide.combined(with: AnyTransition.opacity), removal: AnyTransition.identity))
             }
         }
-        //        .overlay(alignment: .center) {
-        //            if fm.isEmpty {
-        //                VStack(alignment: .center) {
-        //                    Image(systemName: "folder.badge.questionmark")
-        //                        .font(.system(size: 100))
-        //                        .foregroundColor(Color.gray.opacity(0.5))
-        //                        .padding(.bottom)
-        //
-        //                    Text("右下＋ボタンから、フォルダーを新規作成してみましょう")
-        //                        .font(.caption)
-        //                        .lineLimit(1)
-        //                }
-        //            }
-        //        }
+        
     }
     
     
