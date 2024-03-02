@@ -24,36 +24,35 @@ struct FolderView: View {
     
     
     var body: some View {
-            ZStack {
-                NavigationStack{
-                        
-                        folderArea
-                    VStack {
-                        HStack {
-                            Spacer()
-                            
-                            floatingButton
-                        }
+        NavigationStack {
+                ZStack {
+                    if fm.isEmpty {
+                        emptyFolderView
                     }
+                    
+                    folderArea
+                        
+                    VStack {
+                        Spacer()
+                            HStack {
+                                Spacer()
+                                    
+                                floatingButton
+                                }
+                            }
 
-                        }
-                .navigationBarBackButtonHidden(true)
-                .onAppear(perform: {
+                        .navigationBarBackButtonHidden(true)
+                        
+                    }
+        }
+            .onAppear(perform: {
                     if launchKey == false {
                         bucketViewModel.setupDefaultCategory(context: context)
-                        
-                        launchKey = true
-                    }
-                    
-                    
-                })
-                    }
-        
-        
-        
-             }
-        
+                            launchKey = true
+                        }
+            })
         }
+}
 
 
 
@@ -64,62 +63,76 @@ extension FolderView {
         ScrollView(.vertical, showsIndicators: false){
             Spacer()
             
-
-                ForEach(fm){foldermodel in
-                    NavigationLink(destination: ListView(bucketViewModel: bucketViewModel, selectedFolder: foldermodel)){
-                        RoundedRectangle(cornerRadius: 16)
-                            .fill(bucketViewModel.colorList[Int(foldermodel.backColor)])
-                            .frame(width: 300, height: 150)
-                            .shadow(color: .gray, radius: 5, x: 5, y: 5)
-                            .overlay(
-                                VStack(alignment: .center){
-                                    Text(foldermodel.notDaySetting ? "" : "\(bucketViewModel.formattedDateString(date: foldermodel.unwrappedStartDate)) ~ \(bucketViewModel.formattedDateString(date: foldermodel.unwrappedFinishDate))")
-                                        .font(.system(size: 16))
-                                        .padding(.top)
-                                    Text("\(foldermodel.unwrappedTitle)")
-                                        .lineLimit(2)
-                                        .font(.system(size: 18, weight: .semibold))
-                                        .padding(.top)
-                                    Text("達成：\(foldermodel.unwrappedAchievedLists.count)/\(foldermodel.unwrappedLists.count)")
-                                        .padding(.top)
-                                        .font(.system(size: 11))
-                                    
-                                }
-                                    .foregroundColor(.black)
-                                , alignment: .top
-                            )
-                        
-                        
-                    }
-                    .onAppear {
-                        self.context.refreshAllObjects()
-                    }
-                    .contextMenu(ContextMenu(menuItems: {
-                        Button(action: {
-                            withAnimation {
-                                context.delete(foldermodel)
+            
+            ForEach(fm){foldermodel in
+                NavigationLink(destination: ListView(bucketViewModel: bucketViewModel, selectedFolder: foldermodel)){
+                    RoundedRectangle(cornerRadius: 16)
+                        .fill(bucketViewModel.colorList[Int(foldermodel.backColor)])
+                        .frame(width: 300, height: 150)
+                        .shadow(color: .gray, radius: 5, x: 5, y: 5)
+                        .overlay(
+                            VStack(alignment: .center){
+                                Text(foldermodel.notDaySetting ? "" : "\(bucketViewModel.formattedDateString(date: foldermodel.unwrappedStartDate)) ~ \(bucketViewModel.formattedDateString(date: foldermodel.unwrappedFinishDate))")
+                                    .font(.system(size: 16))
+                                    .padding(.top)
+                                Text("\(foldermodel.unwrappedTitle)")
+                                    .lineLimit(2)
+                                    .font(.system(size: 18, weight: .semibold))
+                                    .padding(.top)
+                                Text("達成：\(foldermodel.unwrappedAchievedLists.count)/\(foldermodel.unwrappedLists.count)")
+                                    .padding(.top)
+                                    .font(.system(size: 11))
+                                
                             }
-                            try? context.save()
-                        }, label: {
-                            Text("削除")
-                        })
-                        Button(action: {
-                            isShowFolderWrite.toggle()
-                            bucketViewModel.editFolder(upFolder: foldermodel)
-                        }, label: {
-                            Text("編集")
-                        })
-                        .sheet(isPresented: $isShowFolderWrite) {
-                            
-                            WriteFolderView(bucketViewModel : bucketViewModel, isShowFolderWrite: $isShowFolderWrite)
-                                .presentationDetents([.large])
-                        }
-                    }))
-                    .transition(
-                        AnyTransition.asymmetric(insertion: AnyTransition.slide.combined(with: AnyTransition.opacity), removal: AnyTransition.identity))
+                                .foregroundColor(.black)
+                            , alignment: .top
+                        )
+                    
+                    
                 }
+                .onAppear {
+                    self.context.refreshAllObjects()
+                }
+                .contextMenu(ContextMenu(menuItems: {
+                    Button(action: {
+                        withAnimation {
+                            context.delete(foldermodel)
+                        }
+                        try? context.save()
+                    }, label: {
+                        Text("削除")
+                    })
+                    Button(action: {
+                        isShowFolderWrite.toggle()
+                        bucketViewModel.editFolder(upFolder: foldermodel)
+                    }, label: {
+                        Text("編集")
+                    })
+                    .sheet(isPresented: $isShowFolderWrite) {
+                        
+                        WriteFolderView(bucketViewModel : bucketViewModel, isShowFolderWrite: $isShowFolderWrite)
+                            .presentationDetents([.large])
+                    }
+                }))
+                .transition(
+                    AnyTransition.asymmetric(insertion: AnyTransition.slide.combined(with: AnyTransition.opacity), removal: AnyTransition.identity))
             }
         }
+        //        .overlay(alignment: .center) {
+        //            if fm.isEmpty {
+        //                VStack(alignment: .center) {
+        //                    Image(systemName: "folder.badge.questionmark")
+        //                        .font(.system(size: 100))
+        //                        .foregroundColor(Color.gray.opacity(0.5))
+        //                        .padding(.bottom)
+        //
+        //                    Text("右下＋ボタンから、フォルダーを新規作成してみましょう")
+        //                        .font(.caption)
+        //                        .lineLimit(1)
+        //                }
+        //            }
+        //        }
+    }
     
     
     private var floatingButton: some View {
@@ -128,24 +141,34 @@ extension FolderView {
         }, label: {
             Image(systemName: "plus.circle.fill")
                 .foregroundColor(.black)
-                .shadow(color: .gray.opacity(0.4), radius: 3, x: 2, y: 2)
+                .shadow(color: .gray.opacity(0.9), radius: 3)
                 .font(.system(size: 40))
-                
+            
         })
         .padding(EdgeInsets(top: 0, leading: 0, bottom: 50, trailing: 50))
         .sheet(isPresented: $isShowFolderWrite){
             
             WriteFolderView(bucketViewModel: bucketViewModel, isShowFolderWrite: $isShowFolderWrite)
                 .presentationDetents([.large, .fraction(0.9)])
-                    
+            
+        }
+    }
+    
+    
+    
+    private var emptyFolderView: some View {
+        
+            VStack(alignment: .center) {
+                Image(systemName: "folder.badge.questionmark")
+                    .font(.system(size: 100))
+                    .foregroundColor(Color.gray.opacity(0.5))
+                    .padding(.bottom)
+                
+                Text("右下＋ボタンから、フォルダーを新規作成してみましょう")
+                    .font(.caption)
+                    .foregroundColor(Color.gray)
+                    .lineLimit(1)
             }
-    }
-     
-    }
-
-struct emptyFolderView: View {
-    var body: some View {
-        Text("空だよ")
     }
 }
 
