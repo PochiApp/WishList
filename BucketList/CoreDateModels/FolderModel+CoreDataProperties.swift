@@ -19,9 +19,11 @@ extension FolderModel {
     @NSManaged public var title: String?
     @NSManaged public var startDate: Date?
     @NSManaged public var finishDate: Date?
-    @NSManaged public var backColor: Int16
+    @NSManaged public var backColor: String?
     @NSManaged public var writeDate: Date?
     @NSManaged public var notDaySetting: Bool
+    @NSManaged public var lockIsActive: Bool
+    @NSManaged public var folderPassword: String?
     @NSManaged public var lists: NSArray?
     @NSManaged public var achievedLists: NSArray?
 }
@@ -35,6 +37,8 @@ extension FolderModel {
     public var unwrappedStartDate: Date { startDate ?? Date() }
     public var unwrappedFinishDate: Date { finishDate ?? Date() }
     public var unwrappedWriteDate: Date { writeDate ?? Date() }
+    public var unwrappedBackColor: String { backColor ?? "" }
+    public var unwrappedfolderPassword: String { folderPassword ?? "" }
     public var unwrappedLists: [ListModel]  { lists as? [ListModel] ?? [] }
     public var unwrappedAchievedLists: [ListModel]  { achievedLists as? [ListModel] ?? [] }
     

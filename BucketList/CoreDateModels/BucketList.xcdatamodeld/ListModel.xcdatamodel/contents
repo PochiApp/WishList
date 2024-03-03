@@ -5,8 +5,10 @@
         <attribute name="categoryName" optional="YES" attributeType="String"/>
     </entity>
     <entity name="FolderModel" representedClassName="FolderModel" syncable="YES">
-        <attribute name="backColor" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="backColor" optional="YES" attributeType="String"/>
         <attribute name="finishDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="folderPassword" optional="YES" attributeType="String"/>
+        <attribute name="lockIsActive" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="notDaySetting" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="startDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="title" optional="YES" attributeType="String"/>
@@ -25,6 +27,7 @@
         <attribute name="image1" optional="YES" attributeType="Binary"/>
         <attribute name="image2" optional="YES" attributeType="Binary"/>
         <attribute name="listNumber" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="miniMemo" optional="YES" attributeType="String"/>
         <attribute name="text" optional="YES" attributeType="String"/>
     </entity>
 </model>

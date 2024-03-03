@@ -21,7 +21,7 @@ struct AddListView: View {
     @State private var textFieldText: String = ""
     @ObservedObject var bucketViewModel : BucketViewModel
     @Binding var isShowListAdd: Bool
-    @State var listColor: Color
+    @State var listColor: String
     @State var selectedPhoto: [PhotosPickerItem] = []
     
     
@@ -121,7 +121,10 @@ struct AddListView: View {
                         }
                         
                     }
-                                
+                    
+                    Section(header: Text("一言メモ")) {
+                        bucketMiniMemoTextField
+                    }
                             
                             if bucketViewModel.updateList !== nil {
                                 Section(header: Text("達成チェック")) {
@@ -145,7 +148,7 @@ struct AddListView: View {
                         
                 .background(Color.gray.opacity(0.1))
                 .navigationBarTitleDisplayMode(.inline)
-                .toolbarBackground(listColor, for: .navigationBar)
+                .toolbarBackground(Color("\(listColor)"), for: .navigationBar)
                 .toolbarBackground(.visible, for: .navigationBar)
                 .toolbar{
                     ToolbarItem(placement: .principal){
@@ -194,12 +197,18 @@ struct AddListView: View {
             }
         }
         
+        private var bucketMiniMemoTextField: some View {
+            TextField("一言メモ", text: $bucketViewModel.miniMemo)
+            
+        }
+        
         private var writeListButton: some View {
             Button(action: {
                 bucketViewModel.writeList(context: context)
                 
                 dismiss()
                 
+                bucketViewModel.resetList()
             }, label: {
                 Text("作成")
                     .font(.title3)

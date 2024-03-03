@@ -23,6 +23,9 @@ struct CategoryView: View {
     var body: some View {
         NavigationView{
             ZStack{
+                if categorys.isEmpty {
+                    emptyCategoryView
+                }
                 List {
                     ForEach(categorys){ category in
                         Text("\(category.unwrappedCategoryName)")
@@ -32,7 +35,17 @@ struct CategoryView: View {
                     .onDelete(perform: deleteCategory)
                 }
                 .background(Color.gray.opacity(0.1))
-                
+                VStack {
+                    Spacer()
+                    
+                    HStack {
+                        Spacer()
+                        
+                        floatingButton
+                        
+                    }
+                            .padding(EdgeInsets(top: 0, leading: 0, bottom: 30, trailing: 30))
+                }
                 
                 
                 
@@ -40,20 +53,6 @@ struct CategoryView: View {
             
         }
         .navigationTitle("カテゴリー一覧")
-        .toolbar {
-            ToolbarItem(placement: .topBarTrailing){
-                Button(action: {
-                    isShowCategoryAdd.toggle()
-                    
-                }, label: {
-                    Image(systemName: "plus.circle.fill")
-                        .foregroundColor(.black)
-                        .shadow(color: .gray.opacity(0.4), radius: 3, x: 2, y: 2)
-                        .padding()
-                })
-                
-            }
-        }
         .font(.title3)
         .onDisappear(){
         firstCategoryGet()
@@ -61,12 +60,15 @@ struct CategoryView: View {
         .sheet(isPresented: $isShowCategoryAdd){
             
             AddCategoryView(bucketViewModel: bucketViewModel, isShowCategoryAdd: $isShowCategoryAdd)
-                .presentationDetents([.large, .fraction(0.9)])
+                .presentationDetents([.medium])
         
                     
             }
         
     }
+    
+    
+    
     
     private func deleteCategory (offSets: IndexSet) {
         offSets.map { categorys[$0] }.forEach(context.delete)
@@ -91,5 +93,39 @@ struct CategoryView: View {
         
         bucketViewModel.category = firstCategoryName
         
+    }
+    
+    
+   
+}
+
+extension CategoryView {
+    private var floatingButton: some View {
+        Button(action: {
+            isShowCategoryAdd.toggle()
+            
+        }, label: {
+            Image(systemName: "plus.circle.fill")
+                .foregroundColor(.black)
+                .shadow(color: .gray.opacity(0.4), radius: 3, x: 2, y: 2)
+                .font(.system(size: 40))
+                .padding()
+        })
+    }
+    
+    
+    private var emptyCategoryView: some View {
+        
+        VStack(alignment: .center) {
+            Image(systemName: "books.vertical")
+                .font(.system(size: 100))
+                .foregroundColor(Color.gray.opacity(0.5))
+                .padding(.bottom)
+            
+            Text("カテゴリーを追加して、リストを分類しましょう")
+                .font(.caption)
+                .foregroundColor(Color.gray)
+                .lineLimit(1)
+        }
     }
 }

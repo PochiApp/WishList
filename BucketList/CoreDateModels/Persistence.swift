@@ -18,9 +18,11 @@ struct PersistenceController {
         newFolderModel.title = ""
         newFolderModel.startDate = Date()
         newFolderModel.finishDate = Date()
-        newFolderModel.backColor = Int16(0)
+        newFolderModel.backColor = ""
         newFolderModel.writeDate = Date()
         newFolderModel.notDaySetting = false
+        newFolderModel.lockIsActive = false
+        newFolderModel.folderPassword = ""
         newFolderModel.lists = []
         newFolderModel.achievedLists = []
         
@@ -32,6 +34,7 @@ struct PersistenceController {
         newListModel.folderDate = Date()
         newListModel.image1 = Data.init()
         newListModel.image2 = Data.init()
+        newListModel.miniMemo = ""
         
         let newCategoryEntity = CategoryEntity(context: viewContext)
         newCategoryEntity.categoryName = ""

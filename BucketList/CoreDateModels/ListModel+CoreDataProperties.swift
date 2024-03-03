@@ -23,6 +23,7 @@ extension ListModel {
     @NSManaged public var folderDate: Date?
     @NSManaged public var image1: Data?
     @NSManaged public var image2: Data?
+    @NSManaged public var miniMemo: String?
     
 
 }
@@ -37,5 +38,6 @@ extension ListModel {
     public var unwrappedFolderDate: Date { folderDate ?? Date() }
     public var unwrappedImage1: Data { image1 ?? Data.init() }
     public var unwrappedImage2: Data { image2 ?? Data.init() }
+    public var unwrappedMiniMemo: String { miniMemo ?? "" }
     
 }

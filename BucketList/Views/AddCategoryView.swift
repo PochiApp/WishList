@@ -17,26 +17,19 @@ struct AddCategoryView: View {
     @Binding var isShowCategoryAdd: Bool
     
     var body: some View {
-        VStack {
+        VStack(alignment:.center) {
             
             NavigationStack{
-                Text("カテゴリー名")
-                    .font(.title3)
-                    .frame(maxWidth: .infinity, alignment: .center)
-                
-                categoryTextField
-                
-                Button(action: {
-                    bucketViewModel.addCategory(context: context)
+                Form {
                     
-                    dismiss()
+                    Section(header: Text("カテゴリー名")) {
+                        categoryTextField
+                    }
+
                     
-                }, label: {
-                    Text("追加")
-                        .font(.title2)
-                })
-                
+                }
                 .navigationBarTitleDisplayMode(.inline)
+                .background(Color.gray.opacity(0.1))
                 .toolbarBackground(.white, for: .navigationBar)
                 .toolbarBackground(.visible, for: .navigationBar)
                 .toolbar{
@@ -45,8 +38,12 @@ struct AddCategoryView: View {
                             .font(.title3)
                         
                     }
-                    ToolbarItem(placement: .topBarTrailing){
+                    ToolbarItem(placement: .topBarLeading){
                         cancelButton
+                    }
+                    
+                    ToolbarItem(placement: .topBarTrailing){
+                        writeCategoryButton
                     }
                 }
             }
@@ -57,9 +54,8 @@ struct AddCategoryView: View {
 extension AddCategoryView {
     private var categoryTextField: some View {
         TextField("", text: $bucketViewModel.categoryName)
-            .frame(maxHeight: 40, alignment: .leading)
-            .background(Color(uiColor: .secondarySystemBackground))
-            .padding(.bottom,10)
+            .frame(alignment: .center)
+
     }
     
     
@@ -70,6 +66,21 @@ extension AddCategoryView {
             Image(systemName: "clear.fill")
                 .font(.title2)
                 .foregroundColor(.black)
+        })
+    }
+    
+    private var writeCategoryButton: some View {
+        Button(action: {
+            bucketViewModel.addCategory(context: context)
+            
+            dismiss()
+            
+            bucketViewModel.categoryName = ""
+            
+        }, label: {
+            Text("追加")
+                .foregroundColor(.black)
+                .font(.title3)
         })
     }
 }

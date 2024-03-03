@@ -27,7 +27,9 @@ struct ListView: View {
         animation: .default)
     private var categorys: FetchedResults<CategoryEntity>
     
+    @Binding var isShowPassInputPage: Bool
     @State var isShowListAdd = false
+    @State var sortCheck = false
     @State var numberSort = true
     @State var achievementCheck = false
     @State var categoryName = ""
@@ -60,17 +62,18 @@ struct ListView: View {
                 listModels.nsPredicate = categoryPredicate
             
             case .all:
-                listModels.nsSortDescriptors = [listNumberSorted]
+//                listModels.nsSortDescriptors = [NSSortDescriptor(keyPath: \ListModel.listNumber, ascending: true)]
                 listModels.nsPredicate = NSPredicate(format: "folderDate == %@", selectedFolder.writeDate! as CVarArg)
-               
+
             }
         }
         
     
     
-    init(bucketViewModel: BucketViewModel, selectedFolder: FolderModel){
+    init(bucketViewModel: BucketViewModel, selectedFolder: FolderModel, isShowPassInputPage: Binding<Bool>){
         self.bucketViewModel = bucketViewModel
         self.selectedFolder = selectedFolder
+        self._isShowPassInputPage = isShowPassInputPage
         
         guard let selectedFolderDate = selectedFolder.writeDate else{
             return
@@ -86,44 +89,56 @@ struct ListView: View {
     
     
     var body: some View {
-        NavigationStack {
-            ZStack {
-                    if listModels.isEmpty {
-                        emptyListView
-                    } else {
-                        listArea
-                            .scrollContentBackground(.hidden)
-                            .navigationBarTitleDisplayMode(.inline)
-                            .toolbarBackground(bucketViewModel.colorList[Int(selectedFolder.backColor)], for: .navigationBar)
-                            .toolbarBackground(.visible, for: .navigationBar)
-                            .toolbar {
-                                ToolbarItem(placement: .topBarLeading) {
-                                    backButton
-                                }
-                                ToolbarItem(placement: .principal) {
-                                    navigationArea
-                                }
+        if selectedFolder.lockIsActive && isShowPassInputPage {
+            PasscodeView(bucketViewModel: bucketViewModel, selectedFolder: selectedFolder, isShowPassInputPage: $isShowPassInputPage)
+        } else {
+            NavigationStack {
+                ZStack {
+
+                        if listModels.isEmpty {
+                            if sortCheck {
+                                sortEmptyView
+                            } else {
+                                emptyListView
                                 
                             }
-                    }
-                VStack {
-                    Spacer()
-                        HStack {
-                            Spacer()
-                            
-                            sortFloatingButton
-                            
-                            plusFloatingButton
-                    }
-                        .padding(EdgeInsets(top: 0, leading: 0, bottom: 25, trailing: 25))
-                    
-                    }
-                    
+                        }
+                            listArea
+                                .scrollContentBackground(.hidden)
+                                .navigationBarTitleDisplayMode(.inline)
+                                .toolbarBackground(Color("\(selectedFolder.unwrappedBackColor)"), for: .navigationBar)
+                                .toolbarBackground(.visible, for: .navigationBar)
+                                .toolbar {
+                                    ToolbarItem(placement: .topBarLeading) {
+                                        backButton
+                                    }
+                                    ToolbarItem(placement: .principal) {
+                                        navigationArea
+                                    }
+                                    
+                                }
+                                
+                        
+                    VStack {
+                        Spacer()
+                            HStack {
+                                Spacer()
+                                
+                                sortFloatingButton
+                                
+                                plusFloatingButton
+                        }
+                            .padding(EdgeInsets(top: 0, leading: 0, bottom: 25, trailing: 25))
+                        
+                        }
+                        
 
+                    }
+                    
+                    
                 }
-                
-                
-            }
+        }
+        
         
   }
         
@@ -136,7 +151,6 @@ extension ListView {
         List {
             ForEach(listModels){ list in
                 HStack(spacing: 10){
-                    
                     Button(action: {
                         list.achievement.toggle()
                         do {
@@ -148,52 +162,76 @@ extension ListView {
                         
                     }, label: {
                         Image(systemName: list.achievement ? "checkmark.square" : "square")
+                            .font(.title3)
                     })
                     .buttonStyle(.plain)
+                    .frame(alignment: .leading)
                     
-                    Button(action: {
-                        isShowListAdd.toggle()
-                        bucketViewModel.editList(upList: list)
-                    }, label: {
-                        HStack {
-                            Text("\(list.listNumber)"+".")
-                                .padding(.trailing,20)
-                            Text("\(list.text!)")
-                                .listRowSeparatorTint(.blue, edges: /*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
-                            
-                            Spacer()
-                            if (!list.unwrappedImage1.isEmpty) {
-                                
-                                if let uiImage1 = UIImage(data: list.unwrappedImage1) {
-                                        Image(uiImage: uiImage1)
-                                            .resizable()
-                                            .frame(width: 25, height:25)
-                                            .clipShape(Circle())
-                                    }
-                            }
-                            
-                            if (!list.unwrappedImage2.isEmpty) {
-                                
-                                if let uiImage2 = UIImage(data: list.unwrappedImage2) {
-                                        Image(uiImage: uiImage2)
-                                            .resizable()
-                                            .frame(width: 25, height:25)
-                                            .clipShape(Circle())
-                                    }
-                            }
                     
-                            Text("\(list.category!)")
-                                .font(.caption)
-                        }
-                        .foregroundColor(.black)
+                            Button(action: {
+                                isShowListAdd.toggle()
+                                bucketViewModel.editList(upList: list)
+                            }, label: {
+                                HStack {
+                                    Text("\(list.listNumber)"+".")
+                                        .font(Font(UIFont.monospacedSystemFont(ofSize: 14, weight: .regular)))
+                                        .padding(.trailing,5)
+                                    VStack {
+                                            Text("\(list.text!)")
+                                                .font(.headline)
+                                                .frame(maxWidth:.infinity, alignment: .leading)
+                                        
+                                        if !list.unwrappedMiniMemo.isEmpty {
+                                            HStack {
+                                                Image(systemName: "bubble")
+                                                    .font(.caption2)
+                                                
+                                                Text("\(list.unwrappedMiniMemo)")
+                                                    .font(.caption2)
+                                                    .frame(maxWidth:.infinity, alignment: .leading)
+                                            }
+                                          
+                                        }
+ 
+                                    }
+                                    
+                                    
+                                    Spacer()
+                                    if (!list.unwrappedImage1.isEmpty) {
+                                        
+                                        if let uiImage1 = UIImage(data: list.unwrappedImage1) {
+                                                Image(uiImage: uiImage1)
+                                                    .resizable()
+                                                    .frame(width: 25, height:25)
+                                                    .clipShape(Circle())
+                                            }
+                                    }
+                                    
+                                    if (!list.unwrappedImage2.isEmpty) {
+                                        
+                                        if let uiImage2 = UIImage(data: list.unwrappedImage2) {
+                                                Image(uiImage: uiImage2)
+                                                    .resizable()
+                                                    .frame(width: 25, height:25)
+                                                    .clipShape(Circle())
+                                            }
+                                    }
+                            
+                                    Text("\(list.category!)")
+                                        .font(.caption)
+                                }
+                                .foregroundColor(.black)
+                                
+                            })
+                       
                         
-                    })
-                    
-                    
-                }
+                        
+                        
+    
+                    }
                 .sheet(isPresented: $isShowListAdd) {
                     
-                    AddListView(bucketViewModel : bucketViewModel, isShowListAdd: $isShowListAdd, listColor:bucketViewModel.colorList[Int(selectedFolder.backColor)])
+                    AddListView(bucketViewModel : bucketViewModel, isShowListAdd: $isShowListAdd, listColor:selectedFolder.unwrappedBackColor)
                         .presentationDetents([.large])
                 }
 
@@ -201,23 +239,22 @@ extension ListView {
             .onMove(perform: moveList)
             .onDelete(perform: deleteList)
             
-            Spacer()
+            Spacer().frame(height: 60)
+                .listRowSeparator(.hidden)
         }
-        
-        
+        .frame(alignment: .leading)
+        .listStyle(.inset)
     }
-    
-    
     
     private var navigationArea : some View {
         
         
         VStack{
             Text("\(selectedFolder.unwrappedTitle)")
-                .font(.headline)
+                    .fontWeight(.light)
             HStack{
                 Text(selectedFolder.notDaySetting ? "" : "\(bucketViewModel.formattedDateString(date: selectedFolder.unwrappedStartDate)) ~ \(bucketViewModel.formattedDateString(date: selectedFolder.unwrappedFinishDate))")
-                    .font(.subheadline)
+                    .font(.caption)
                     .padding(.trailing)
             }
             
@@ -251,28 +288,33 @@ extension ListView {
                 
                 Button("未達成",
                        action: {
+                    sortCheck = true
                     achievementCheck = false
                     listSort(sort: .achievementSort)})
                 
                 Button("達成",
                        action: {
+                    sortCheck = true
                     achievementCheck = true
                     listSort(sort: .achievementSort)})
             }
             
             Button("降順",
                    action: {
+                sortCheck = true
                 numberSort = false
                 listSort(sort: .ascending)
                 })
             
             Button("昇順",
                    action: {
+                sortCheck = true
                 numberSort = true
                 listSort(sort: .ascending)})
             
             Button("全表示",
                    action: {
+                sortCheck = false
                 numberSort = true
                 listSort(sort: .all)})
            
@@ -289,6 +331,10 @@ extension ListView {
     
     private var plusFloatingButton: some View {
         Button(action: {
+            sortCheck = false
+            numberSort = true
+            listSort(sort: .all)
+            
             isShowListAdd.toggle()
             bucketViewModel.folderDate = selectedFolder.writeDate ?? Date()
             bucketViewModel.listNumber = listModels.count + 1
@@ -301,13 +347,14 @@ extension ListView {
         })
         .sheet(isPresented: $isShowListAdd){
             
-            AddListView(bucketViewModel: bucketViewModel ,isShowListAdd: $isShowListAdd, listColor: bucketViewModel.colorList[Int(selectedFolder.backColor)])
+            AddListView(bucketViewModel: bucketViewModel ,isShowListAdd: $isShowListAdd, listColor: selectedFolder.unwrappedBackColor)
                 .presentationDetents([.large, .fraction(0.9)])
             
         }
     }
     
     private func deleteList (offSets: IndexSet) {
+        if sortCheck { return }
         offSets.map { listModels[$0] }.forEach(context.delete)
         
         
@@ -341,6 +388,7 @@ extension ListView {
     
     
     private func moveList (offSets: IndexSet, destination: Int) {
+        if sortCheck { return }
         withAnimation {
             var revisedLists = Array(listModels)
             revisedLists.move(fromOffsets: offSets, toOffset: destination)
@@ -379,4 +427,17 @@ extension ListView {
             }
     }
     
+    private var sortEmptyView: some View {
+        VStack(alignment: .center) {
+            Image(systemName: "doc.text.magnifyingglass")
+                .font(.system(size: 100))
+                .foregroundColor(Color.gray.opacity(0.5))
+                .padding(.bottom)
+            
+            Text("絞り込みした結果、リストがありません")
+                .font(.caption)
+                .foregroundColor(Color.gray)
+                .lineLimit(1)
+        }
+    }
 }

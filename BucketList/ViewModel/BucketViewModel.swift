@@ -14,9 +14,10 @@ class BucketViewModel : ObservableObject{
     @Published var title = ""
     @Published var selectedStartDate: Date = Date()
     @Published var selectedFinishDate: Date = Date()
-    @Published var backColor = 0
+    @Published var backColor = "snowWhite"
     @Published var updateFolder: FolderModel!
-    
+    @Published var lockIsAcctive = false
+    @Published var folderPassword = ""
     @Published var notDaySetting = false
     
     @Published var text = ""
@@ -27,6 +28,7 @@ class BucketViewModel : ObservableObject{
     @Published var datas: [Data] = []
     @Published var image1: Data = Data.init()
     @Published var image2: Data = Data.init()
+    @Published var miniMemo = ""
     @Published var images: [UIImage?] = []
     @Published var updateList: ListModel!
     
@@ -34,23 +36,6 @@ class BucketViewModel : ObservableObject{
     
     @Published var categoryName = ""
     @Published var categoryAddDate = Date()
-    
-    
-    let colorList: [Color] = [.white,
-                              .red.opacity(0.7),
-                              .orange.opacity(0.5),
-                              .yellow.opacity(0.5),
-                              .green.opacity(0.5),
-                              .mint.opacity(0.5),
-                              .teal.opacity(0.5),
-                              .cyan.opacity(0.6),
-                              .blue.opacity(0.5),
-                              .indigo.opacity(0.5),
-                              .purple.opacity(0.5),
-                              .pink.opacity(0.2),
-                              .brown.opacity(0.5),
-                              .gray.opacity(0.3)]
-    
     
    
     func writeFolder (context: NSManagedObjectContext) {
@@ -61,7 +46,7 @@ class BucketViewModel : ObservableObject{
             updateFolder.notDaySetting = notDaySetting
             updateFolder.startDate = selectedStartDate
             updateFolder.finishDate = selectedFinishDate
-            updateFolder.backColor = Int16(backColor)
+            updateFolder.backColor = backColor
             
             try! context.save()
             
@@ -71,7 +56,7 @@ class BucketViewModel : ObservableObject{
             notDaySetting = false
             selectedStartDate = Date()
             selectedFinishDate = Date()
-            backColor = 0
+            backColor = "snowWhite"
             
             return
         }
@@ -80,17 +65,11 @@ class BucketViewModel : ObservableObject{
         newFolderData.notDaySetting = notDaySetting
         newFolderData.startDate = selectedStartDate
         newFolderData.finishDate = selectedFinishDate
-        newFolderData.backColor = Int16(backColor)
+        newFolderData.backColor = backColor
         newFolderData.writeDate = Date()
         
         do {
             try context.save()
-            
-            title = ""
-            notDaySetting = false
-            selectedStartDate = Date()
-            selectedFinishDate = Date()
-            backColor = 0
            
         }
         catch {
@@ -112,9 +91,27 @@ class BucketViewModel : ObservableObject{
         notDaySetting = updateFolder.notDaySetting
         selectedStartDate = updateFolder.unwrappedStartDate
         selectedFinishDate = updateFolder.unwrappedFinishDate
-        backColor = Int(updateFolder.backColor)
+        backColor = updateFolder.unwrappedBackColor
         
         
+    }
+    
+    func lockFolder(lockFolder: FolderModel, context: NSManagedObjectContext) {
+        lockFolder.lockIsActive = true
+        lockFolder.folderPassword = folderPassword
+        
+        try! context.save()
+        
+        folderPassword = ""
+    }
+    
+    func unLockFolder(lockFolder: FolderModel, context: NSManagedObjectContext) {
+        lockFolder.lockIsActive = false
+        lockFolder.folderPassword = ""
+        
+        try! context.save()
+        
+        folderPassword = ""
     }
     
     func resetFolder () {
@@ -125,7 +122,7 @@ class BucketViewModel : ObservableObject{
         notDaySetting = false
         selectedStartDate =  Date()
         selectedFinishDate = Date()
-        backColor = 0
+        backColor = "snowWhite"
         
     }
     
@@ -137,6 +134,7 @@ class BucketViewModel : ObservableObject{
             updateList.achievement = achievement
             updateList.image1 = image1
             updateList.image2 = image2
+            updateList.miniMemo = miniMemo
             
             try! context.save()
             
@@ -147,6 +145,7 @@ class BucketViewModel : ObservableObject{
             achievement = false
             image1 = Data.init()
             image2 = Data.init()
+            miniMemo = ""
             
             return
             
@@ -160,17 +159,11 @@ class BucketViewModel : ObservableObject{
         newListData.achievement = false
         newListData.image1 = image1
         newListData.image2 = image2
+        newListData.miniMemo = miniMemo
+        
         
         do {
             try context.save()
-            
-            text = ""
-            listNumber = 0
-            category = firstCategory
-            folderDate = Date()
-            achievement = false
-            image1 = Data.init()
-            image2 = Data.init()
             
         }
         catch {
@@ -183,11 +176,12 @@ class BucketViewModel : ObservableObject{
     func editList (upList: ListModel) {
         updateList = upList
         
-        text = updateList.text ?? ""
-        category = updateList.category ?? ""
+        text = updateList.unwrappedText
+        category = updateList.unwrappedCategory
         achievement = updateList.achievement
-        image1 = updateList.image1 ?? Data.init()
-        image2 = updateList.image2 ?? Data.init()
+        image1 = updateList.unwrappedImage1
+        image2 = updateList.unwrappedImage2
+        miniMemo = updateList.unwrappedMiniMemo
         
     }
     
@@ -202,6 +196,7 @@ class BucketViewModel : ObservableObject{
         achievement = false
         image1 = Data.init()
         image2 = Data.init()
+        miniMemo = ""
         
         images = []
         
@@ -278,8 +273,6 @@ class BucketViewModel : ObservableObject{
         
         do {
             try context.save()
-            
-            categoryName = ""
             
         }
         catch {

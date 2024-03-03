@@ -20,6 +20,7 @@
 		395828A72B2D75EE007E085C /* WriteFolderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395828A62B2D75ED007E085C /* WriteFolderView.swift */; };
 		39C7D2BE2B8865F9009F32B1 /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C7D2BD2B8865F9009F32B1 /* SettingView.swift */; };
 		39C7D2C02B886C84009F32B1 /* FirstTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C7D2BF2B886C84009F32B1 /* FirstTabView.swift */; };
+		39C7D2C42B9316C5009F32B1 /* PasscodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C7D2C32B9316C5009F32B1 /* PasscodeView.swift */; };
 		39CC4ABF2B6F602500F070D9 /* CategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39CC4ABE2B6F602500F070D9 /* CategoryView.swift */; };
 		39CC4AC62B6F748E00F070D9 /* CategoryEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39CC4AC42B6F748E00F070D9 /* CategoryEntity+CoreDataClass.swift */; };
 		39CC4AC72B6F748E00F070D9 /* CategoryEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39CC4AC52B6F748E00F070D9 /* CategoryEntity+CoreDataProperties.swift */; };
@@ -44,6 +45,7 @@
 		395828A62B2D75ED007E085C /* WriteFolderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WriteFolderView.swift; sourceTree = "<group>"; };
 		39C7D2BD2B8865F9009F32B1 /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
 		39C7D2BF2B886C84009F32B1 /* FirstTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstTabView.swift; sourceTree = "<group>"; };
+		39C7D2C32B9316C5009F32B1 /* PasscodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasscodeView.swift; sourceTree = "<group>"; };
 		39CC4ABE2B6F602500F070D9 /* CategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryView.swift; sourceTree = "<group>"; };
 		39CC4AC42B6F748E00F070D9 /* CategoryEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CategoryEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
 		39CC4AC52B6F748E00F070D9 /* CategoryEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CategoryEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -112,6 +114,7 @@
 				39CC4ABE2B6F602500F070D9 /* CategoryView.swift */,
 				39CC4AC82B70F8A600F070D9 /* AddCategoryView.swift */,
 				39C7D2BD2B8865F9009F32B1 /* SettingView.swift */,
+				39C7D2C32B9316C5009F32B1 /* PasscodeView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -222,6 +225,7 @@
 				39C7D2BE2B8865F9009F32B1 /* SettingView.swift in Sources */,
 				39E54C6C2B3068A800298D98 /* FolderModel+CoreDataProperties.swift in Sources */,
 				3958287A2B29C576007E085C /* ListModel+CoreDataProperties.swift in Sources */,
+				39C7D2C42B9316C5009F32B1 /* PasscodeView.swift in Sources */,
 				395828752B29C152007E085C /* BucketList.xcdatamodeld in Sources */,
 				395828792B29C576007E085C /* ListModel+CoreDataClass.swift in Sources */,
 				39E54C682B2E949100298D98 /* BucketViewModel.swift in Sources */,
