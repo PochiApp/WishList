@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import AudioToolbox
 import CoreData
 
 
@@ -14,6 +15,9 @@ struct ListView: View {
     @Environment(\.managedObjectContext) private var context
     
     @ObservedObject var bucketViewModel : BucketViewModel
+    
+    let UISFGenerator = UISelectionFeedbackGenerator()
+    
     private let selectedFolder : FolderModel
     @FetchRequest(
                 entity: ListModel.entity(),
@@ -112,6 +116,7 @@ struct ListView: View {
                                     ToolbarItem(placement: .topBarLeading) {
                                         backButton
                                     }
+                                    
                                     ToolbarItem(placement: .principal) {
                                         navigationArea
                                     }
@@ -153,6 +158,7 @@ extension ListView {
                 HStack(spacing: 10){
                     Button(action: {
                         list.achievement.toggle()
+                        UISFGenerator.selectionChanged()
                         do {
                             try context.save()
                         }
@@ -265,20 +271,21 @@ extension ListView {
     private var backButton : some View {
         NavigationLink(destination: FolderView(bucketViewModel: bucketViewModel)) {
             Image(systemName: "arrowshape.turn.up.backward")
-                .foregroundColor(.black)
+                .foregroundColor(Color("originalBlack"))
                 .navigationBarBackButtonHidden(true)
         }
     }
+    
     
     private var sortFloatingButton: some View {
         Menu{
             Menu("カテゴリー別") {
                 ForEach(categorys, id: \.self) { selectCategory in
                     Button(action: {
-                        categoryName = selectCategory.categoryName ?? ""
+                        categoryName = selectCategory.unwrappedCategoryName
                         listSort(sort: .categorySort)
                     }, label: {
-                        Text("\(selectCategory.categoryName!)")
+                        Text("\(selectCategory.unwrappedCategoryName)")
                     })
                     
                 }
@@ -321,7 +328,7 @@ extension ListView {
         }
                 label: {
                     Image(systemName: "line.3.horizontal.decrease.circle")
-                        .foregroundColor(.black)
+                        .foregroundColor(Color("originalBlack"))
                         .shadow(color: .gray.opacity(0.4), radius: 3, x: 2, y: 2)
                         .font(.system(size: 40))
                 }
@@ -340,7 +347,7 @@ extension ListView {
             bucketViewModel.listNumber = listModels.count + 1
         }, label: {
             Image(systemName: "plus.circle.fill")
-                .foregroundColor(.black)
+                .foregroundColor(Color("originalBlack"))
                 .shadow(color: .gray.opacity(0.4), radius: 3, x: 2, y: 2)
                 .font(.system(size: 40))
                 .padding()

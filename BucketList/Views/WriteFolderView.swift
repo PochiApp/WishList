@@ -181,7 +181,7 @@ extension WriteFolderView {
         }, label: {
             Image(systemName: "clear.fill")
                 .font(.title3)
-                .foregroundColor(.black)
+                .foregroundColor(Color("originalBlack"))
         })
     }
     
@@ -198,7 +198,7 @@ extension WriteFolderView {
         }, label: {
             Text("追加")
                 .font(.title3)
-                .foregroundColor(.black)
+                .foregroundColor(Color("originalBlack"))
         })
     }
 }

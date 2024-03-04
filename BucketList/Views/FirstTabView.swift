@@ -30,7 +30,7 @@ struct FirstTabView: View {
             
         }
         .background(.white)
-        .accentColor(.black)
+        .accentColor(Color("originalBlack"))
     }
 }
 

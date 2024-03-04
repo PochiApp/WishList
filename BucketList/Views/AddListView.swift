@@ -212,7 +212,7 @@ struct AddListView: View {
             }, label: {
                 Text("作成")
                     .font(.title3)
-                    .foregroundColor(.black)
+                    .foregroundColor(Color("originalBlack"))
             })
         }
         
@@ -223,7 +223,7 @@ struct AddListView: View {
             }, label: {
                 Image(systemName: "clear.fill")
                     .font(.title2)
-                    .foregroundColor(.black)
+                    .foregroundColor(Color("originalBlack"))
             })
         }
     }

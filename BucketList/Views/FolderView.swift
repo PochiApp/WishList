@@ -101,7 +101,7 @@ extension FolderView {
                                 
                                 
                             }
-                                .foregroundColor(.black)
+                                .foregroundColor(Color("originalBlack"))
                             , alignment: .top
                         )
                     
@@ -210,7 +210,7 @@ extension FolderView {
             isShowFolderWrite.toggle()
         }, label: {
             Image(systemName: "plus.circle.fill")
-                .foregroundColor(.black)
+                .foregroundColor(Color("originalBlack"))
                 .shadow(color: .gray.opacity(0.9), radius: 3)
                 .font(.system(size: 40))
             

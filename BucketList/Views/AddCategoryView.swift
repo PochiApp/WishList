@@ -65,7 +65,7 @@ extension AddCategoryView {
         }, label: {
             Image(systemName: "clear.fill")
                 .font(.title2)
-                .foregroundColor(.black)
+                .foregroundColor(Color("originalBlack"))
         })
     }
     
@@ -79,7 +79,7 @@ extension AddCategoryView {
             
         }, label: {
             Text("追加")
-                .foregroundColor(.black)
+                .foregroundColor(Color("originalBlack"))
                 .font(.title3)
         })
     }
