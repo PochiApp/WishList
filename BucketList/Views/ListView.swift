@@ -183,8 +183,9 @@ extension ListView {
                                         .font(Font(UIFont.monospacedSystemFont(ofSize: 14, weight: .regular)))
                                         .padding(.trailing,5)
                                     VStack {
-                                            Text("\(list.text!)")
+                                            Text("\(list.unwrappedText)")
                                                 .font(.headline)
+                                                .background(list.achievement ? Color("\(selectedFolder.unwrappedBackColor)").opacity(0.5) : Color.clear)
                                                 .frame(maxWidth:.infinity, alignment: .leading)
                                         
                                         if !list.unwrappedMiniMemo.isEmpty {
@@ -226,10 +227,9 @@ extension ListView {
                                     Text("\(list.category!)")
                                         .font(.caption)
                                 }
-                                .foregroundColor(.black)
-                                
+                                .foregroundColor(Color("originalBlack"))
                             })
-                       
+                            
                         
                         
                         

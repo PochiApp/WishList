@@ -43,7 +43,7 @@ struct WriteFolderView: View {
                         Section {
                             colorPicker
                         } header: {
-                            Text("背景色")
+                            Text("テーマカラー")
                         }
                         
                         

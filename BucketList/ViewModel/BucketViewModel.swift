@@ -19,6 +19,7 @@ class BucketViewModel : ObservableObject{
     @Published var lockIsAcctive = false
     @Published var folderPassword = ""
     @Published var notDaySetting = false
+    @Published var lockFolder: FolderModel!
     
     @Published var text = ""
     @Published var listNumber = 0
@@ -96,16 +97,17 @@ class BucketViewModel : ObservableObject{
         
     }
     
-    func lockFolder(lockFolder: FolderModel, context: NSManagedObjectContext) {
+    func lockFolder(context: NSManagedObjectContext) {
         lockFolder.lockIsActive = true
         lockFolder.folderPassword = folderPassword
         
         try! context.save()
         
+        lockFolder = nil
         folderPassword = ""
     }
     
-    func unLockFolder(lockFolder: FolderModel, context: NSManagedObjectContext) {
+    func unLockFolder(context: NSManagedObjectContext) {
         lockFolder.lockIsActive = false
         lockFolder.folderPassword = ""
         
