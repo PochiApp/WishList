@@ -15,6 +15,8 @@ struct WriteFolderView: View {
         @ObservedObject var bucketViewModel : BucketViewModel
         @Binding var isShowFolderWrite: Bool
         @FocusState var textIsActive: Bool
+        @State private var textFieldTitle: String = ""
+    
         
         var body: some View {
             VStack {
@@ -88,7 +90,7 @@ struct WriteFolderView: View {
 extension WriteFolderView {
     
     private var titleTextField : some View {
-        TextField("フォルダ-タイトル", text: $bucketViewModel.title)
+        TextField("フォルダ-タイトル", text: $textFieldTitle)
             .focused($textIsActive)
 
     }
@@ -187,7 +189,7 @@ extension WriteFolderView {
     
     private var addFolderButton : some View {
         Button(action: {
-            
+            bucketViewModel.title = textFieldTitle
             bucketViewModel.writeFolder(context: context)
             
             dismiss()

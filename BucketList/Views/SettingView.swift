@@ -29,8 +29,6 @@ struct SettingView: View {
                         Text("カテゴリー編集")
                     }
                     
-                    Text("通知設定")
-                    
                 }
                 
                 Section(header: Text("アプリ情報")) {

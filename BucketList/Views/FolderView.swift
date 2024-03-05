@@ -126,7 +126,7 @@ extension FolderView {
                 NavigationLink(destination: ListView(bucketViewModel: bucketViewModel, selectedFolder: foldermodel, isShowPassInputPage: $isShowPassInputPage)){
                     RoundedRectangle(cornerRadius: 16)
                         .fill(Color("\(foldermodel.unwrappedBackColor)"))
-                        .frame(width: 300, height: 150)
+                        .frame(width: 290, height: 150)
                         .shadow(color: .gray.opacity(0.9), radius: 1, x: 2, y: 2)
                         .overlay(
                             VStack(alignment: .center){

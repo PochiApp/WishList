@@ -19,10 +19,13 @@ struct AddListView: View {
     private var categorys: FetchedResults<CategoryEntity>
     
     @State private var textFieldText: String = ""
+    @State private var textFieldMemo: String = ""
     @ObservedObject var bucketViewModel : BucketViewModel
     @Binding var isShowListAdd: Bool
     @State var listColor: String
     @State var selectedPhoto: [PhotosPickerItem] = []
+    @FocusState var textIsActive: Bool
+    @FocusState var memoIsActive: Bool
     
     
     var body: some View {
@@ -31,7 +34,10 @@ struct AddListView: View {
             NavigationStack{
                 Form {
                     Section(header: Text("やりたいこと")) {
+                        let _ = print("a")
                         bucketTextField
+                        
+                        let _ = print("b")
                     }
                     
                     Section(header: Text("カテゴリー")) {
@@ -174,6 +180,10 @@ struct AddListView: View {
                     }
                 
                 }
+        .onTapGesture {
+            textIsActive = false
+            memoIsActive = false
+        }
             }
         
         }
@@ -183,7 +193,9 @@ struct AddListView: View {
     
     extension AddListView {
         private var bucketTextField: some View {
-            TextField("やりたいこと", text: $bucketViewModel.text)
+
+            TextField("やりたいこと", text: $textFieldText)
+                .focused($textIsActive)
             
         }
         
@@ -198,12 +210,14 @@ struct AddListView: View {
         }
         
         private var bucketMiniMemoTextField: some View {
-            TextField("一言メモ", text: $bucketViewModel.miniMemo)
-            
+            TextField("一言メモ", text: $textFieldMemo)
+                .focused($memoIsActive)
         }
         
         private var writeListButton: some View {
             Button(action: {
+                bucketViewModel.text = textFieldText
+                bucketViewModel.miniMemo = textFieldMemo
                 bucketViewModel.writeList(context: context)
                 
                 dismiss()

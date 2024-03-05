@@ -66,7 +66,6 @@ struct ListView: View {
                 listModels.nsPredicate = categoryPredicate
             
             case .all:
-//                listModels.nsSortDescriptors = [NSSortDescriptor(keyPath: \ListModel.listNumber, ascending: true)]
                 listModels.nsPredicate = NSPredicate(format: "folderDate == %@", selectedFolder.writeDate! as CVarArg)
 
             }
@@ -173,7 +172,6 @@ extension ListView {
                     .buttonStyle(.plain)
                     .frame(alignment: .leading)
                     
-                    
                             Button(action: {
                                 isShowListAdd.toggle()
                                 bucketViewModel.editList(upList: list)
@@ -205,7 +203,7 @@ extension ListView {
                                     
                                     Spacer()
                                     if (!list.unwrappedImage1.isEmpty) {
-                                        
+                               
                                         if let uiImage1 = UIImage(data: list.unwrappedImage1) {
                                                 Image(uiImage: uiImage1)
                                                     .resizable()
@@ -215,7 +213,7 @@ extension ListView {
                                     }
                                     
                                     if (!list.unwrappedImage2.isEmpty) {
-                                        
+                                   
                                         if let uiImage2 = UIImage(data: list.unwrappedImage2) {
                                                 Image(uiImage: uiImage2)
                                                     .resizable()
@@ -226,6 +224,7 @@ extension ListView {
                             
                                     Text("\(list.category!)")
                                         .font(.caption)
+                                
                                 }
                                 .foregroundColor(Color("originalBlack"))
                             })
