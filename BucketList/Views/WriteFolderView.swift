@@ -22,33 +22,22 @@ struct WriteFolderView: View {
             VStack {
                 NavigationStack{
                     Form {
-                        
-                        Section {
-                            
+                        Section(header: Text("フォルダータイトル")) {
                             titleTextField
-                        } header: {
-                            Text("フォルダータイトル")
                         }
                         
-                        
-                        Section {
+                        Section(header: Text("期間")) {
                             startDatePicker
                             
                             finishDatePicker
                             
                             Toggle("期間設定なし", isOn: $bucketViewModel.notDaySetting)
                             
-                        } header: {
-                            Text("期間")
                         }
                         
-                        Section {
+                        Section(header: Text("テーマカラー")) {
                             colorPicker
-                        } header: {
-                            Text("テーマカラー")
                         }
-                        
-                        
                     }
                     .navigationBarTitleDisplayMode(.inline)
                     .toolbarBackground(Color("\(bucketViewModel.backColor)"), for: .navigationBar)
@@ -90,7 +79,7 @@ struct WriteFolderView: View {
 extension WriteFolderView {
     
     private var titleTextField : some View {
-        TextField("フォルダ-タイトル", text: $textFieldTitle)
+        TextField("フォルダ-タイトル", text: bucketViewModel.updateFolder == nil ? $textFieldTitle : $bucketViewModel.title)
             .focused($textIsActive)
 
     }
@@ -189,7 +178,9 @@ extension WriteFolderView {
     
     private var addFolderButton : some View {
         Button(action: {
-            bucketViewModel.title = textFieldTitle
+            if bucketViewModel.updateFolder == nil {
+                bucketViewModel.title = textFieldTitle
+            }
             bucketViewModel.writeFolder(context: context)
             
             dismiss()

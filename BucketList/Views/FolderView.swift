@@ -54,7 +54,6 @@ struct FolderView: View {
             .onAppear(perform: {
                 isShowPassInputPage = true
                 self.context.refreshAllObjects()
-                bucketViewModel.category = bucketViewModel.firstCategory
                 
                     if launchKey == false {
                         bucketViewModel.setupDefaultCategory(context: context)
@@ -146,9 +145,12 @@ extension FolderView {
                                        
                                 }
                                 
-                                Text("達成：\(foldermodel.unwrappedAchievedLists.count)/\(foldermodel.unwrappedLists.count)")
-                                    .font(.system(size: 11))
-                                    .padding(.top, 6)
+                                if let listsAchieved = foldermodel.achievedLists, let allLists = foldermodel.lists {
+                                    Text("達成：\(listsAchieved.count)/\(allLists.count)")
+                                        .font(.system(size: 11))
+                                        .padding(.top, 6)
+                                }
+                                
                                 
                                 
                             }
@@ -179,8 +181,9 @@ extension FolderView {
                         
                     
                     Button(action: {
-                        isShowFolderWrite.toggle()
                         bucketViewModel.editFolder(upFolder: foldermodel)
+                        isShowFolderWrite.toggle()
+                        
                     }, label: {
                         Text("編集")
                     })

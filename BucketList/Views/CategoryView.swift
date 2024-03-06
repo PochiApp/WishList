@@ -54,9 +54,6 @@ struct CategoryView: View {
         }
         .navigationTitle("カテゴリー一覧")
         .font(.title3)
-        .onDisappear(){
-        firstCategoryGet()
-       }
         .sheet(isPresented: $isShowCategoryAdd){
             
             AddCategoryView(bucketViewModel: bucketViewModel, isShowCategoryAdd: $isShowCategoryAdd)
@@ -76,22 +73,11 @@ struct CategoryView: View {
         do {
             try context.save()
             
-            firstCategoryGet()
-            
         }
         catch {
             print("削除失敗")
         }
         
-        
-    }
-    
-    private func firstCategoryGet () {
-        let arrayCategory = Array(categorys)
-        let firstCategoryName = arrayCategory.first?.categoryName ?? ""
-        bucketViewModel.firstCategory = firstCategoryName
-        
-        bucketViewModel.category = firstCategoryName
         
     }
     

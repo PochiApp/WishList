@@ -33,8 +33,6 @@ class BucketViewModel : ObservableObject{
     @Published var images: [UIImage?] = []
     @Published var updateList: ListModel!
     
-    @AppStorage ("isFirstCategory") var firstCategory = "未分類"
-    
     @Published var categoryName = ""
     @Published var categoryAddDate = Date()
     
@@ -81,7 +79,7 @@ class BucketViewModel : ObservableObject{
     func formattedDateString(date: Date) -> String {
             let formatter = DateFormatter()
             formatter.locale = Locale(identifier:"ja_JP")
-            formatter.dateFormat = "yyyy/MM/dd"
+            formatter.setLocalizedDateFormatFromTemplate("yyyy/MM/dd")
             return formatter.string(from: date)
     }
     
@@ -143,7 +141,7 @@ class BucketViewModel : ObservableObject{
             updateList = nil
             
             text = ""
-            category = firstCategory
+            category = ""
             achievement = false
             image1 = Data.init()
             image2 = Data.init()
@@ -193,7 +191,7 @@ class BucketViewModel : ObservableObject{
         
         text =  ""
         listNumber = 0
-        category = firstCategory
+        category = ""
         folderDate = Date()
         achievement = false
         image1 = Data.init()

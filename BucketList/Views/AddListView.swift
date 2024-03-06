@@ -18,32 +18,34 @@ struct AddListView: View {
         animation: .default)
     private var categorys: FetchedResults<CategoryEntity>
     
-    @State private var textFieldText: String = ""
-    @State private var textFieldMemo: String = ""
     @ObservedObject var bucketViewModel : BucketViewModel
     @Binding var isShowListAdd: Bool
     @State var listColor: String
     @State var selectedPhoto: [PhotosPickerItem] = []
-    @FocusState var textIsActive: Bool
-    @FocusState var memoIsActive: Bool
+    @FocusState var textFieldIsActive: Field?
+    
+    enum Field: Hashable {
+        case text
+        case miniMemo
+    }
     
     
     var body: some View {
         VStack {
-            
             NavigationStack{
                 Form {
                     Section(header: Text("やりたいこと")) {
-                        let _ = print("a")
                         bucketTextField
-                        
-                        let _ = print("b")
                     }
                     
                     Section(header: Text("カテゴリー")) {
                         categoryPicker
                         
-                        NavigationLink(destination: CategoryView(bucketViewModel: bucketViewModel)){
+                        NavigationLink(
+                            destination: CategoryView(bucketViewModel: bucketViewModel)
+                                .onDisappear(perform: {
+                                    firstCategoryGet()
+                                })){
                             Text("カテゴリー追加へ")
                                 .font(.subheadline)
                         }
@@ -63,11 +65,8 @@ struct AddListView: View {
                                             Image(uiImage: image)
                                                 .resizable()
                                                 .scaledToFit()
-                                            
                                         }
-                                        
                                     }
-                                    
                                 }
                             
                                     Button(action: {
@@ -77,13 +76,9 @@ struct AddListView: View {
                                         Text("画像削除")
                                             .foregroundColor(.red)
                                     }
-
                             }
                         }
                         .onChange(of: selectedPhoto){
-                            
-                            
-                        
                             if !bucketViewModel.datas.isEmpty {
                                 bucketViewModel.datas.removeAll()
                             }
@@ -116,10 +111,10 @@ struct AddListView: View {
                                 
                                await bucketViewModel.convertUiimages()
                                 
-                                
                             }
                         }
                         .onAppear() {
+                            firstCategoryGet()
                             Task {
                                 await bucketViewModel.convertUiimages()
                             }
@@ -151,7 +146,6 @@ struct AddListView: View {
                             }
                             
                         }
-                        
                 .background(Color.gray.opacity(0.1))
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbarBackground(Color("\(listColor)"), for: .navigationBar)
@@ -175,27 +169,19 @@ struct AddListView: View {
                         writeListButton
                     }
                 }
-                
-                    
-                    }
-                
-                }
-        .onTapGesture {
-            textIsActive = false
-            memoIsActive = false
-        }
             }
-        
         }
-    
-    
+    }
+}
 
-    
     extension AddListView {
         private var bucketTextField: some View {
 
-            TextField("やりたいこと", text: $textFieldText)
-                .focused($textIsActive)
+            TextField("やりたいこと", text: $bucketViewModel.text)
+                .focused($textFieldIsActive, equals: .text)
+                .onTapGesture {
+                    textFieldIsActive = nil
+                }
             
         }
         
@@ -203,21 +189,23 @@ struct AddListView: View {
             
             Picker("カテゴリー", selection: $bucketViewModel.category) {
                 ForEach(categorys, id: \.self) { category in
-                    Text("\(category.categoryName ?? "")")
-                        .tag(category.categoryName ?? "")
+                    Text("\(category.unwrappedCategoryName)")
+                        .tag(category.unwrappedCategoryName)
                 }
             }
         }
         
         private var bucketMiniMemoTextField: some View {
-            TextField("一言メモ", text: $textFieldMemo)
-                .focused($memoIsActive)
+            TextField("一言メモ", text: $bucketViewModel.miniMemo)
+                .focused($textFieldIsActive, equals: .miniMemo)
+                .onTapGesture {
+                    textFieldIsActive = nil
+                }
         }
         
         private var writeListButton: some View {
             Button(action: {
-                bucketViewModel.text = textFieldText
-                bucketViewModel.miniMemo = textFieldMemo
+             
                 bucketViewModel.writeList(context: context)
                 
                 dismiss()
@@ -239,6 +227,11 @@ struct AddListView: View {
                     .font(.title2)
                     .foregroundColor(Color("originalBlack"))
             })
+        }
+        
+        private func firstCategoryGet() {
+            let arrayCategory = Array(categorys)
+            bucketViewModel.category = arrayCategory.first?.categoryName ?? ""
         }
     }
 

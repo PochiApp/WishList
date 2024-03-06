@@ -11,6 +11,7 @@ struct AddCategoryView: View {
     
     @Environment (\.managedObjectContext)private var context
     @Environment (\.dismiss) var dismiss
+    @FocusState var textIsActive: Bool
     
     @ObservedObject var bucketViewModel : BucketViewModel
     
@@ -46,6 +47,9 @@ struct AddCategoryView: View {
                         writeCategoryButton
                     }
                 }
+                .onTapGesture {
+                    textIsActive = false
+                }
             }
         }
     }
@@ -54,6 +58,7 @@ struct AddCategoryView: View {
 extension AddCategoryView {
     private var categoryTextField: some View {
         TextField("", text: $bucketViewModel.categoryName)
+            .focused($textIsActive)
             .frame(alignment: .center)
 
     }

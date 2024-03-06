@@ -39,7 +39,5 @@ extension FolderModel {
     public var unwrappedWriteDate: Date { writeDate ?? Date() }
     public var unwrappedBackColor: String { backColor ?? "" }
     public var unwrappedfolderPassword: String { folderPassword ?? "" }
-    public var unwrappedLists: [ListModel]  { lists as? [ListModel] ?? [] }
-    public var unwrappedAchievedLists: [ListModel]  { achievedLists as? [ListModel] ?? [] }
     
 }
