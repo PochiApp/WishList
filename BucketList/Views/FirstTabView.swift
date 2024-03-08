@@ -27,6 +27,11 @@ struct FirstTabView: View {
                     Label("設定", systemImage: "gearshape")
                 }
             
+            PassView()
+                .tabItem {
+                    Label("設定", systemImage: "gearshape")
+                }
+            
             
         }
         .background(.white)

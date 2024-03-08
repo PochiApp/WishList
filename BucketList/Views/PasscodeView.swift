@@ -8,8 +8,7 @@
 import SwiftUI
 
 struct PasscodeView: View {
-    
-    @Environment (\.dismiss) var dismiss
+
     @State private var passcode: String = ""
     @FocusState var passcodeIsActive: Bool
     @ObservedObject var bucketViewModel : BucketViewModel
@@ -32,7 +31,7 @@ struct PasscodeView: View {
                 .padding(.bottom)
             
             SecureField("パスワードを入力してください", text: $passcode)
-                .textFieldStyle(.roundedBorder)
+                .textFieldStyle(CustomPasscodeFieldStyle())
                 .frame(width: 300)
                 .focused($passcodeIsActive)
             
@@ -64,5 +63,4 @@ struct PasscodeView: View {
         }
     }
 }
-
 
