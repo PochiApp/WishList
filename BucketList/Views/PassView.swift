@@ -10,12 +10,32 @@ import SwiftUI
 struct PassView: View {
     
     @State var passCode = ""
-//    @State var themeColor: String
+    private let correctPassCode: String = "1234"
+    @ObservedObject var bucketViewModel : BucketViewModel
+    @State var selectedFolder: FolderModel
+    @Binding var isShowPassInputPage: Bool
     
     var body: some View {
         VStack {
-            Text("\(passCode)")
-                .font(.title2)
+            HStack {
+                
+                Image(systemName: passCode.count >= 1 ? "key.fill" : "key")
+                    .font(.title)
+                    .padding()
+                
+                Image(systemName: passCode.count >= 2 ? "key.fill" : "key")
+                    .font(.title)
+                    .padding()
+                
+                Image(systemName: passCode.count >= 3 ? "key.fill" : "key")
+                    .font(.title)
+                    .padding()
+                
+                Image(systemName: passCode.count >= 4 ? "key.fill" : "key")
+                    .font(.title)
+                    .padding()
+            }
+            .padding()
             
             HStack {
                 ForEach(1...3, id: \.self) { number in
@@ -54,8 +74,6 @@ struct PassView: View {
             }
             
             HStack {
-                
-                
                 Button(action: {
                     passCode += "0"
                 }, label: {
@@ -74,7 +92,14 @@ struct PassView: View {
             }
                     
                 }
+        .onChange(of: passCode) {
+            if passCode.count == 4 {
+                if passCode == selectedFolder.unwrappedfolderPassword {
+                    isShowPassInputPage = false
+                }
             }
+        }
+        }
     
     struct CapsuleButtonStyle: ButtonStyle {
         
@@ -104,6 +129,9 @@ struct CustomPasscodeFieldStyle: TextFieldStyle {
         
     }
 }
+
+
+
 
 
 

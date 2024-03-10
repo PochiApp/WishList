@@ -93,7 +93,7 @@ struct ListView: View {
     
     var body: some View {
         if selectedFolder.lockIsActive && isShowPassInputPage {
-            PasscodeView(bucketViewModel: bucketViewModel, selectedFolder: selectedFolder, isShowPassInputPage: $isShowPassInputPage)
+            PassView(bucketViewModel: bucketViewModel, selectedFolder: selectedFolder, isShowPassInputPage: $isShowPassInputPage)
         } else {
             NavigationStack {
                 ZStack {
