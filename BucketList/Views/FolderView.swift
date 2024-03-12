@@ -14,24 +14,24 @@ struct FolderView: View {
     @AppStorage ("isFirstLaunchKey") var launchKey = false
     
     @FetchRequest(
-        entity: FolderModel.entity(), 
+        entity: FolderModel.entity(),
         sortDescriptors: [NSSortDescriptor(keyPath: \FolderModel.writeDate, ascending: false)],
         animation: .default)
-        private var fm: FetchedResults<FolderModel>
+        private var folderModel: FetchedResults<FolderModel>
+    
     @ObservedObject var bucketViewModel : BucketViewModel
     @State var isShowListView = false
     @State var isShowFolderWrite: Bool = false
-    @State var isShowUnlockAlert: Bool = false
-    @State var isShowMissAlert: Bool = false
-    @State var isShowPassAlert: Bool = false
     @State var isShowPassInputPage: Bool = true
+    @State var isShowSetPassPage: Bool = false
+    @State var isShowUnlockPassPage: Bool = false
     
     
     var body: some View {
         NavigationStack {
                 ZStack {
                     Color.gray.opacity(0.08).edgesIgnoringSafeArea(.all)
-                    if fm.isEmpty {
+                    if folderModel.isEmpty {
                         emptyFolderView
                     }
                     
@@ -60,68 +60,17 @@ struct FolderView: View {
                             launchKey = true
                         }
             })
-            .alert("ロックの解除", isPresented: $isShowUnlockAlert) {
-                SecureField("パスワード", text: $bucketViewModel.folderPassword)
-                
-                Button("Cancel") {
-                    isShowUnlockAlert = false
-                    bucketViewModel.folderPassword = ""
-                    bucketViewModel.lockFolder = nil
-                }
-                
-                Button("確認") {
-                    if bucketViewModel.lockFolder.folderPassword == bucketViewModel.folderPassword {
-                        bucketViewModel.unLockFolder(context: context)
-                    } else {
-                        isShowMissAlert = true
-                        bucketViewModel.folderPassword = ""
-                    }
-                }
-                
-            } message: {
-                
-                Text("設定しているパスワードを入力してください")
-            }
-            .alert("パスワードが間違っています", isPresented: $isShowMissAlert) {
-                
-                Button("OK") {
-                    isShowMissAlert = false
-                    isShowUnlockAlert = true
-                }
-                    
-            } message: {
-                Text("正しいパスワードを入力してください。")
-            }
-            
-            .alert("フォルダーをロック", isPresented: $isShowPassAlert) {
-                SecureField("パスワード", text: $bucketViewModel.folderPassword)
-                
-                Button("Cancel") {
-                    isShowPassAlert = false
-                    bucketViewModel.folderPassword = ""
-                    bucketViewModel.lockFolder = nil
-                }
-                
-                Button("OK") {
-                    bucketViewModel.lockFolder(context: context)
-                }
-                    
-            } message: {
-                Text("パスワードを設定してください")
-            }
+
         }
 }
 
-
-
 extension FolderView {
-    
-    
+
     private var folderArea: some View {
         ScrollView(.vertical, showsIndicators: false){
             Spacer()
             
-            ForEach(fm){foldermodel in
+            ForEach(folderModel){ foldermodel in
                 NavigationLink(destination: ListView(bucketViewModel: bucketViewModel, selectedFolder: foldermodel, isShowPassInputPage: $isShowPassInputPage)){
                     RoundedRectangle(cornerRadius: 16)
                         .fill(Color("\(foldermodel.unwrappedBackColor)"))
@@ -163,20 +112,23 @@ extension FolderView {
                 .contextMenu(ContextMenu(menuItems: {
                     if foldermodel.lockIsActive {
                         Button(action: {
-                            isShowUnlockAlert.toggle()
                             bucketViewModel.lockFolder = foldermodel
+                            isShowUnlockPassPage = true
+                
                         }, label: {
                             Text("フォルダーのロック解除")
                         })
+                        
                             
                     } else {
                         Button(action: {
-                            isShowPassAlert.toggle()
+
                             bucketViewModel.lockFolder = foldermodel
+                            isShowSetPassPage = true
+                        
                         }, label: {
                             Text("フォルダーをロック")
                         })
-                            
                         }
                         
                     
@@ -190,6 +142,15 @@ extension FolderView {
                     .sheet(isPresented: $isShowFolderWrite) {
                         
                         WriteFolderView(bucketViewModel : bucketViewModel, isShowFolderWrite: $isShowFolderWrite)
+                            .presentationDetents([.large])
+                    }
+                    .fullScreenCover(isPresented: $isShowSetPassPage, content: {
+                        SetPassView(bucketViewModel: bucketViewModel, isShowSetPassPage: $isShowSetPassPage, isShowUnlockPassPage: $isShowUnlockPassPage)
+
+                    })
+                    
+                    .sheet(isPresented: $isShowUnlockPassPage) {
+                        SetPassView(bucketViewModel: bucketViewModel, isShowSetPassPage: $isShowSetPassPage, isShowUnlockPassPage: $isShowUnlockPassPage)
                             .presentationDetents([.large])
                     }
                     
@@ -208,7 +169,6 @@ extension FolderView {
                 
             }
         }
-        
     }
     
     

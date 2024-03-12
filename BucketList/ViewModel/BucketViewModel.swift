@@ -111,6 +111,7 @@ class BucketViewModel : ObservableObject{
         
         try! context.save()
         
+        lockFolder = nil
         folderPassword = ""
     }
     

@@ -1,24 +1,61 @@
 //
-//  PassView.swift
+//  SetPassView.swift
 //  BucketList
 //
-//  Created by 嶺澤美帆 on 2024/03/07.
+//  Created by 嶺澤美帆 on 2024/03/12.
 //
 
 import SwiftUI
 import AudioToolbox
 
-struct PassView: View {
+struct SetPassView: View {
     
     @Environment(\.managedObjectContext) private var context
-    @ObservedObject var bucketViewModel : BucketViewModel
     @State var passCode = ""
-    @State var selectedFolder: FolderModel
-    @Binding var isShowPassInputPage: Bool
+    @State var passNumber1 = ""
+    @State var passNumber2 = ""
+    @State var passNumber3 = ""
+    @State var passNumber4 = ""
+    @ObservedObject var bucketViewModel : BucketViewModel
+    @Binding var isShowSetPassPage: Bool
+    @Binding var isShowUnlockPassPage: Bool
+    @State var isDisable: Bool = true
     let UINFGenerator = UINotificationFeedbackGenerator()
     
     var body: some View {
         VStack {
+                isShowUnlockPassPage ? Text("設定しているパスコードを入力してください") : Text("パスコードを設定してください")
+            
+            if isShowSetPassPage {
+                HStack {
+                    Rectangle()
+                        .stroke(lineWidth: 5)
+                        .frame(width: 30, height: 30)
+                        .padding()
+                        .overlay(Text("\(passNumber1)").fontWeight(.bold))
+                    
+                    Rectangle()
+                        .stroke(lineWidth: 5)
+                        .frame(width: 30, height: 30)
+                        .padding()
+                        .overlay(Text("\(passNumber2)").fontWeight(.bold))
+                    
+                    Rectangle()
+                        .stroke(lineWidth: 5)
+                        .frame(width: 30, height: 30)
+                        .padding()
+                        .overlay(Text("\(passNumber3)").fontWeight(.bold))
+                    
+                    Rectangle()
+                        .stroke(lineWidth: 5)
+                        .frame(width: 30, height: 30)
+                        .padding()
+                        .overlay(Text("\(passNumber4)").fontWeight(.bold))
+                        
+                    }
+                        .padding()
+               
+            } else {
                 HStack {
                     Image(systemName: passCode.count >= 1 ? "key.fill" : "key")
                         .font(.system(size:30))
@@ -40,24 +77,54 @@ struct PassView: View {
             }
             
                 numberButtonView
-                        .onChange(of: passCode) {
-                                if passCode.count == 4 {
-                                    if passCode == selectedFolder.unwrappedfolderPassword {
-                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5){
-                                            isShowPassInputPage = false
-                                            passCode = ""
-                                        }
-                                    } else {
-                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5){
-                                            UINFGenerator.notificationOccurred(.warning)
-                                            passCode = ""
-                                        }
-                                    }
-                                }
+            
+            if isShowSetPassPage {
+                Button(action: {
+                    bucketViewModel.folderPassword = passCode
+                    bucketViewModel.lockFolder(context: context)
+                }, label: {
+                    Text("決定")
+                })
+                .disabled(isDisable)
+            }
+                }
+        .onChange(of: passCode) {
+            let tuple = (isShowSetPassPage, isShowUnlockPassPage)
+            
+            switch tuple {
+            
+            case (true, false):
+                let passCodeAray = Array(passCode)
+                passNumber1 = passCodeAray.indices.contains(1) ? String(passCodeAray[1]) : ""
+                passNumber2 = passCodeAray.indices.contains(2) ? String(passCodeAray[2]) : ""
+                passNumber3 = passCodeAray.indices.contains(3) ? String(passCodeAray[3]) : ""
+                passNumber4 = passCodeAray.indices.contains(4) ? String(passCodeAray[4]) : ""
+                
+                if passCode.count >= 4 {
+                    isDisable = false
+                    passCode = String(passCode.prefix(4))
+                }
+                
+            case (false, true):
+                if passCode.count == 4 {
+                    if passCode == bucketViewModel.lockFolder.unwrappedfolderPassword {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5){
+                            bucketViewModel.unLockFolder(context: context)
+                            passCode = ""
+                        }
+                    } else {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5){
+                            UINFGenerator.notificationOccurred(.warning)
+                            passCode = ""
+                        }
                     }
                 }
-        
+                
+            default: break
             }
+            
+        }
+        }
     
     struct CapsuleButtonStyle: ButtonStyle {
         
@@ -76,9 +143,9 @@ struct PassView: View {
         }
     }
     
+}
 
-
-extension PassView {
+extension SetPassView {
     private var numberButtonView: some View {
         VStack(alignment: .trailing) {
             HStack {
@@ -137,3 +204,4 @@ extension PassView {
         }
     }
 }
+
