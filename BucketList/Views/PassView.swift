@@ -61,11 +61,13 @@ struct PassView: View {
     
     struct CapsuleButtonStyle: ButtonStyle {
         
+        @State var selectedFolder: FolderModel
+        
         func makeBody(configuration: Configuration) -> some View {
             configuration.label
                 .padding(8)
                 .frame(width: 80, height: 80)
-                .background(configuration.isPressed ? Color("snowWhite") : Color("originalPink"))
+                .background(configuration.isPressed ? Color("snowWhite") : Color("\(selectedFolder.unwrappedBackColor)"))
                 .foregroundColor(Color("originalBlack"))
                 .font(.body.bold())
                 .clipShape(Capsule())
@@ -89,7 +91,7 @@ extension PassView {
                         Text("\(number)")
                             .font(.title2)
                     })
-                    .buttonStyle(CapsuleButtonStyle())
+                    .buttonStyle(CapsuleButtonStyle(selectedFolder: selectedFolder))
                 }
             }
             
@@ -101,7 +103,7 @@ extension PassView {
                         Text("\(number)")
                             .font(.title2)
                     })
-                    .buttonStyle(CapsuleButtonStyle())
+                    .buttonStyle(CapsuleButtonStyle(selectedFolder: selectedFolder))
                 }
             }
             
@@ -113,7 +115,7 @@ extension PassView {
                         Text("\(number)")
                             .font(.title2)
                     })
-                    .buttonStyle(CapsuleButtonStyle())
+                    .buttonStyle(CapsuleButtonStyle(selectedFolder: selectedFolder))
                 }
             }
             
@@ -124,15 +126,14 @@ extension PassView {
                     Text("0")
                         .font(.title2)
                 })
-                .buttonStyle(CapsuleButtonStyle())
+                .buttonStyle(CapsuleButtonStyle(selectedFolder: selectedFolder))
                 
                 Button(action: {
                     passCode = String(passCode.dropLast())
                 }, label: {
                     Image(systemName: "delete.left")
-                        .foregroundColor(Color("originalBlack"))
                 })
-                .buttonStyle(CapsuleButtonStyle())
+                .buttonStyle(CapsuleButtonStyle(selectedFolder: selectedFolder))
             }
         }
     }

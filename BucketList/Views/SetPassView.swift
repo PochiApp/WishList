@@ -30,25 +30,25 @@ struct SetPassView: View {
                 HStack {
                     Rectangle()
                         .stroke(lineWidth: 5)
-                        .frame(width: 30, height: 30)
+                        .frame(width: 50, height: 50)
                         .padding()
                         .overlay(Text("\(passNumber1)").fontWeight(.bold))
                     
                     Rectangle()
                         .stroke(lineWidth: 5)
-                        .frame(width: 30, height: 30)
+                        .frame(width: 50, height: 50)
                         .padding()
                         .overlay(Text("\(passNumber2)").fontWeight(.bold))
                     
                     Rectangle()
                         .stroke(lineWidth: 5)
-                        .frame(width: 30, height: 30)
+                        .frame(width: 50, height: 50)
                         .padding()
                         .overlay(Text("\(passNumber3)").fontWeight(.bold))
                     
                     Rectangle()
                         .stroke(lineWidth: 5)
-                        .frame(width: 30, height: 30)
+                        .frame(width: 50, height: 50)
                         .padding()
                         .overlay(Text("\(passNumber4)").fontWeight(.bold))
                         
@@ -81,10 +81,12 @@ struct SetPassView: View {
             if isShowSetPassPage {
                 Button(action: {
                     bucketViewModel.folderPassword = passCode
+                    isShowSetPassPage = false
                     bucketViewModel.lockFolder(context: context)
                 }, label: {
                     Text("決定")
                 })
+                .padding()
                 .disabled(isDisable)
             }
                 }
@@ -95,20 +97,23 @@ struct SetPassView: View {
             
             case (true, false):
                 let passCodeAray = Array(passCode)
-                passNumber1 = passCodeAray.indices.contains(1) ? String(passCodeAray[1]) : ""
-                passNumber2 = passCodeAray.indices.contains(2) ? String(passCodeAray[2]) : ""
-                passNumber3 = passCodeAray.indices.contains(3) ? String(passCodeAray[3]) : ""
-                passNumber4 = passCodeAray.indices.contains(4) ? String(passCodeAray[4]) : ""
+                passNumber1 = passCodeAray.indices.contains(0) ? String(passCodeAray[0]) : ""
+                passNumber2 = passCodeAray.indices.contains(1) ? String(passCodeAray[1]) : ""
+                passNumber3 = passCodeAray.indices.contains(2) ? String(passCodeAray[2]) : ""
+                passNumber4 = passCodeAray.indices.contains(3) ? String(passCodeAray[3]) : ""
                 
                 if passCode.count >= 4 {
                     isDisable = false
                     passCode = String(passCode.prefix(4))
+                } else {
+                    isDisable = true
                 }
                 
             case (false, true):
                 if passCode.count == 4 {
                     if passCode == bucketViewModel.lockFolder.unwrappedfolderPassword {
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5){
+                            isShowUnlockPassPage = false
                             bucketViewModel.unLockFolder(context: context)
                             passCode = ""
                         }
@@ -128,11 +133,13 @@ struct SetPassView: View {
     
     struct CapsuleButtonStyle: ButtonStyle {
         
+        @State var selectedFolder: FolderModel
+        
         func makeBody(configuration: Configuration) -> some View {
             configuration.label
                 .padding(8)
                 .frame(width: 80, height: 80)
-                .background(configuration.isPressed ? Color("snowWhite") : Color("originalPink"))
+                .background(configuration.isPressed ? Color("snowWhite") : Color("\(selectedFolder.unwrappedBackColor)"))
                 .foregroundColor(Color("originalBlack"))
                 .font(.body.bold())
                 .clipShape(Capsule())
@@ -156,7 +163,7 @@ extension SetPassView {
                         Text("\(number)")
                             .font(.title2)
                     })
-                    .buttonStyle(CapsuleButtonStyle())
+                    .buttonStyle(CapsuleButtonStyle(selectedFolder: bucketViewModel.lockFolder))
                 }
             }
             
@@ -168,7 +175,7 @@ extension SetPassView {
                         Text("\(number)")
                             .font(.title2)
                     })
-                    .buttonStyle(CapsuleButtonStyle())
+                    .buttonStyle(CapsuleButtonStyle(selectedFolder: bucketViewModel.lockFolder))
                 }
             }
             
@@ -180,26 +187,35 @@ extension SetPassView {
                         Text("\(number)")
                             .font(.title2)
                     })
-                    .buttonStyle(CapsuleButtonStyle())
+                    .buttonStyle(CapsuleButtonStyle(selectedFolder: bucketViewModel.lockFolder))
                 }
             }
             
             HStack {
+                Button(action: {
+                    isShowSetPassPage = false
+                    isShowUnlockPassPage = false
+                }, label: {
+                    Text("キャンセル")
+                        .font(.caption)
+                })
+                .buttonStyle(CapsuleButtonStyle(selectedFolder: bucketViewModel.lockFolder))
+                
                 Button(action: {
                     passCode += "0"
                 }, label: {
                     Text("0")
                         .font(.title2)
                 })
-                .buttonStyle(CapsuleButtonStyle())
+                .buttonStyle(CapsuleButtonStyle(selectedFolder: bucketViewModel.lockFolder))
                 
                 Button(action: {
                     passCode = String(passCode.dropLast())
                 }, label: {
                     Image(systemName: "delete.left")
-                        .foregroundColor(Color("originalBlack"))
+    
                 })
-                .buttonStyle(CapsuleButtonStyle())
+                .buttonStyle(CapsuleButtonStyle(selectedFolder: bucketViewModel.lockFolder))
             }
         }
     }

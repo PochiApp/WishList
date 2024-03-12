@@ -49,14 +49,6 @@ class BucketViewModel : ObservableObject{
             
             try! context.save()
             
-            updateFolder = nil
-            
-            title = ""
-            notDaySetting = false
-            selectedStartDate = Date()
-            selectedFinishDate = Date()
-            backColor = "snowWhite"
-            
             return
         }
         let newFolderData = FolderModel(context:context)
@@ -100,8 +92,7 @@ class BucketViewModel : ObservableObject{
         lockFolder.folderPassword = folderPassword
         
         try! context.save()
-        
-        lockFolder = nil
+
         folderPassword = ""
     }
     
@@ -110,8 +101,7 @@ class BucketViewModel : ObservableObject{
         lockFolder.folderPassword = ""
         
         try! context.save()
-        
-        lockFolder = nil
+ 
         folderPassword = ""
     }
     

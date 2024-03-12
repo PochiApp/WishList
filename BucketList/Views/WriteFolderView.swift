@@ -189,7 +189,7 @@ extension WriteFolderView {
             
             
         }, label: {
-            Text("追加")
+            Text(bucketViewModel.updateFolder == nil ? "追加" : "変更")
                 .font(.title3)
                 .foregroundColor(Color("originalBlack"))
         })

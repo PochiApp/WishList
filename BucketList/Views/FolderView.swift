@@ -116,7 +116,7 @@ extension FolderView {
                             isShowUnlockPassPage = true
                 
                         }, label: {
-                            Text("フォルダーのロック解除")
+                            Label("フォルダーのロック解除", systemImage: "lock.open")
                         })
                         
                             
@@ -127,7 +127,7 @@ extension FolderView {
                             isShowSetPassPage = true
                         
                         }, label: {
-                            Text("フォルダーをロック")
+                            Label("フォルダーをロック", systemImage: "lock")
                         })
                         }
                         
@@ -137,20 +137,11 @@ extension FolderView {
                         isShowFolderWrite.toggle()
                         
                     }, label: {
-                        Text("編集")
+                        Label("編集", systemImage: "pencil")
                     })
                     .sheet(isPresented: $isShowFolderWrite) {
                         
                         WriteFolderView(bucketViewModel : bucketViewModel, isShowFolderWrite: $isShowFolderWrite)
-                            .presentationDetents([.large])
-                    }
-                    .fullScreenCover(isPresented: $isShowSetPassPage, content: {
-                        SetPassView(bucketViewModel: bucketViewModel, isShowSetPassPage: $isShowSetPassPage, isShowUnlockPassPage: $isShowUnlockPassPage)
-
-                    })
-                    
-                    .sheet(isPresented: $isShowUnlockPassPage) {
-                        SetPassView(bucketViewModel: bucketViewModel, isShowSetPassPage: $isShowSetPassPage, isShowUnlockPassPage: $isShowUnlockPassPage)
                             .presentationDetents([.large])
                     }
                     
@@ -160,9 +151,18 @@ extension FolderView {
                         }
                         try? context.save()
                     }, label: {
-                        Text("削除")
+                        Label("削除", systemImage: "trash")
                     })
                 }))
+                .fullScreenCover(isPresented: $isShowSetPassPage, content: {
+                    SetPassView(bucketViewModel: bucketViewModel, isShowSetPassPage: $isShowSetPassPage, isShowUnlockPassPage: $isShowUnlockPassPage)
+
+                })
+                
+                .fullScreenCover(isPresented: $isShowUnlockPassPage, content: {
+                    SetPassView(bucketViewModel: bucketViewModel, isShowSetPassPage: $isShowSetPassPage, isShowUnlockPassPage: $isShowUnlockPassPage)
+                        .presentationDetents([.large])
+                })
                 .transition(
                     AnyTransition.asymmetric(insertion: AnyTransition.slide.combined(with: AnyTransition.opacity), removal: AnyTransition.identity))
                 

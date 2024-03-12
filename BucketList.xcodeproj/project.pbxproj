@@ -8,8 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		39361DF12BA020EC008B0AD9 /* SetPassView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39361DF02BA020EC008B0AD9 /* SetPassView.swift */; };
-		39361DF32BA035AF008B0AD9 /* kariView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39361DF22BA035AF008B0AD9 /* kariView.swift */; };
-		39361DF52BA03AFF008B0AD9 /* SampleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39361DF42BA03AFF008B0AD9 /* SampleView.swift */; };
 		3958285D2B21DB13007E085C /* BucketListApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3958285C2B21DB13007E085C /* BucketListApp.swift */; };
 		395828612B21DB15007E085C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 395828602B21DB15007E085C /* Assets.xcassets */; };
 		395828642B21DB15007E085C /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 395828632B21DB15007E085C /* Preview Assets.xcassets */; };
@@ -35,8 +33,6 @@
 
 /* Begin PBXFileReference section */
 		39361DF02BA020EC008B0AD9 /* SetPassView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetPassView.swift; sourceTree = "<group>"; };
-		39361DF22BA035AF008B0AD9 /* kariView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = kariView.swift; sourceTree = "<group>"; };
-		39361DF42BA03AFF008B0AD9 /* SampleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleView.swift; sourceTree = "<group>"; };
 		395828592B21DB13007E085C /* BucketList.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BucketList.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3958285C2B21DB13007E085C /* BucketListApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BucketListApp.swift; sourceTree = "<group>"; };
 		395828602B21DB15007E085C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -122,8 +118,6 @@
 				39C7D2BD2B8865F9009F32B1 /* SettingView.swift */,
 				39B4A8532B99A6BD00FDFE67 /* PassView.swift */,
 				39361DF02BA020EC008B0AD9 /* SetPassView.swift */,
-				39361DF22BA035AF008B0AD9 /* kariView.swift */,
-				39361DF42BA03AFF008B0AD9 /* SampleView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -225,7 +219,6 @@
 				3958286F2B21E148007E085C /* FolderView.swift in Sources */,
 				39CC4AC92B70F8A600F070D9 /* AddCategoryView.swift in Sources */,
 				3958285D2B21DB13007E085C /* BucketListApp.swift in Sources */,
-				39361DF52BA03AFF008B0AD9 /* SampleView.swift in Sources */,
 				39CC4AC72B6F748E00F070D9 /* CategoryEntity+CoreDataProperties.swift in Sources */,
 				395828712B2347FE007E085C /* ListView.swift in Sources */,
 				3958287C2B29C8CE007E085C /* Persistence.swift in Sources */,
@@ -241,7 +234,6 @@
 				395828792B29C576007E085C /* ListModel+CoreDataClass.swift in Sources */,
 				39E54C682B2E949100298D98 /* BucketViewModel.swift in Sources */,
 				39CC4AC62B6F748E00F070D9 /* CategoryEntity+CoreDataClass.swift in Sources */,
-				39361DF32BA035AF008B0AD9 /* kariView.swift in Sources */,
 				39E54C6B2B3068A800298D98 /* FolderModel+CoreDataClass.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
