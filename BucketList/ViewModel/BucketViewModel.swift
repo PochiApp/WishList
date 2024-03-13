@@ -129,14 +129,7 @@ class BucketViewModel : ObservableObject{
             
             try! context.save()
             
-            updateList = nil
-            
-            text = ""
-            category = ""
-            achievement = false
-            image1 = Data.init()
-            image2 = Data.init()
-            miniMemo = ""
+         
             
             return
             

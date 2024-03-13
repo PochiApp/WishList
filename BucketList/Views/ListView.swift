@@ -166,7 +166,7 @@ extension ListView {
                         
                     }, label: {
                         Image(systemName: list.achievement ? "checkmark.square" : "square")
-                            .font(.title3)
+                            .font(.system(size: 30))
                     })
                     .buttonStyle(.plain)
                     .frame(alignment: .leading)
@@ -177,7 +177,7 @@ extension ListView {
                             }, label: {
                                 HStack {
                                     Text("\(list.listNumber)"+".")
-                                        .font(Font(UIFont.monospacedSystemFont(ofSize: 14, weight: .regular)))
+                                        .font(Font(UIFont.monospacedSystemFont(ofSize: 20, weight: .regular)))
                                         .padding(.trailing,5)
                                     VStack {
                                             Text("\(list.unwrappedText)")
@@ -201,28 +201,36 @@ extension ListView {
                                     
                                     
                                     Spacer()
-                                    if (!list.unwrappedImage1.isEmpty) {
-                               
-                                        if let uiImage1 = UIImage(data: list.unwrappedImage1) {
-                                                Image(uiImage: uiImage1)
-                                                    .resizable()
-                                                    .frame(width: 25, height:25)
-                                                    .clipShape(Circle())
+                                    VStack{
+                                        HStack{
+                                            if (!list.unwrappedImage1.isEmpty) {
+                                       
+                                                if let uiImage1 = UIImage(data: list.unwrappedImage1) {
+                                                        Image(uiImage: uiImage1)
+                                                            .resizable()
+                                                            .frame(width: 30, height:30)
+                                                            .clipShape(Circle())
+                                                    }
                                             }
-                                    }
-                                    
-                                    if (!list.unwrappedImage2.isEmpty) {
-                                   
-                                        if let uiImage2 = UIImage(data: list.unwrappedImage2) {
-                                                Image(uiImage: uiImage2)
-                                                    .resizable()
-                                                    .frame(width: 25, height:25)
-                                                    .clipShape(Circle())
+                                            
+                                            if (!list.unwrappedImage2.isEmpty) {
+                                           
+                                                if let uiImage2 = UIImage(data: list.unwrappedImage2) {
+                                                        Image(uiImage: uiImage2)
+                                                            .resizable()
+                                                            .frame(width: 30, height:30)
+                                                            .clipShape(Circle())
+                                                    }
                                             }
+                                        }
+                                        
+                                
+                                        Text("\(list.unwrappedCategory)")
+                                            .fixedSize(horizontal: false, vertical: true)
+                                            .frame(width: 70, height: 30)
+                                            .font(.caption)
                                     }
                             
-                                    Text("\(list.category!)")
-                                        .font(.caption)
                                 
                                 }
                                 .foregroundColor(Color("originalBlack"))
@@ -340,7 +348,7 @@ extension ListView {
             numberSort = true
             listSort(sort: .all)
             
-            isShowListAdd.toggle()
+            isShowListAdd = true
             bucketViewModel.folderDate = selectedFolder.writeDate ?? Date()
             bucketViewModel.listNumber = listModels.count + 1
         }, label: {
