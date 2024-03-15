@@ -90,28 +90,28 @@ struct SetPassView: View {
                 .disabled(isDisable)
             }
                 }
-        .onChange(of: passCode) {
+        .onChange(of: passCode) { newPassCode in
             let tuple = (isShowSetPassPage, isShowUnlockPassPage)
             
             switch tuple {
             
             case (true, false):
-                let passCodeAray = Array(passCode)
+                let passCodeAray = Array(newPassCode)
                 passNumber1 = passCodeAray.indices.contains(0) ? String(passCodeAray[0]) : ""
                 passNumber2 = passCodeAray.indices.contains(1) ? String(passCodeAray[1]) : ""
                 passNumber3 = passCodeAray.indices.contains(2) ? String(passCodeAray[2]) : ""
                 passNumber4 = passCodeAray.indices.contains(3) ? String(passCodeAray[3]) : ""
                 
-                if passCode.count >= 4 {
+                if newPassCode.count >= 4 {
                     isDisable = false
-                    passCode = String(passCode.prefix(4))
+                    passCode = String(newPassCode.prefix(4))
                 } else {
                     isDisable = true
                 }
                 
             case (false, true):
-                if passCode.count == 4 {
-                    if passCode == bucketViewModel.lockFolder.unwrappedfolderPassword {
+                if newPassCode.count == 4 {
+                    if newPassCode == bucketViewModel.lockFolder.unwrappedfolderPassword {
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5){
                             isShowUnlockPassPage = false
                             bucketViewModel.unLockFolder(context: context)

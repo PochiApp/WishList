@@ -40,9 +40,9 @@ struct PassView: View {
             }
             
                 numberButtonView
-                        .onChange(of: passCode) {
-                                if passCode.count == 4 {
-                                    if passCode == selectedFolder.unwrappedfolderPassword {
+                        .onChange(of: passCode) { newPassCode in
+                                if newPassCode.count == 4 {
+                                    if newPassCode == selectedFolder.unwrappedfolderPassword {
                                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5){
                                             isShowPassInputPage = false
                                             passCode = ""
@@ -77,8 +77,6 @@ struct PassView: View {
                 
         }
     }
-    
-
 
 extension PassView {
     private var numberButtonView: some View {

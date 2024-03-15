@@ -78,13 +78,13 @@ struct AddListView: View {
                                     }
                             }
                         }
-                        .onChange(of: selectedPhoto){
+                        .onChange(of: selectedPhoto){ newSelectedPhoto in
                             if !bucketViewModel.datas.isEmpty {
                                 bucketViewModel.datas.removeAll()
                             }
                             
                             Task {
-                                await bucketViewModel.convertDataimages(photos: selectedPhoto)
+                                await bucketViewModel.convertDataimages(photos: newSelectedPhoto)
                                 
                                 switch bucketViewModel.datas.count {
                                 case 1 :
@@ -114,11 +114,15 @@ struct AddListView: View {
                             }
                         }
                         .onAppear() {
-                            firstCategoryGet()
+                            if bucketViewModel.updateList == nil {
+                                firstCategoryGet()
+                            }
                             Task {
                                 await bucketViewModel.convertUiimages()
                             }
-                          
+                        }
+                        .onDisappear(){
+                            bucketViewModel.resetList()
                         }
                         
                     }
@@ -209,10 +213,9 @@ struct AddListView: View {
                 bucketViewModel.writeList(context: context)
                 
                 dismiss()
-                
-                bucketViewModel.resetList()
+
             }, label: {
-                Text("作成")
+                Text(bucketViewModel.updateList == nil ? "作成" : "変更")
                     .font(.title3)
                     .foregroundColor(Color("originalBlack"))
             })
@@ -221,7 +224,6 @@ struct AddListView: View {
         private var cancelButton: some View {
             Button(action: {
                 isShowListAdd = false
-                bucketViewModel.resetList()
             }, label: {
                 Image(systemName: "clear.fill")
                     .font(.title2)

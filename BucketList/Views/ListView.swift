@@ -187,7 +187,7 @@ extension ListView {
                                         
                                         if !list.unwrappedMiniMemo.isEmpty {
                                             HStack {
-                                                Image(systemName: "bubble")
+                                                Image(systemName: "bubble.right")
                                                     .font(.caption2)
                                                 
                                                 Text("\(list.unwrappedMiniMemo)")
