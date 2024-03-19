@@ -32,6 +32,7 @@ struct AddListView: View {
     
     var body: some View {
         VStack {
+            let _ = print("でた")
             NavigationStack{
                 Form {
                     Section(header: Text("やりたいこと")) {
@@ -121,9 +122,7 @@ struct AddListView: View {
                                 await bucketViewModel.convertUiimages()
                             }
                         }
-                        .onDisappear(){
-                            bucketViewModel.resetList()
-                        }
+                       
                         
                     }
                     
@@ -213,6 +212,8 @@ struct AddListView: View {
                 bucketViewModel.writeList(context: context)
                 
                 dismiss()
+                
+                bucketViewModel.resetList()
 
             }, label: {
                 Text(bucketViewModel.updateList == nil ? "作成" : "変更")
@@ -223,7 +224,8 @@ struct AddListView: View {
         
         private var cancelButton: some View {
             Button(action: {
-                isShowListAdd = false
+                dismiss()
+                bucketViewModel.resetList()
             }, label: {
                 Image(systemName: "clear.fill")
                     .font(.title2)

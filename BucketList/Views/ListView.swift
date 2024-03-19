@@ -74,9 +74,11 @@ struct ListView: View {
     
     
     init(bucketViewModel: BucketViewModel, selectedFolder: FolderModel, isShowPassInputPage: Binding<Bool>){
+        print("init")
         self.bucketViewModel = bucketViewModel
         self.selectedFolder = selectedFolder
         self._isShowPassInputPage = isShowPassInputPage
+
         
         guard let selectedFolderDate = selectedFolder.writeDate else{
             return
@@ -172,8 +174,9 @@ extension ListView {
                     .frame(alignment: .leading)
                     
                             Button(action: {
-                                isShowListAdd.toggle()
+                                isShowListAdd = true
                                 bucketViewModel.editList(upList: list)
+                                print("\(list.listNumber)")
                             }, label: {
                                 HStack {
                                     Text("\(list.listNumber)"+".")
@@ -184,6 +187,7 @@ extension ListView {
                                                 .font(.headline)
                                                 .background(list.achievement ? Color("\(selectedFolder.unwrappedBackColor)").opacity(0.5) : Color.clear)
                                                 .frame(maxWidth:.infinity, alignment: .leading)
+                                                .padding(.bottom, 5)
                                         
                                         if !list.unwrappedMiniMemo.isEmpty {
                                             HStack {
@@ -236,20 +240,29 @@ extension ListView {
                                 .foregroundColor(Color("originalBlack"))
                             })
                             
-                        
-                        
-                        
-    
+     
                     }
                 .sheet(isPresented: $isShowListAdd) {
-                    
+                    let _ = print("sheet1")
                     AddListView(bucketViewModel : bucketViewModel, isShowListAdd: $isShowListAdd, listColor:selectedFolder.unwrappedBackColor)
                         .presentationDetents([.large])
+                        .onAppear() {
+                            print("\(isShowListAdd)")
+                        }
+                        .onDisappear() {
+                            print("\(isShowListAdd)")
+                        }
                 }
 
             }
             .onMove(perform: moveList)
             .onDelete(perform: deleteList)
+            .onAppear() {
+                print("でました！！")
+            }
+            .onChange(of: isShowListAdd) {
+                print("変わりました")
+            }
             
             Spacer().frame(height: 60)
                 .listRowSeparator(.hidden)
