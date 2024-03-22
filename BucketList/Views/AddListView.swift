@@ -32,10 +32,9 @@ struct AddListView: View {
     
     var body: some View {
         VStack {
-            let _ = print("でた")
             NavigationStack{
                 Form {
-                    Section(header: Text("やりたいこと")) {
+                    Section(header: Text("やりたいこと/叶えたいこと など")) {
                         bucketTextField
                     }
                     
@@ -180,7 +179,7 @@ struct AddListView: View {
     extension AddListView {
         private var bucketTextField: some View {
 
-            TextField("やりたいこと", text: $bucketViewModel.text)
+            TextField("やりたいこと/叶えたいこと など", text: $bucketViewModel.text)
                 .focused($textFieldIsActive, equals: .text)
                 .onTapGesture {
                     textFieldIsActive = nil

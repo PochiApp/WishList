@@ -74,7 +74,6 @@ struct ListView: View {
     
     
     init(bucketViewModel: BucketViewModel, selectedFolder: FolderModel, isShowPassInputPage: Binding<Bool>){
-        print("init")
         self.bucketViewModel = bucketViewModel
         self.selectedFolder = selectedFolder
         self._isShowPassInputPage = isShowPassInputPage
@@ -159,6 +158,7 @@ extension ListView {
                     Button(action: {
                         list.achievement.toggle()
                         UISFGenerator.selectionChanged()
+                        
                         do {
                             try context.save()
                         }
@@ -173,96 +173,14 @@ extension ListView {
                     .buttonStyle(.plain)
                     .frame(alignment: .leading)
                     
-                            Button(action: {
-                                isShowListAdd = true
-                                bucketViewModel.editList(upList: list)
-                                print("\(list.listNumber)")
-                            }, label: {
-                                HStack {
-                                    Text("\(list.listNumber)"+".")
-                                        .font(Font(UIFont.monospacedSystemFont(ofSize: 20, weight: .regular)))
-                                        .padding(.trailing,5)
-                                    VStack {
-                                            Text("\(list.unwrappedText)")
-                                                .font(.headline)
-                                                .background(list.achievement ? Color("\(selectedFolder.unwrappedBackColor)").opacity(0.5) : Color.clear)
-                                                .frame(maxWidth:.infinity, alignment: .leading)
-                                                .padding(.bottom, 5)
-                                        
-                                        if !list.unwrappedMiniMemo.isEmpty {
-                                            HStack {
-                                                Image(systemName: "bubble.right")
-                                                    .font(.caption2)
-                                                
-                                                Text("\(list.unwrappedMiniMemo)")
-                                                    .font(.caption2)
-                                                    .frame(maxWidth:.infinity, alignment: .leading)
-                                            }
-                                          
-                                        }
- 
-                                    }
-                                    
-                                    
-                                    Spacer()
-                                    VStack{
-                                        HStack{
-                                            if (!list.unwrappedImage1.isEmpty) {
-                                       
-                                                if let uiImage1 = UIImage(data: list.unwrappedImage1) {
-                                                        Image(uiImage: uiImage1)
-                                                            .resizable()
-                                                            .frame(width: 30, height:30)
-                                                            .clipShape(Circle())
-                                                    }
-                                            }
-                                            
-                                            if (!list.unwrappedImage2.isEmpty) {
-                                           
-                                                if let uiImage2 = UIImage(data: list.unwrappedImage2) {
-                                                        Image(uiImage: uiImage2)
-                                                            .resizable()
-                                                            .frame(width: 30, height:30)
-                                                            .clipShape(Circle())
-                                                    }
-                                            }
-                                        }
-                                        
-                                
-                                        Text("\(list.unwrappedCategory)")
-                                            .fixedSize(horizontal: false, vertical: true)
-                                            .frame(width: 70, height: 30)
-                                            .font(.caption)
-                                    }
+                    listButtonView(list: list, selectedFolder: selectedFolder, bucketViewModel: bucketViewModel)
                             
-                                
-                                }
-                                .foregroundColor(Color("originalBlack"))
-                            })
-                            
-     
                     }
-                .sheet(isPresented: $isShowListAdd) {
-                    let _ = print("sheet1")
-                    AddListView(bucketViewModel : bucketViewModel, isShowListAdd: $isShowListAdd, listColor:selectedFolder.unwrappedBackColor)
-                        .presentationDetents([.large])
-                        .onAppear() {
-                            print("\(isShowListAdd)")
-                        }
-                        .onDisappear() {
-                            print("\(isShowListAdd)")
-                        }
-                }
+                
 
             }
             .onMove(perform: moveList)
             .onDelete(perform: deleteList)
-            .onAppear() {
-                print("でました！！")
-            }
-            .onChange(of: isShowListAdd) {
-                print("変わりました")
-            }
             
             Spacer().frame(height: 60)
                 .listRowSeparator(.hidden)
@@ -464,6 +382,86 @@ extension ListView {
                 .font(.caption)
                 .foregroundColor(Color.gray)
                 .lineLimit(1)
+        }
+    }
+}
+struct listButtonView: View {
+    
+    @State var isShowListAdd = false
+    let list: ListModel
+    let selectedFolder: FolderModel
+    @ObservedObject var bucketViewModel : BucketViewModel
+    
+    
+    var body: some View {
+        Button(action: {
+            isShowListAdd = true
+            bucketViewModel.editList(upList: list)
+        }, label: {
+            HStack {
+                Text("\(list.listNumber)"+".")
+                    .font(Font(UIFont.monospacedSystemFont(ofSize: 20, weight: .regular)))
+                    .padding(.trailing,5)
+                VStack {
+                        Text("\(list.unwrappedText)")
+                            .font(.headline)
+                            .background(list.achievement ? Color("\(selectedFolder.unwrappedBackColor)").opacity(0.5) : Color.clear)
+                            .frame(maxWidth:.infinity, alignment: .leading)
+                            .padding(.bottom, 5)
+                    
+                    if !list.unwrappedMiniMemo.isEmpty {
+                        HStack {
+                            Image(systemName: "bubble.right")
+                                .font(.caption2)
+                            
+                            Text("\(list.unwrappedMiniMemo)")
+                                .font(.caption2)
+                                .frame(maxWidth:.infinity, alignment: .leading)
+                        }
+                      
+                    }
+
+                }
+                
+                
+                Spacer()
+                VStack{
+                    HStack{
+                        if (!list.unwrappedImage1.isEmpty) {
+                   
+                            if let uiImage1 = UIImage(data: list.unwrappedImage1) {
+                                    Image(uiImage: uiImage1)
+                                        .resizable()
+                                        .frame(width: 30, height:30)
+                                        .clipShape(Circle())
+                                }
+                        }
+                        
+                        if (!list.unwrappedImage2.isEmpty) {
+                       
+                            if let uiImage2 = UIImage(data: list.unwrappedImage2) {
+                                    Image(uiImage: uiImage2)
+                                        .resizable()
+                                        .frame(width: 30, height:30)
+                                        .clipShape(Circle())
+                                }
+                        }
+                    }
+                    
+            
+                    Text("\(list.unwrappedCategory)")
+                        .fixedSize(horizontal: false, vertical: true)
+                        .frame(width: 70, height: 30)
+                        .font(.caption)
+                }
+        
+            
+            }
+            .foregroundColor(Color("originalBlack"))
+        })
+        .sheet(isPresented: $isShowListAdd) {
+            AddListView(bucketViewModel : bucketViewModel, isShowListAdd: $isShowListAdd, listColor:selectedFolder.unwrappedBackColor)
+                .presentationDetents([.large])
         }
     }
 }
