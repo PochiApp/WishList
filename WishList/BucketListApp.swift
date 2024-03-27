@@ -9,7 +9,7 @@ import SwiftUI
 import CoreData
 
 @main
-struct BucketListApp: App {
+struct WishListApp: App {
     private let persistence = PersistenceController.shared
         var body: some Scene {
             WindowGroup {
