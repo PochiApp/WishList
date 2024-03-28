@@ -6,9 +6,11 @@
 //
 
 import SwiftUI
+import StoreKit
 
 struct SettingView: View {
     
+    @Environment (\.requestReview) var requestReview
     @ObservedObject var bucketViewModel : BucketViewModel
     
     var version: String {
@@ -42,7 +44,9 @@ struct SettingView: View {
                     }
                     
                     
-                    Text("レビューを書く")
+                    Button("レビューを書く",
+                           action: {
+                        requestReview()})
                     
                     Link(destination: URL(string: "mailto:pochi.app.dp@gmail.com")!) {
                         Text("お問い合わせ")
