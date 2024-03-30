@@ -1,6 +1,6 @@
 //
-//  BucketListApp.swift
-//  BucketList
+//  WishListApp.swift
+//  WishList
 //
 //  Created by 嶺澤美帆 on 2023/12/07.
 //

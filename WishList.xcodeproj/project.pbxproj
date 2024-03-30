@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		39361DF12BA020EC008B0AD9 /* SetPassView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39361DF02BA020EC008B0AD9 /* SetPassView.swift */; };
-		3958285D2B21DB13007E085C /* BucketListApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3958285C2B21DB13007E085C /* BucketListApp.swift */; };
+		3958285D2B21DB13007E085C /* WishListApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3958285C2B21DB13007E085C /* WishListApp.swift */; };
 		395828612B21DB15007E085C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 395828602B21DB15007E085C /* Assets.xcassets */; };
 		395828642B21DB15007E085C /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 395828632B21DB15007E085C /* Preview Assets.xcassets */; };
 		3958286F2B21E148007E085C /* FolderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3958286E2B21E148007E085C /* FolderView.swift */; };
@@ -35,7 +35,7 @@
 		39361DF02BA020EC008B0AD9 /* SetPassView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetPassView.swift; sourceTree = "<group>"; };
 		39361DF62BA1CC34008B0AD9 /* ListModel 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "ListModel 2.xcdatamodel"; sourceTree = "<group>"; };
 		395828592B21DB13007E085C /* WishList.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WishList.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		3958285C2B21DB13007E085C /* BucketListApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BucketListApp.swift; sourceTree = "<group>"; };
+		3958285C2B21DB13007E085C /* WishListApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishListApp.swift; sourceTree = "<group>"; };
 		395828602B21DB15007E085C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		395828632B21DB15007E085C /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		3958286E2B21E148007E085C /* FolderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderView.swift; sourceTree = "<group>"; };
@@ -88,7 +88,7 @@
 		3958285B2B21DB13007E085C /* WishList */ = {
 			isa = PBXGroup;
 			children = (
-				3958285C2B21DB13007E085C /* BucketListApp.swift */,
+				3958285C2B21DB13007E085C /* WishListApp.swift */,
 				395828722B234829007E085C /* Views */,
 				395828A32B2D1CE0007E085C /* ViewModel */,
 				395828A22B2D1B29007E085C /* CoreDateModels */,
@@ -219,7 +219,7 @@
 				395828A72B2D75EE007E085C /* WriteFolderView.swift in Sources */,
 				3958286F2B21E148007E085C /* FolderView.swift in Sources */,
 				39CC4AC92B70F8A600F070D9 /* AddCategoryView.swift in Sources */,
-				3958285D2B21DB13007E085C /* BucketListApp.swift in Sources */,
+				3958285D2B21DB13007E085C /* WishListApp.swift in Sources */,
 				39CC4AC72B6F748E00F070D9 /* CategoryEntity+CoreDataProperties.swift in Sources */,
 				395828712B2347FE007E085C /* ListView.swift in Sources */,
 				3958287C2B29C8CE007E085C /* Persistence.swift in Sources */,
@@ -367,7 +367,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_ASSET_PATHS = "\"WishList/Preview Content\"";
 				DEVELOPMENT_TEAM = KDZUTKP4G4;
 				ENABLE_PREVIEWS = YES;
@@ -384,7 +384,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.gmail.dp.app.pochi.BucketList;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -402,7 +402,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_ASSET_PATHS = "\"WishList/Preview Content\"";
 				DEVELOPMENT_TEAM = KDZUTKP4G4;
 				ENABLE_PREVIEWS = YES;
@@ -419,7 +419,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.gmail.dp.app.pochi.BucketList;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";

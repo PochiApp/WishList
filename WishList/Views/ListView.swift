@@ -388,9 +388,9 @@ extension ListView {
 struct listButtonView: View {
     
     @State var isShowListAdd = false
-    let list: ListModel
+    @ObservedObject var list: ListModel
     let selectedFolder: FolderModel
-    @ObservedObject var bucketViewModel : BucketViewModel
+    @ObservedObject var bucketViewModel: BucketViewModel
     
     
     var body: some View {

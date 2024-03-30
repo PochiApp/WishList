@@ -34,11 +34,11 @@ struct AddListView: View {
         VStack {
             NavigationStack{
                 Form {
-                    Section(header: Text("やりたいこと/叶えたいこと など")) {
+                    Section(header: Text("やりたいこと/欲しいもの など")) {
                         bucketTextField
                     }
                     
-                    Section(header: Text("カテゴリー")) {
+                    Section(header: Text("カテゴリー").foregroundColor(Color("originalBlack"))) {
                         categoryPicker
                         
                         NavigationLink(
@@ -48,6 +48,7 @@ struct AddListView: View {
                                 })){
                             Text("カテゴリー追加へ")
                                 .font(.subheadline)
+                                .foregroundColor(Color("originalBlack"))
                         }
                     }
                     
@@ -142,6 +143,7 @@ struct AddListView: View {
                                         
                                     }, label: {
                                         Image(systemName: bucketViewModel.achievement ? "checkmark.square" : "square")
+                                            .foregroundColor(Color("originalBlack"))
                                     })
                                     .buttonStyle(.plain)
                                 }
@@ -155,11 +157,14 @@ struct AddListView: View {
                 .toolbar{
                     ToolbarItem(placement: .principal){
                         if bucketViewModel.updateList == nil {
-                            Text("やりたいことリスト作成")
+                            Text("リスト作成")
                                 .font(.title3)
+                                .foregroundColor(Color("originalBlack"))
+                            
                         } else {
-                            Text("やりたいことリスト編集")
+                            Text("リスト編集")
                                 .font(.title3)
+                                .foregroundColor(Color("originalBlack"))
                         }
                         
                     }
@@ -179,7 +184,7 @@ struct AddListView: View {
     extension AddListView {
         private var bucketTextField: some View {
 
-            TextField("やりたいこと/叶えたいこと など", text: $bucketViewModel.text)
+            TextField("やりたいこと/欲しいもの など", text: $bucketViewModel.text)
                 .focused($textFieldIsActive, equals: .text)
                 .onTapGesture {
                     textFieldIsActive = nil

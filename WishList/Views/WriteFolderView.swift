@@ -47,8 +47,11 @@ struct WriteFolderView: View {
                             if bucketViewModel.updateFolder == nil {
                                 Text("新規フォルダ作成")
                                     .font(.title3)
+                                    .foregroundColor(Color("originalBlack"))
                             } else {
                                 Text("フォルダ編集")
+                                    .font(.title3)
+                                    .foregroundColor(Color("originalBlack"))
                             }
                             
                         }

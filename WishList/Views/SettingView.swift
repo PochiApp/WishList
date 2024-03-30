@@ -37,7 +37,7 @@ struct SettingView: View {
                     HStack {
                         Text("アプリバージョン情報")
                         Spacer()
-                        Text("\(version)(\(build))")
+                        Text("\(version)")
                             .foregroundColor(.gray)
                             .fontWeight(.regular)
                         
