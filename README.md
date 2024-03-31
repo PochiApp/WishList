@@ -5,6 +5,7 @@
 
 操作性を簡単に、テーマカラーやパスコード機能、画像の設定といった自分好みのカスタマイズも可能にしています。
 
+<img width="200" alt="スクリーンショット 2024-04-01 0 19 39" src="https://github.com/PochiApp/WishList/assets/149248514/529e9ba4-0c3d-47ee-b2ec-b351dad18469">
 <img width="200" alt="スクリーンショット 2024-03-31 19 01 18" src="https://github.com/PochiApp/WishList/assets/149248514/f349751d-076c-42fd-b08d-08b07dca18a1">
 
 # 使用技術
