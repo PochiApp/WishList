@@ -19,7 +19,7 @@ struct FolderView: View {
         animation: .default)
         private var folderModel: FetchedResults<FolderModel>
     
-    @ObservedObject var bucketViewModel : BucketViewModel
+    @ObservedObject var wishListViewModel : WishListViewModel
     @State var isShowListView = false
     @State var isShowFolderWrite: Bool = false
     @State var isShowPassInputPage: Bool = true
@@ -56,7 +56,7 @@ struct FolderView: View {
                 self.context.refreshAllObjects()
                 
                     if launchKey == false {
-                        bucketViewModel.setupDefaultCategory(context: context)
+                        wishListViewModel.setupDefaultCategory(context: context)
                             launchKey = true
                         }
             })
@@ -71,14 +71,14 @@ extension FolderView {
             Spacer()
             
             ForEach(folderModel){ foldermodel in
-                NavigationLink(destination: ListView(bucketViewModel: bucketViewModel, selectedFolder: foldermodel, isShowPassInputPage: $isShowPassInputPage)){
+                NavigationLink(destination: ListView(wishListViewModel: wishListViewModel, selectedFolder: foldermodel, isShowPassInputPage: $isShowPassInputPage)){
                     RoundedRectangle(cornerRadius: 16)
                         .fill(Color("\(foldermodel.unwrappedBackColor)"))
                         .frame(width: 290, height: 150)
                         .shadow(color: .gray.opacity(0.9), radius: 1, x: 2, y: 2)
                         .overlay(
                             VStack(alignment: .center){
-                                Text(foldermodel.notDaySetting ? "" : "\(bucketViewModel.formattedDateString(date: foldermodel.unwrappedStartDate)) ~ \(bucketViewModel.formattedDateString(date: foldermodel.unwrappedFinishDate))")
+                                Text(foldermodel.notDaySetting ? "" : "\(wishListViewModel.formattedDateString(date: foldermodel.unwrappedStartDate)) ~ \(wishListViewModel.formattedDateString(date: foldermodel.unwrappedFinishDate))")
                                     .font(.system(size: 16))
                                     .padding(.top)
                                 HStack {
@@ -112,7 +112,7 @@ extension FolderView {
                 .contextMenu(ContextMenu(menuItems: {
                     if foldermodel.lockIsActive {
                         Button(action: {
-                            bucketViewModel.lockFolder = foldermodel
+                            wishListViewModel.lockFolder = foldermodel
                             isShowUnlockPassPage = true
                 
                         }, label: {
@@ -123,7 +123,7 @@ extension FolderView {
                     } else {
                         Button(action: {
 
-                            bucketViewModel.lockFolder = foldermodel
+                            wishListViewModel.lockFolder = foldermodel
                             isShowSetPassPage = true
                         
                         }, label: {
@@ -133,7 +133,7 @@ extension FolderView {
                         
                     
                     Button(action: {
-                        bucketViewModel.editFolder(upFolder: foldermodel)
+                        wishListViewModel.editFolder(upFolder: foldermodel)
                         isShowFolderWrite.toggle()
                         
                     }, label: {
@@ -141,7 +141,7 @@ extension FolderView {
                     })
                     .sheet(isPresented: $isShowFolderWrite) {
                         
-                        WriteFolderView(bucketViewModel : bucketViewModel, isShowFolderWrite: $isShowFolderWrite)
+                        WriteFolderView(wishListViewModel : wishListViewModel, isShowFolderWrite: $isShowFolderWrite)
                             .presentationDetents([.large])
                     }
                     
@@ -155,12 +155,12 @@ extension FolderView {
                     })
                 }))
                 .fullScreenCover(isPresented: $isShowSetPassPage, content: {
-                    SetPassView(bucketViewModel: bucketViewModel, isShowSetPassPage: $isShowSetPassPage, isShowUnlockPassPage: $isShowUnlockPassPage)
+                    SetPassView(wishListViewModel: wishListViewModel, isShowSetPassPage: $isShowSetPassPage, isShowUnlockPassPage: $isShowUnlockPassPage)
 
                 })
                 
                 .fullScreenCover(isPresented: $isShowUnlockPassPage, content: {
-                    SetPassView(bucketViewModel: bucketViewModel, isShowSetPassPage: $isShowSetPassPage, isShowUnlockPassPage: $isShowUnlockPassPage)
+                    SetPassView(wishListViewModel: wishListViewModel, isShowSetPassPage: $isShowSetPassPage, isShowUnlockPassPage: $isShowUnlockPassPage)
                         .presentationDetents([.large])
                 })
                 .transition(
@@ -185,7 +185,7 @@ extension FolderView {
         .padding(EdgeInsets(top: 0, leading: 0, bottom: 50, trailing: 50))
         .sheet(isPresented: $isShowFolderWrite){
             
-            WriteFolderView(bucketViewModel: bucketViewModel, isShowFolderWrite: $isShowFolderWrite)
+            WriteFolderView(wishListViewModel: wishListViewModel, isShowFolderWrite: $isShowFolderWrite)
                 .presentationDetents([.large, .fraction(0.9)])
             
         }

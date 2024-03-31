@@ -11,7 +11,7 @@ import AudioToolbox
 struct PassView: View {
     
     @Environment(\.managedObjectContext) private var context
-    @ObservedObject var bucketViewModel : BucketViewModel
+    @ObservedObject var wishListViewModel : WishListViewModel
     @State var passCode = ""
     @State var selectedFolder: FolderModel
     @Binding var isShowPassInputPage: Bool

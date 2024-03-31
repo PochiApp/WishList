@@ -18,7 +18,7 @@ struct AddListView: View {
         animation: .default)
     private var categorys: FetchedResults<CategoryEntity>
     
-    @ObservedObject var bucketViewModel : BucketViewModel
+    @ObservedObject var wishListViewModel : WishListViewModel
     @Binding var isShowListAdd: Bool
     @State var listColor: String
     @State var selectedPhoto: [PhotosPickerItem] = []
@@ -42,7 +42,7 @@ struct AddListView: View {
                         categoryPicker
                         
                         NavigationLink(
-                            destination: CategoryView(bucketViewModel: bucketViewModel)
+                            destination: CategoryView(wishListViewModel: wishListViewModel)
                                 .onDisappear(perform: {
                                     firstCategoryGet()
                                 })){
@@ -55,13 +55,13 @@ struct AddListView: View {
                     Section(header: Text("画像")) {
                         
                         PhotosPicker(selection: $selectedPhoto, maxSelectionCount: 2, selectionBehavior: .ordered, matching: .images) {
-                            if bucketViewModel.images.isEmpty {
+                            if wishListViewModel.images.isEmpty {
                                 Image("noimage")
                                     .resizable()
                                     .scaledToFit()
                             } else {
                                 HStack {
-                                    ForEach(bucketViewModel.images, id:\.self) { image in
+                                    ForEach(wishListViewModel.images, id:\.self) { image in
                                         if let image {
                                             Image(uiImage: image)
                                                 .resizable()
@@ -72,7 +72,7 @@ struct AddListView: View {
                             
                                     Button(action: {
                                         selectedPhoto = []
-                                        bucketViewModel.resetImages()
+                                        wishListViewModel.resetImages()
                                     }) {
                                         Text("画像削除")
                                             .foregroundColor(.red)
@@ -80,46 +80,46 @@ struct AddListView: View {
                             }
                         }
                         .onChange(of: selectedPhoto){ newSelectedPhoto in
-                            if !bucketViewModel.datas.isEmpty {
-                                bucketViewModel.datas.removeAll()
+                            if !wishListViewModel.datas.isEmpty {
+                                wishListViewModel.datas.removeAll()
                             }
                             
                             Task {
-                                await bucketViewModel.convertDataimages(photos: newSelectedPhoto)
+                                await wishListViewModel.convertDataimages(photos: newSelectedPhoto)
                                 
-                                switch bucketViewModel.datas.count {
+                                switch wishListViewModel.datas.count {
                                 case 1 :
                                     DispatchQueue.main.async {
-                                        bucketViewModel.image1 = bucketViewModel.datas[0]
-                                        bucketViewModel.image2 = Data.init()
+                                        wishListViewModel.image1 = wishListViewModel.datas[0]
+                                        wishListViewModel.image2 = Data.init()
                                         print("case1")
                                     }
                                 case 2 :
                                     DispatchQueue.main.async {
-                                        bucketViewModel.image1 = bucketViewModel.datas[0]
-                                        bucketViewModel.image2 = bucketViewModel.datas[1]
+                                        wishListViewModel.image1 = wishListViewModel.datas[0]
+                                        wishListViewModel.image2 = wishListViewModel.datas[1]
                                         print("case2")
                                     }
                                 default :
                                     DispatchQueue.main.async {
-                                        bucketViewModel.image1 = Data.init()
-                                        bucketViewModel.image2 = Data.init()
+                                        wishListViewModel.image1 = Data.init()
+                                        wishListViewModel.image2 = Data.init()
                                         print("default")
                                     }
                                     return
                                     
                                 }
                                 
-                               await bucketViewModel.convertUiimages()
+                               await wishListViewModel.convertUiimages()
                                 
                             }
                         }
                         .onAppear() {
-                            if bucketViewModel.updateList == nil {
+                            if wishListViewModel.updateList == nil {
                                 firstCategoryGet()
                             }
                             Task {
-                                await bucketViewModel.convertUiimages()
+                                await wishListViewModel.convertUiimages()
                             }
                         }
                        
@@ -130,10 +130,10 @@ struct AddListView: View {
                         bucketMiniMemoTextField
                     }
                             
-                            if bucketViewModel.updateList !== nil {
+                            if wishListViewModel.updateList !== nil {
                                 Section(header: Text("達成チェック")) {
                                     Button(action: {
-                                        bucketViewModel.achievement.toggle()
+                                        wishListViewModel.achievement.toggle()
                                         do {
                                             try context.save()
                                         }
@@ -142,7 +142,7 @@ struct AddListView: View {
                                         }
                                         
                                     }, label: {
-                                        Image(systemName: bucketViewModel.achievement ? "checkmark.square" : "square")
+                                        Image(systemName: wishListViewModel.achievement ? "checkmark.square" : "square")
                                             .foregroundColor(Color("originalBlack"))
                                     })
                                     .buttonStyle(.plain)
@@ -156,7 +156,7 @@ struct AddListView: View {
                 .toolbarBackground(.visible, for: .navigationBar)
                 .toolbar{
                     ToolbarItem(placement: .principal){
-                        if bucketViewModel.updateList == nil {
+                        if wishListViewModel.updateList == nil {
                             Text("リスト作成")
                                 .font(.title3)
                                 .foregroundColor(Color("originalBlack"))
@@ -184,7 +184,7 @@ struct AddListView: View {
     extension AddListView {
         private var bucketTextField: some View {
 
-            TextField("やりたいこと/欲しいもの など", text: $bucketViewModel.text)
+            TextField("やりたいこと/欲しいもの など", text: $wishListViewModel.text)
                 .focused($textFieldIsActive, equals: .text)
                 .onTapGesture {
                     textFieldIsActive = nil
@@ -194,7 +194,7 @@ struct AddListView: View {
         
         private var categoryPicker: some View {
             
-            Picker("カテゴリー", selection: $bucketViewModel.category) {
+            Picker("カテゴリー", selection: $wishListViewModel.category) {
                 ForEach(categorys, id: \.self) { category in
                     Text("\(category.unwrappedCategoryName)")
                         .tag(category.unwrappedCategoryName)
@@ -203,7 +203,7 @@ struct AddListView: View {
         }
         
         private var bucketMiniMemoTextField: some View {
-            TextField("一言メモ", text: $bucketViewModel.miniMemo)
+            TextField("一言メモ", text: $wishListViewModel.miniMemo)
                 .focused($textFieldIsActive, equals: .miniMemo)
                 .onTapGesture {
                     textFieldIsActive = nil
@@ -213,14 +213,14 @@ struct AddListView: View {
         private var writeListButton: some View {
             Button(action: {
              
-                bucketViewModel.writeList(context: context)
+                wishListViewModel.writeList(context: context)
                 
                 dismiss()
                 
-                bucketViewModel.resetList()
+                wishListViewModel.resetList()
 
             }, label: {
-                Text(bucketViewModel.updateList == nil ? "作成" : "変更")
+                Text(wishListViewModel.updateList == nil ? "作成" : "変更")
                     .font(.title3)
                     .foregroundColor(Color("originalBlack"))
             })
@@ -229,7 +229,7 @@ struct AddListView: View {
         private var cancelButton: some View {
             Button(action: {
                 dismiss()
-                bucketViewModel.resetList()
+                wishListViewModel.resetList()
             }, label: {
                 Image(systemName: "clear.fill")
                     .font(.title2)
@@ -239,7 +239,7 @@ struct AddListView: View {
         
         private func firstCategoryGet() {
             let arrayCategory = Array(categorys)
-            bucketViewModel.category = arrayCategory.first?.categoryName ?? ""
+            wishListViewModel.category = arrayCategory.first?.categoryName ?? ""
         }
     }
 

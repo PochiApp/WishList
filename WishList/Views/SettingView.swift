@@ -11,7 +11,7 @@ import StoreKit
 struct SettingView: View {
     
     @Environment (\.requestReview) var requestReview
-    @ObservedObject var bucketViewModel : BucketViewModel
+    @ObservedObject var wishListViewModel : WishListViewModel
     
     var version: String {
         guard let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String else { return "" }
@@ -27,7 +27,7 @@ struct SettingView: View {
         NavigationStack {
             Form {
                 Section(header: Text("設定")) {
-                    NavigationLink(destination: CategoryView(bucketViewModel: bucketViewModel)) {
+                    NavigationLink(destination: CategoryView(wishListViewModel: wishListViewModel)) {
                         Text("カテゴリー編集")
                     }
                     

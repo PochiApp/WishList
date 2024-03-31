@@ -1,5 +1,5 @@
 //
-//  BucketViewModel.swift
+//  wishListViewModel.swift
 //  BucketList
 //
 //  Created by 嶺澤美帆 on 2023/12/17.
@@ -9,7 +9,7 @@ import SwiftUI
 import CoreData
 import PhotosUI
 
-class BucketViewModel : ObservableObject{
+class WishListViewModel : ObservableObject{
     
     @Published var title = ""
     @Published var selectedStartDate: Date = Date()

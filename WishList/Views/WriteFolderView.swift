@@ -12,7 +12,7 @@ struct WriteFolderView: View {
         
         @Environment (\.managedObjectContext)private var context
         @Environment (\.dismiss) var dismiss
-        @ObservedObject var bucketViewModel : BucketViewModel
+        @ObservedObject var wishListViewModel : WishListViewModel
         @Binding var isShowFolderWrite: Bool
         @FocusState var textIsActive: Bool
         @State private var textFieldTitle: String = ""
@@ -31,7 +31,7 @@ struct WriteFolderView: View {
                             
                             finishDatePicker
                             
-                            Toggle("期間設定なし", isOn: $bucketViewModel.notDaySetting)
+                            Toggle("期間設定なし", isOn: $wishListViewModel.notDaySetting)
                             
                         }
                         
@@ -40,11 +40,11 @@ struct WriteFolderView: View {
                         }
                     }
                     .navigationBarTitleDisplayMode(.inline)
-                    .toolbarBackground(Color("\(bucketViewModel.backColor)"), for: .navigationBar)
+                    .toolbarBackground(Color("\(wishListViewModel.backColor)"), for: .navigationBar)
                     .toolbarBackground(.visible, for: .navigationBar)
                     .toolbar{
                         ToolbarItem(placement: .principal){
-                            if bucketViewModel.updateFolder == nil {
+                            if wishListViewModel.updateFolder == nil {
                                 Text("新規フォルダ作成")
                                     .font(.title3)
                                     .foregroundColor(Color("originalBlack"))
@@ -82,33 +82,33 @@ struct WriteFolderView: View {
 extension WriteFolderView {
     
     private var titleTextField : some View {
-        TextField("フォルダ-タイトル", text: bucketViewModel.updateFolder == nil ? $textFieldTitle : $bucketViewModel.title)
+        TextField("フォルダ-タイトル", text: wishListViewModel.updateFolder == nil ? $textFieldTitle : $wishListViewModel.title)
             .focused($textIsActive)
 
     }
     
     private var startDatePicker : some View {
-        DisclosureGroup(bucketViewModel.notDaySetting ?"開始　未設定" :"開始  \(bucketViewModel.formattedDateString(date: bucketViewModel.selectedStartDate))"){
-                DatePicker("開始",selection: $bucketViewModel.selectedStartDate, displayedComponents: [.date])
+        DisclosureGroup(wishListViewModel.notDaySetting ?"開始　未設定" :"開始  \(wishListViewModel.formattedDateString(date: wishListViewModel.selectedStartDate))"){
+                DatePicker("開始",selection: $wishListViewModel.selectedStartDate, displayedComponents: [.date])
                     .datePickerStyle(.wheel)
                     .environment(\.locale, Locale(identifier: "ja_JP"))
             
         }
-        .disabled(bucketViewModel.notDaySetting)
+        .disabled(wishListViewModel.notDaySetting)
     }
     
     private var finishDatePicker : some View {
-        DisclosureGroup(bucketViewModel.notDaySetting ?"終了　未設定" :"終了  \(bucketViewModel.formattedDateString(date: bucketViewModel.selectedFinishDate))"){
-            DatePicker("終了",selection: $bucketViewModel.selectedFinishDate, in: bucketViewModel.selectedStartDate..., displayedComponents: [.date])
+        DisclosureGroup(wishListViewModel.notDaySetting ?"終了　未設定" :"終了  \(wishListViewModel.formattedDateString(date: wishListViewModel.selectedFinishDate))"){
+            DatePicker("終了",selection: $wishListViewModel.selectedFinishDate, in: wishListViewModel.selectedStartDate..., displayedComponents: [.date])
                 .datePickerStyle(.wheel)
                 .environment(\.locale, Locale(identifier: "ja_JP"))
         }
-        .disabled(bucketViewModel.notDaySetting)
+        .disabled(wishListViewModel.notDaySetting)
     }
                 
     
     private var colorPicker : some View {
-        Picker("色を選択", selection:$bucketViewModel.backColor){
+        Picker("色を選択", selection: $wishListViewModel.backColor){
                 Text("SnowWhite").tag("snowWhite")
                     .frame(maxWidth:300)
                     .background(Color("snowWhite"))
@@ -170,7 +170,7 @@ extension WriteFolderView {
         Button(action: {
             isShowFolderWrite = false
             
-            bucketViewModel.resetFolder()
+            wishListViewModel.resetFolder()
             
         }, label: {
             Image(systemName: "clear.fill")
@@ -181,18 +181,18 @@ extension WriteFolderView {
     
     private var addFolderButton : some View {
         Button(action: {
-            if bucketViewModel.updateFolder == nil {
-                bucketViewModel.title = textFieldTitle
+            if wishListViewModel.updateFolder == nil {
+                wishListViewModel.title = textFieldTitle
             }
-            bucketViewModel.writeFolder(context: context)
+            wishListViewModel.writeFolder(context: context)
             
             dismiss()
             
-            bucketViewModel.resetFolder()
+            wishListViewModel.resetFolder()
             
             
         }, label: {
-            Text(bucketViewModel.updateFolder == nil ? "追加" : "変更")
+            Text(wishListViewModel.updateFolder == nil ? "追加" : "変更")
                 .font(.title3)
                 .foregroundColor(Color("originalBlack"))
         })

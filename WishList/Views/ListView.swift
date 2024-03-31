@@ -14,7 +14,7 @@ struct ListView: View {
     
     @Environment(\.managedObjectContext) private var context
     
-    @ObservedObject var bucketViewModel : BucketViewModel
+    @ObservedObject var wishListViewModel : WishListViewModel
     
     let UISFGenerator = UISelectionFeedbackGenerator()
     
@@ -73,8 +73,8 @@ struct ListView: View {
         
     
     
-    init(bucketViewModel: BucketViewModel, selectedFolder: FolderModel, isShowPassInputPage: Binding<Bool>){
-        self.bucketViewModel = bucketViewModel
+    init(wishListViewModel: WishListViewModel, selectedFolder: FolderModel, isShowPassInputPage: Binding<Bool>){
+        self.wishListViewModel = wishListViewModel
         self.selectedFolder = selectedFolder
         self._isShowPassInputPage = isShowPassInputPage
 
@@ -94,7 +94,7 @@ struct ListView: View {
     
     var body: some View {
         if selectedFolder.lockIsActive && isShowPassInputPage {
-            PassView(bucketViewModel: bucketViewModel, selectedFolder: selectedFolder, isShowPassInputPage: $isShowPassInputPage)
+            PassView(wishListViewModel: wishListViewModel, selectedFolder: selectedFolder, isShowPassInputPage: $isShowPassInputPage)
         } else {
             NavigationStack {
                 ZStack {
@@ -173,7 +173,7 @@ extension ListView {
                     .buttonStyle(.plain)
                     .frame(alignment: .leading)
                     
-                    listButtonView(list: list, selectedFolder: selectedFolder, bucketViewModel: bucketViewModel)
+                    listButtonView(list: list, selectedFolder: selectedFolder, wishListViewModel: wishListViewModel)
                             
                     }
                 
@@ -196,7 +196,7 @@ extension ListView {
             Text("\(selectedFolder.unwrappedTitle)")
                     .fontWeight(.light)
             HStack{
-                Text(selectedFolder.notDaySetting ? "" : "\(bucketViewModel.formattedDateString(date: selectedFolder.unwrappedStartDate)) ~ \(bucketViewModel.formattedDateString(date: selectedFolder.unwrappedFinishDate))")
+                Text(selectedFolder.notDaySetting ? "" : "\(wishListViewModel.formattedDateString(date: selectedFolder.unwrappedStartDate)) ~ \(wishListViewModel.formattedDateString(date: selectedFolder.unwrappedFinishDate))")
                     .font(.caption)
                     .padding(.trailing)
             }
@@ -206,7 +206,7 @@ extension ListView {
     }
     
     private var backButton : some View {
-        NavigationLink(destination: FolderView(bucketViewModel: bucketViewModel)) {
+        NavigationLink(destination: FolderView(wishListViewModel: wishListViewModel)) {
             Image(systemName: "arrowshape.turn.up.backward")
                 .foregroundColor(Color("originalBlack"))
                 .navigationBarBackButtonHidden(true)
@@ -280,8 +280,8 @@ extension ListView {
             listSort(sort: .all)
             
             isShowListAdd = true
-            bucketViewModel.folderDate = selectedFolder.writeDate ?? Date()
-            bucketViewModel.listNumber = listModels.count + 1
+            wishListViewModel.folderDate = selectedFolder.writeDate ?? Date()
+            wishListViewModel.listNumber = listModels.count + 1
         }, label: {
             Image(systemName: "plus.circle.fill")
                 .foregroundColor(Color("originalBlack"))
@@ -291,7 +291,7 @@ extension ListView {
         })
         .sheet(isPresented: $isShowListAdd){
             
-            AddListView(bucketViewModel: bucketViewModel ,isShowListAdd: $isShowListAdd, listColor: selectedFolder.unwrappedBackColor)
+            AddListView(wishListViewModel: wishListViewModel ,isShowListAdd: $isShowListAdd, listColor: selectedFolder.unwrappedBackColor)
                 .presentationDetents([.large, .fraction(0.9)])
             
         }
@@ -390,13 +390,13 @@ struct listButtonView: View {
     @State var isShowListAdd = false
     @ObservedObject var list: ListModel
     let selectedFolder: FolderModel
-    @ObservedObject var bucketViewModel: BucketViewModel
+    @ObservedObject var wishListViewModel: WishListViewModel
     
     
     var body: some View {
         Button(action: {
             isShowListAdd = true
-            bucketViewModel.editList(upList: list)
+            wishListViewModel.editList(upList: list)
         }, label: {
             HStack {
                 Text("\(list.listNumber)"+".")
@@ -460,7 +460,7 @@ struct listButtonView: View {
             .foregroundColor(Color("originalBlack"))
         })
         .sheet(isPresented: $isShowListAdd) {
-            AddListView(bucketViewModel : bucketViewModel, isShowListAdd: $isShowListAdd, listColor:selectedFolder.unwrappedBackColor)
+            AddListView(wishListViewModel : wishListViewModel, isShowListAdd: $isShowListAdd, listColor:selectedFolder.unwrappedBackColor)
                 .presentationDetents([.large])
         }
     }

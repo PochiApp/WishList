@@ -16,7 +16,7 @@ struct SetPassView: View {
     @State var passNumber2 = ""
     @State var passNumber3 = ""
     @State var passNumber4 = ""
-    @ObservedObject var bucketViewModel : BucketViewModel
+    @ObservedObject var wishListViewModel : WishListViewModel
     @Binding var isShowSetPassPage: Bool
     @Binding var isShowUnlockPassPage: Bool
     @State var isDisable: Bool = true
@@ -80,9 +80,9 @@ struct SetPassView: View {
             
             if isShowSetPassPage {
                 Button(action: {
-                    bucketViewModel.folderPassword = passCode
+                    wishListViewModel.folderPassword = passCode
                     isShowSetPassPage = false
-                    bucketViewModel.lockFolder(context: context)
+                    wishListViewModel.lockFolder(context: context)
                 }, label: {
                     Text("決定")
                 })
@@ -111,10 +111,10 @@ struct SetPassView: View {
                 
             case (false, true):
                 if newPassCode.count == 4 {
-                    if newPassCode == bucketViewModel.lockFolder.unwrappedfolderPassword {
+                    if newPassCode == wishListViewModel.lockFolder.unwrappedfolderPassword {
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5){
                             isShowUnlockPassPage = false
-                            bucketViewModel.unLockFolder(context: context)
+                            wishListViewModel.unLockFolder(context: context)
                             passCode = ""
                         }
                     } else {
@@ -163,7 +163,7 @@ extension SetPassView {
                         Text("\(number)")
                             .font(.title2)
                     })
-                    .buttonStyle(CapsuleButtonStyle(selectedFolder: bucketViewModel.lockFolder))
+                    .buttonStyle(CapsuleButtonStyle(selectedFolder: wishListViewModel.lockFolder))
                 }
             }
             
@@ -175,7 +175,7 @@ extension SetPassView {
                         Text("\(number)")
                             .font(.title2)
                     })
-                    .buttonStyle(CapsuleButtonStyle(selectedFolder: bucketViewModel.lockFolder))
+                    .buttonStyle(CapsuleButtonStyle(selectedFolder: wishListViewModel.lockFolder))
                 }
             }
             
@@ -187,7 +187,7 @@ extension SetPassView {
                         Text("\(number)")
                             .font(.title2)
                     })
-                    .buttonStyle(CapsuleButtonStyle(selectedFolder: bucketViewModel.lockFolder))
+                    .buttonStyle(CapsuleButtonStyle(selectedFolder: wishListViewModel.lockFolder))
                 }
             }
             
@@ -199,7 +199,7 @@ extension SetPassView {
                     Text("キャンセル")
                         .font(.caption)
                 })
-                .buttonStyle(CapsuleButtonStyle(selectedFolder: bucketViewModel.lockFolder))
+                .buttonStyle(CapsuleButtonStyle(selectedFolder: wishListViewModel.lockFolder))
                 
                 Button(action: {
                     passCode += "0"
@@ -207,7 +207,7 @@ extension SetPassView {
                     Text("0")
                         .font(.title2)
                 })
-                .buttonStyle(CapsuleButtonStyle(selectedFolder: bucketViewModel.lockFolder))
+                .buttonStyle(CapsuleButtonStyle(selectedFolder: wishListViewModel.lockFolder))
                 
                 Button(action: {
                     passCode = String(passCode.dropLast())
@@ -215,7 +215,7 @@ extension SetPassView {
                     Image(systemName: "delete.left")
     
                 })
-                .buttonStyle(CapsuleButtonStyle(selectedFolder: bucketViewModel.lockFolder))
+                .buttonStyle(CapsuleButtonStyle(selectedFolder: wishListViewModel.lockFolder))
             }
         }
     }

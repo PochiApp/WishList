@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct FirstTabView: View {
-    @StateObject var bucketViewModel = BucketViewModel()
+    @StateObject var wishListViewModel = WishListViewModel()
     
     init() {
         UITabBar.appearance().backgroundColor = .white
@@ -16,13 +16,13 @@ struct FirstTabView: View {
     
     var body: some View {
         TabView {
-            FolderView(bucketViewModel: bucketViewModel)
+            FolderView(wishListViewModel: wishListViewModel)
                 .tabItem {
                     Label("フォルダー", systemImage: "folder")
 
                 }
             
-            SettingView(bucketViewModel: bucketViewModel)
+            SettingView(wishListViewModel: wishListViewModel)
                 .tabItem {
                     Label("設定", systemImage: "gearshape")
                 }
