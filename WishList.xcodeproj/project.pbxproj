@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		271AEC777F15A209D0AF018E /* Pods_WishList.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E5E9132EB91BDA24446FD0D3 /* Pods_WishList.framework */; };
 		39361DF12BA020EC008B0AD9 /* SetPassView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39361DF02BA020EC008B0AD9 /* SetPassView.swift */; };
 		3958285D2B21DB13007E085C /* WishListApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3958285C2B21DB13007E085C /* WishListApp.swift */; };
 		395828612B21DB15007E085C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 395828602B21DB15007E085C /* Assets.xcassets */; };
@@ -46,6 +47,7 @@
 		3958287B2B29C8CE007E085C /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		395828A42B2D2356007E085C /* AddListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddListView.swift; sourceTree = "<group>"; };
 		395828A62B2D75ED007E085C /* WriteFolderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WriteFolderView.swift; sourceTree = "<group>"; };
+		3977865C2BD131200066D5D9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		39B4A8532B99A6BD00FDFE67 /* PassView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassView.swift; sourceTree = "<group>"; };
 		39C7D2BD2B8865F9009F32B1 /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
 		39C7D2BF2B886C84009F32B1 /* FirstTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstTabView.swift; sourceTree = "<group>"; };
@@ -56,6 +58,9 @@
 		39E54C672B2E949100298D98 /* WishListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishListViewModel.swift; sourceTree = "<group>"; };
 		39E54C692B3068A800298D98 /* FolderModel+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FolderModel+CoreDataClass.swift"; sourceTree = "<group>"; };
 		39E54C6A2B3068A800298D98 /* FolderModel+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FolderModel+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		873B0063C0C8BC0EB78DAD24 /* Pods-WishList.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WishList.release.xcconfig"; path = "Target Support Files/Pods-WishList/Pods-WishList.release.xcconfig"; sourceTree = "<group>"; };
+		E5E9132EB91BDA24446FD0D3 /* Pods_WishList.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WishList.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F98742E72A056DEA8BBE56DD /* Pods-WishList.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WishList.debug.xcconfig"; path = "Target Support Files/Pods-WishList/Pods-WishList.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,17 +68,29 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				271AEC777F15A209D0AF018E /* Pods_WishList.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		23A3FF361C7668C278F5CC06 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				F98742E72A056DEA8BBE56DD /* Pods-WishList.debug.xcconfig */,
+				873B0063C0C8BC0EB78DAD24 /* Pods-WishList.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		395828502B21DB13007E085C = {
 			isa = PBXGroup;
 			children = (
 				3958285B2B21DB13007E085C /* WishList */,
 				3958285A2B21DB13007E085C /* Products */,
+				23A3FF361C7668C278F5CC06 /* Pods */,
+				561681CC3C99F846F6E7EABC /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -88,6 +105,7 @@
 		3958285B2B21DB13007E085C /* WishList */ = {
 			isa = PBXGroup;
 			children = (
+				3977865C2BD131200066D5D9 /* Info.plist */,
 				3958285C2B21DB13007E085C /* WishListApp.swift */,
 				395828722B234829007E085C /* Views */,
 				395828A32B2D1CE0007E085C /* ViewModel */,
@@ -146,6 +164,14 @@
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
+		561681CC3C99F846F6E7EABC /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				E5E9132EB91BDA24446FD0D3 /* Pods_WishList.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -153,9 +179,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 395828672B21DB15007E085C /* Build configuration list for PBXNativeTarget "WishList" */;
 			buildPhases = (
+				AAFB65D7686B31F0B2C24B06 /* [CP] Check Pods Manifest.lock */,
 				395828552B21DB13007E085C /* Sources */,
 				395828562B21DB13007E085C /* Frameworks */,
 				395828572B21DB13007E085C /* Resources */,
+				7261315362348A40A2578063 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -210,6 +238,48 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		7261315362348A40A2578063 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-WishList/Pods-WishList-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-WishList/Pods-WishList-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-WishList/Pods-WishList-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		AAFB65D7686B31F0B2C24B06 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-WishList-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		395828552B21DB13007E085C /* Sources */ = {
@@ -363,6 +433,7 @@
 		};
 		395828682B21DB15007E085C /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F98742E72A056DEA8BBE56DD /* Pods-WishList.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -372,6 +443,7 @@
 				DEVELOPMENT_TEAM = KDZUTKP4G4;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = WishList/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "-Wish List- やりたい・叶えたいことリスト";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -398,6 +470,7 @@
 		};
 		395828692B21DB15007E085C /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 873B0063C0C8BC0EB78DAD24 /* Pods-WishList.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -407,6 +480,7 @@
 				DEVELOPMENT_TEAM = KDZUTKP4G4;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = WishList/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "-Wish List- やりたい・叶えたいことリスト";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
