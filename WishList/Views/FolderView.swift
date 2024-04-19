@@ -7,6 +7,7 @@
 
 import SwiftUI
 import CoreData
+import UIKit
 
 struct FolderView: View {
     
@@ -65,7 +66,7 @@ struct FolderView: View {
 }
 
 extension FolderView {
-
+    
     private var folderArea: some View {
         ScrollView(.vertical, showsIndicators: false){
             Spacer()
@@ -87,11 +88,11 @@ extension FolderView {
                                             .font(.system(size: 14))
                                             .padding(.top)
                                     }
-                                        Text("\(foldermodel.unwrappedTitle)")
-                                            .lineLimit(2)
-                                            .font(.system(size: 17, weight: .semibold))
-                                            .padding(.top)
-                                       
+                                    Text("\(foldermodel.unwrappedTitle)")
+                                        .lineLimit(2)
+                                        .font(.system(size: 17, weight: .semibold))
+                                        .padding(.top)
+                                    
                                 }
                                 
                                 if let listsAchieved = foldermodel.achievedLists, let allLists = foldermodel.lists {
@@ -114,23 +115,23 @@ extension FolderView {
                         Button(action: {
                             wishListViewModel.lockFolder = foldermodel
                             isShowUnlockPassPage = true
-                
+                            
                         }, label: {
                             Label("フォルダーのロック解除", systemImage: "lock.open")
                         })
                         
-                            
+                        
                     } else {
                         Button(action: {
-
+                            
                             wishListViewModel.lockFolder = foldermodel
                             isShowSetPassPage = true
-                        
+                            
                         }, label: {
                             Label("フォルダーをロック", systemImage: "lock")
                         })
-                        }
-                        
+                    }
+                    
                     
                     Button(action: {
                         wishListViewModel.editFolder(upFolder: foldermodel)
@@ -156,7 +157,7 @@ extension FolderView {
                 }))
                 .fullScreenCover(isPresented: $isShowSetPassPage, content: {
                     SetPassView(wishListViewModel: wishListViewModel, isShowSetPassPage: $isShowSetPassPage, isShowUnlockPassPage: $isShowUnlockPassPage)
-
+                    
                 })
                 
                 .fullScreenCover(isPresented: $isShowUnlockPassPage, content: {
@@ -195,17 +196,30 @@ extension FolderView {
     
     private var emptyFolderView: some View {
         
-            VStack(alignment: .center) {
-                Image(systemName: "folder.badge.questionmark")
-                    .font(.system(size: 100))
-                    .foregroundColor(Color.gray.opacity(0.5))
-                    .padding(.bottom)
-                
-                Text("右下＋ボタンから、フォルダーを新規作成してみましょう")
-                    .font(.caption)
-                    .foregroundColor(Color.gray)
-                    .lineLimit(1)
-            }
+        VStack(alignment: .center) {
+            Image(systemName: "folder.badge.questionmark")
+                .font(.system(size: 100))
+                .foregroundColor(Color.gray.opacity(0.5))
+                .padding(.bottom)
+            
+            Text("右下＋ボタンから、フォルダーを新規作成してみましょう")
+                .font(.caption)
+                .foregroundColor(Color.gray)
+                .lineLimit(1)
+        }
     }
     
+    struct AdMobBannerView: UIViewRepresentable {
+        func makeUIView(context: Context) -> GADBannerView {
+            let banner = GADBannerView(adSize: GADASizeBanner)
+            banner.adUnitID = ca-app-pub-8468128693425803/4696940598
+            banner.rootViewController = UIApplication.shared.windows.first?.rootViewController
+            banner.load(GADRequest())
+            return banner
+        }
+        
+        func updateUIView(_ uiView: GADBannerView, context: Context) {
+            
+        }
+    }
 }

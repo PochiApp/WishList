@@ -20,6 +20,7 @@
 		3958287C2B29C8CE007E085C /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3958287B2B29C8CE007E085C /* Persistence.swift */; };
 		395828A52B2D2356007E085C /* AddListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395828A42B2D2356007E085C /* AddListView.swift */; };
 		395828A72B2D75EE007E085C /* WriteFolderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395828A62B2D75ED007E085C /* WriteFolderView.swift */; };
+		3977865F2BD2B4900066D5D9 /* BannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3977865E2BD2B4900066D5D9 /* BannerViewController.swift */; };
 		39B4A8542B99A6BD00FDFE67 /* PassView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39B4A8532B99A6BD00FDFE67 /* PassView.swift */; };
 		39C7D2BE2B8865F9009F32B1 /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C7D2BD2B8865F9009F32B1 /* SettingView.swift */; };
 		39C7D2C02B886C84009F32B1 /* FirstTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C7D2BF2B886C84009F32B1 /* FirstTabView.swift */; };
@@ -48,6 +49,7 @@
 		395828A42B2D2356007E085C /* AddListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddListView.swift; sourceTree = "<group>"; };
 		395828A62B2D75ED007E085C /* WriteFolderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WriteFolderView.swift; sourceTree = "<group>"; };
 		3977865C2BD131200066D5D9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		3977865E2BD2B4900066D5D9 /* BannerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerViewController.swift; sourceTree = "<group>"; };
 		39B4A8532B99A6BD00FDFE67 /* PassView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassView.swift; sourceTree = "<group>"; };
 		39C7D2BD2B8865F9009F32B1 /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
 		39C7D2BF2B886C84009F32B1 /* FirstTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstTabView.swift; sourceTree = "<group>"; };
@@ -109,6 +111,7 @@
 				3958285C2B21DB13007E085C /* WishListApp.swift */,
 				395828722B234829007E085C /* Views */,
 				395828A32B2D1CE0007E085C /* ViewModel */,
+				3977865D2BD2B4490066D5D9 /* Banner */,
 				395828A22B2D1B29007E085C /* CoreDateModels */,
 				395828602B21DB15007E085C /* Assets.xcassets */,
 				395828622B21DB15007E085C /* Preview Content */,
@@ -162,6 +165,14 @@
 				39E54C672B2E949100298D98 /* WishListViewModel.swift */,
 			);
 			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		3977865D2BD2B4490066D5D9 /* Banner */ = {
+			isa = PBXGroup;
+			children = (
+				3977865E2BD2B4900066D5D9 /* BannerViewController.swift */,
+			);
+			path = Banner;
 			sourceTree = "<group>";
 		};
 		561681CC3C99F846F6E7EABC /* Frameworks */ = {
@@ -292,6 +303,7 @@
 				3958285D2B21DB13007E085C /* WishListApp.swift in Sources */,
 				39CC4AC72B6F748E00F070D9 /* CategoryEntity+CoreDataProperties.swift in Sources */,
 				395828712B2347FE007E085C /* ListView.swift in Sources */,
+				3977865F2BD2B4900066D5D9 /* BannerViewController.swift in Sources */,
 				3958287C2B29C8CE007E085C /* Persistence.swift in Sources */,
 				39C7D2C02B886C84009F32B1 /* FirstTabView.swift in Sources */,
 				39CC4ABF2B6F602500F070D9 /* CategoryView.swift in Sources */,
