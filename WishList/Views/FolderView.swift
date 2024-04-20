@@ -36,9 +36,12 @@ struct FolderView: View {
                         emptyFolderView
                     }
                     
-                    folderArea
+                    VStack {
+                        folderArea
                         
-                        
+                        BannerView()
+                    }
+                    
                     VStack {
                         Spacer()
                             HStack {
@@ -209,17 +212,4 @@ extension FolderView {
         }
     }
     
-    struct AdMobBannerView: UIViewRepresentable {
-        func makeUIView(context: Context) -> GADBannerView {
-            let banner = GADBannerView(adSize: GADASizeBanner)
-            banner.adUnitID = ca-app-pub-8468128693425803/4696940598
-            banner.rootViewController = UIApplication.shared.windows.first?.rootViewController
-            banner.load(GADRequest())
-            return banner
-        }
-        
-        func updateUIView(_ uiView: GADBannerView, context: Context) {
-            
-        }
-    }
 }
