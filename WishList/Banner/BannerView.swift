@@ -11,13 +11,14 @@ import GoogleMobileAds
 struct BannerView: UIViewControllerRepresentable {
     @State private var viewWidth: CGFloat = .zero
     private let bannerView = GADBannerView()
-    private let adUnitID = "ca-app-pub-8468128693425803/4696940598"
+    private let adUnitID = Bundle.main.object(forInfoDictionaryKey: "AdmobSettingViewBannerAdUnitId") as? String
     
     func makeUIViewController(context: Context) -> some UIViewController {
         let bannerViewController = BannerViewController()
         bannerView.adUnitID = adUnitID
         bannerView.rootViewController = bannerViewController
         bannerViewController.view.addSubview(bannerView)
+        bannerViewController.delegate = context.coordinator
         
         return bannerViewController
     }
@@ -27,5 +28,21 @@ struct BannerView: UIViewControllerRepresentable {
         
         bannerView.adSize = GADCurrentOrientationInlineAdaptiveBannerAdSizeWithWidth(viewWidth)
         bannerView.load(GADRequest())
+    }
+    
+    func makeCoordinator() -> Coordinator {
+        Coordinator(self)
+    }
+    
+    class Coordinator: NSObject, BannerViewControllerWidthDelegate, GADBannerViewDelegate {
+        let parent: BannerView
+        
+        init(_ parent: BannerView) {
+            self.parent = parent
+        }
+        
+        func bannerViewController(_ bannerViewController: BannerViewController, didUpdate width: CGFloat) {
+            parent.viewWidth = width
+        }
     }
 }

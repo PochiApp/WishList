@@ -38,8 +38,6 @@ struct FolderView: View {
                     
                     VStack {
                         folderArea
-                        
-                        BannerView()
                     }
                     
                     VStack {

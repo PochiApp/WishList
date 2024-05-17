@@ -38,6 +38,7 @@ struct WriteFolderView: View {
                         Section(header: Text("テーマカラー")) {
                             colorPicker
                         }
+                        
                     }
                     .navigationBarTitleDisplayMode(.inline)
                     .toolbarBackground(Color("\(wishListViewModel.backColor)"), for: .navigationBar)

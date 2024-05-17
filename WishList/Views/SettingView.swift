@@ -55,14 +55,11 @@ struct SettingView: View {
                     Link(destination: URL(string: "https://summer-argon-e25.notion.site/54b9aa4f4e1b4139b4e52b8c732d153a?pvs=4")!) {
                         Text("プライバシーポリシー")
                     }
-                    
-                    
-                    
-                    
                 }
             }
+            BannerView()
+                .frame(width:320, height:50)
         }
         
     }
 }
-
