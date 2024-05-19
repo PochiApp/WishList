@@ -30,7 +30,6 @@ struct CategoryView: View {
                     ForEach(categorys){ category in
                         Text("\(category.unwrappedCategoryName)")
                             .font(.title3)
-        
                     }
                     .onDelete(perform: deleteCategory)
                 }
@@ -42,15 +41,10 @@ struct CategoryView: View {
                         Spacer()
                         
                         floatingButton
-                        
                     }
-                            .padding(EdgeInsets(top: 0, leading: 0, bottom: 30, trailing: 30))
+                    .padding(EdgeInsets(top: 0, leading: 0, bottom: 30, trailing: 30))
                 }
-                
-                
-                
             }
-            
         }
         .navigationTitle("カテゴリー一覧")
         .font(.title3)
@@ -58,10 +52,7 @@ struct CategoryView: View {
             
             AddCategoryView(wishListViewModel: wishListViewModel, isShowCategoryAdd: $isShowCategoryAdd)
                 .presentationDetents([.medium])
-        
-                    
-            }
-        
+        }
     }
     
     
@@ -72,24 +63,17 @@ struct CategoryView: View {
         
         do {
             try context.save()
-            
         }
         catch {
             print("削除失敗")
         }
-        
-        
     }
-    
-    
-   
 }
 
 extension CategoryView {
     private var floatingButton: some View {
         Button(action: {
             isShowCategoryAdd.toggle()
-            
         }, label: {
             Image(systemName: "plus.circle.fill")
                 .foregroundColor(.black)

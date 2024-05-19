@@ -19,7 +19,7 @@
 		3958287A2B29C576007E085C /* ListModel+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395828782B29C576007E085C /* ListModel+CoreDataProperties.swift */; };
 		3958287C2B29C8CE007E085C /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3958287B2B29C8CE007E085C /* Persistence.swift */; };
 		395828A52B2D2356007E085C /* AddListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395828A42B2D2356007E085C /* AddListView.swift */; };
-		395828A72B2D75EE007E085C /* WriteFolderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395828A62B2D75ED007E085C /* WriteFolderView.swift */; };
+		395828A72B2D75EE007E085C /* AddFolderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395828A62B2D75ED007E085C /* AddFolderView.swift */; };
 		3977865F2BD2B4900066D5D9 /* BannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3977865E2BD2B4900066D5D9 /* BannerViewController.swift */; };
 		397786612BD3A2C80066D5D9 /* BannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 397786602BD3A2C80066D5D9 /* BannerView.swift */; };
 		39B4A8542B99A6BD00FDFE67 /* PassView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39B4A8532B99A6BD00FDFE67 /* PassView.swift */; };
@@ -48,7 +48,7 @@
 		395828782B29C576007E085C /* ListModel+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ListModel+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		3958287B2B29C8CE007E085C /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		395828A42B2D2356007E085C /* AddListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddListView.swift; sourceTree = "<group>"; };
-		395828A62B2D75ED007E085C /* WriteFolderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WriteFolderView.swift; sourceTree = "<group>"; };
+		395828A62B2D75ED007E085C /* AddFolderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFolderView.swift; sourceTree = "<group>"; };
 		3977865C2BD131200066D5D9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		3977865E2BD2B4900066D5D9 /* BannerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerViewController.swift; sourceTree = "<group>"; };
 		397786602BD3A2C80066D5D9 /* BannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerView.swift; sourceTree = "<group>"; };
@@ -134,7 +134,7 @@
 			children = (
 				39C7D2BF2B886C84009F32B1 /* FirstTabView.swift */,
 				3958286E2B21E148007E085C /* FolderView.swift */,
-				395828A62B2D75ED007E085C /* WriteFolderView.swift */,
+				395828A62B2D75ED007E085C /* AddFolderView.swift */,
 				395828702B2347FE007E085C /* ListView.swift */,
 				395828A42B2D2356007E085C /* AddListView.swift */,
 				39CC4ABE2B6F602500F070D9 /* CategoryView.swift */,
@@ -300,7 +300,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				395828A72B2D75EE007E085C /* WriteFolderView.swift in Sources */,
+				395828A72B2D75EE007E085C /* AddFolderView.swift in Sources */,
 				3958286F2B21E148007E085C /* FolderView.swift in Sources */,
 				39CC4AC92B70F8A600F070D9 /* AddCategoryView.swift in Sources */,
 				3958285D2B21DB13007E085C /* WishListApp.swift in Sources */,
@@ -472,7 +472,7 @@
 				INFOPLIST_KEY_UIStatusBarStyle = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -510,7 +510,7 @@
 				INFOPLIST_KEY_UIStatusBarStyle = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

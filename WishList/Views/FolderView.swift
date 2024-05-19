@@ -18,62 +18,59 @@ struct FolderView: View {
         entity: FolderModel.entity(),
         sortDescriptors: [NSSortDescriptor(keyPath: \FolderModel.writeDate, ascending: false)],
         animation: .default)
-        private var folderModel: FetchedResults<FolderModel>
+    private var folderModel: FetchedResults<FolderModel>
     
     @ObservedObject var wishListViewModel : WishListViewModel
     @State var isShowListView = false
-    @State var isShowFolderWrite: Bool = false
-    @State var isShowPassInputPage: Bool = true
-    @State var isShowSetPassPage: Bool = false
-    @State var isShowUnlockPassPage: Bool = false
+    @State var isShowAddFolderView: Bool = false
+    @State var isInsertPassViewBeforeListView: Bool = true
+    @State var isShowSetPassView: Bool = false
+    @State var isShowUnlockPassView: Bool = false
     
     
     var body: some View {
         NavigationStack {
-                ZStack {
-                    Color.gray.opacity(0.08).edgesIgnoringSafeArea(.all)
-                    if folderModel.isEmpty {
-                        emptyFolderView
-                    }
-                    
-                    VStack {
-                        folderArea
-                    }
-                    
-                    VStack {
-                        Spacer()
-                            HStack {
-                                Spacer()
-                                    
-                                floatingButton
-                                }
-                            }
-
-                        .navigationBarBackButtonHidden(true)
-                        
-                    }
-        }
-            .onAppear(perform: {
-                isShowPassInputPage = true
-                self.context.refreshAllObjects()
+            ZStack {
+                Color.gray.opacity(0.08).edgesIgnoringSafeArea(.all)
+                if folderModel.isEmpty {
+                    emptyFolderView
+                }
                 
-                    if launchKey == false {
-                        wishListViewModel.setupDefaultCategory(context: context)
-                            launchKey = true
-                        }
-            })
-
+                VStack {
+                    folderArea
+                        .navigationBarBackButtonHidden(true)
+                }
+                
+                VStack {
+                    Spacer()
+                    
+                    HStack {
+                        Spacer()
+                        
+                        floatingButton
+                    }
+                }
+            }
         }
+        .onAppear(perform: {
+            isInsertPassViewBeforeListView = true
+            self.context.refreshAllObjects()
+            
+            if launchKey == false {
+                wishListViewModel.setupDefaultCategory(context: context)
+                launchKey = true
+            }
+        })
+    }
 }
 
 extension FolderView {
-    
     private var folderArea: some View {
         ScrollView(.vertical, showsIndicators: false){
             Spacer()
             
             ForEach(folderModel){ foldermodel in
-                NavigationLink(destination: ListView(wishListViewModel: wishListViewModel, selectedFolder: foldermodel, isShowPassInputPage: $isShowPassInputPage)){
+                NavigationLink(destination:ListView(wishListViewModel: wishListViewModel, selectedFolder: foldermodel, isInsertPassViewBeforeListView: $isInsertPassViewBeforeListView)){
                     RoundedRectangle(cornerRadius: 16)
                         .fill(Color("\(foldermodel.unwrappedBackColor)"))
                         .frame(width: 290, height: 150)
@@ -83,6 +80,7 @@ extension FolderView {
                                 Text(foldermodel.notDaySetting ? "" : "\(wishListViewModel.formattedDateString(date: foldermodel.unwrappedStartDate)) ~ \(wishListViewModel.formattedDateString(date: foldermodel.unwrappedFinishDate))")
                                     .font(.system(size: 16))
                                     .padding(.top)
+                                
                                 HStack {
                                     if foldermodel.lockIsActive {
                                         Image(systemName: "lock.fill")
@@ -93,7 +91,6 @@ extension FolderView {
                                         .lineLimit(2)
                                         .font(.system(size: 17, weight: .semibold))
                                         .padding(.top)
-                                    
                                 }
                                 
                                 if let listsAchieved = foldermodel.achievedLists, let allLists = foldermodel.lists {
@@ -102,32 +99,23 @@ extension FolderView {
                                         .padding(.top, 6)
                                 }
                                 
-                                
-                                
                             }
                                 .foregroundColor(Color("originalBlack"))
-                            , alignment: .top
+                                , alignment: .top
                         )
-                    
-                    
                 }
                 .contextMenu(ContextMenu(menuItems: {
                     if foldermodel.lockIsActive {
                         Button(action: {
                             wishListViewModel.lockFolder = foldermodel
-                            isShowUnlockPassPage = true
-                            
+                            isShowUnlockPassView = true
                         }, label: {
                             Label("フォルダーのロック解除", systemImage: "lock.open")
                         })
-                        
-                        
                     } else {
                         Button(action: {
-                            
                             wishListViewModel.lockFolder = foldermodel
-                            isShowSetPassPage = true
-                            
+                            isShowSetPassView = true
                         }, label: {
                             Label("フォルダーをロック", systemImage: "lock")
                         })
@@ -135,15 +123,14 @@ extension FolderView {
                     
                     
                     Button(action: {
-                        wishListViewModel.editFolder(upFolder: foldermodel)
-                        isShowFolderWrite.toggle()
-                        
+                        wishListViewModel.editFolder(updateFolder: foldermodel)
+                        isShowAddFolderView.toggle()
                     }, label: {
                         Label("編集", systemImage: "pencil")
                     })
-                    .sheet(isPresented: $isShowFolderWrite) {
+                    .sheet(isPresented: $isShowAddFolderView) {
                         
-                        WriteFolderView(wishListViewModel : wishListViewModel, isShowFolderWrite: $isShowFolderWrite)
+                        AddFolderView(wishListViewModel : wishListViewModel, isShowAddFolderView: $isShowAddFolderView)
                             .presentationDetents([.large])
                     }
                     
@@ -156,19 +143,17 @@ extension FolderView {
                         Label("削除", systemImage: "trash")
                     })
                 }))
-                .fullScreenCover(isPresented: $isShowSetPassPage, content: {
-                    SetPassView(wishListViewModel: wishListViewModel, isShowSetPassPage: $isShowSetPassPage, isShowUnlockPassPage: $isShowUnlockPassPage)
+                .fullScreenCover(isPresented: $isShowSetPassView, content: {
+                    SetPassView(wishListViewModel: wishListViewModel, isShowSetPassPage: $isShowSetPassView, isShowUnlockPassPage: $isShowUnlockPassView)
                     
                 })
                 
-                .fullScreenCover(isPresented: $isShowUnlockPassPage, content: {
-                    SetPassView(wishListViewModel: wishListViewModel, isShowSetPassPage: $isShowSetPassPage, isShowUnlockPassPage: $isShowUnlockPassPage)
+                .fullScreenCover(isPresented: $isShowUnlockPassView, content: {
+                    SetPassView(wishListViewModel: wishListViewModel, isShowSetPassPage: $isShowSetPassView, isShowUnlockPassPage: $isShowUnlockPassView)
                         .presentationDetents([.large])
                 })
                 .transition(
                     AnyTransition.asymmetric(insertion: AnyTransition.slide.combined(with: AnyTransition.opacity), removal: AnyTransition.identity))
-                
-                
             }
         }
     }
@@ -176,27 +161,23 @@ extension FolderView {
     
     private var floatingButton: some View {
         Button(action: {
-            isShowFolderWrite.toggle()
+            isShowAddFolderView.toggle()
         }, label: {
             Image(systemName: "plus.circle.fill")
                 .foregroundColor(Color("originalBlack"))
                 .shadow(color: .gray.opacity(0.9), radius: 3)
                 .font(.system(size: 40))
-            
         })
         .padding(EdgeInsets(top: 0, leading: 0, bottom: 50, trailing: 50))
-        .sheet(isPresented: $isShowFolderWrite){
-            
-            WriteFolderView(wishListViewModel: wishListViewModel, isShowFolderWrite: $isShowFolderWrite)
+        .sheet(isPresented: $isShowAddFolderView){
+            AddFolderView(wishListViewModel: wishListViewModel, isShowAddFolderView: $isShowAddFolderView)
                 .presentationDetents([.large, .fraction(0.9)])
-            
         }
     }
     
     
     
     private var emptyFolderView: some View {
-        
         VStack(alignment: .center) {
             Image(systemName: "folder.badge.questionmark")
                 .font(.system(size: 100))
@@ -209,5 +190,4 @@ extension FolderView {
                 .lineLimit(1)
         }
     }
-    
 }

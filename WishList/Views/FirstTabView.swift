@@ -19,15 +19,12 @@ struct FirstTabView: View {
             FolderView(wishListViewModel: wishListViewModel)
                 .tabItem {
                     Label("フォルダー", systemImage: "folder")
-
                 }
             
             SettingView(wishListViewModel: wishListViewModel)
                 .tabItem {
                     Label("設定", systemImage: "gearshape")
                 }
-            
-            
         }
         .background(.white)
         .accentColor(Color("originalBlack"))

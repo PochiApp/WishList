@@ -11,16 +11,18 @@ import PhotosUI
 
 class WishListViewModel : ObservableObject{
     
-    @Published var title = ""
+    //Folder関連
+    @Published var folderTitle = ""
     @Published var selectedStartDate: Date = Date()
     @Published var selectedFinishDate: Date = Date()
     @Published var backColor = "snowWhite"
-    @Published var updateFolder: FolderModel!
+    @Published var updateFolder: FolderModel! //編集対象のフォルダーが格納される
     @Published var lockIsAcctive = false
     @Published var folderPassword = ""
-    @Published var notDaySetting = false
-    @Published var lockFolder: FolderModel!
+    @Published var notDaySetting = false //フォルダーの期日設定なしの場合true
+    @Published var lockFolder: FolderModel! //ロック対象のフォルダーが格納される
     
+    //List関連
     @Published var text = ""
     @Published var listNumber = 0
     @Published var category = ""
@@ -33,15 +35,18 @@ class WishListViewModel : ObservableObject{
     @Published var images: [UIImage?] = []
     @Published var updateList: ListModel!
     
+    //Category関連
     @Published var categoryName = ""
     @Published var categoryAddDate = Date()
     
-   
+    //MARK: - Folder関連メソッド
+    
+    //Folderの新規作成及び編集
     func writeFolder (context: NSManagedObjectContext) {
         
+        //updateFolderがnilではない場合、Folderの編集処理
         if updateFolder != nil {
-            
-            updateFolder.title = title
+            updateFolder.title = folderTitle
             updateFolder.notDaySetting = notDaySetting
             updateFolder.startDate = selectedStartDate
             updateFolder.finishDate = selectedFinishDate
@@ -51,8 +56,10 @@ class WishListViewModel : ObservableObject{
             
             return
         }
+        
+        //updateFolderがnilの場合、Folderの新規作成処理
         let newFolderData = FolderModel(context:context)
-        newFolderData.title = title
+        newFolderData.title = folderTitle
         newFolderData.notDaySetting = notDaySetting
         newFolderData.startDate = selectedStartDate
         newFolderData.finishDate = selectedFinishDate
@@ -61,7 +68,6 @@ class WishListViewModel : ObservableObject{
         
         do {
             try context.save()
-           
         }
         catch {
             print("新しいフォルダーが作れません")
@@ -69,22 +75,21 @@ class WishListViewModel : ObservableObject{
     }
     
     func formattedDateString(date: Date) -> String {
-            let formatter = DateFormatter()
-            formatter.locale = Locale(identifier:"ja_JP")
-            formatter.setLocalizedDateFormatFromTemplate("yyyy/MM/dd")
-            return formatter.string(from: date)
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier:"ja_JP")
+        formatter.setLocalizedDateFormatFromTemplate("yyyy/MM/dd")
+        return formatter.string(from: date)
     }
     
-    func editFolder (upFolder: FolderModel) {
-        updateFolder = upFolder
+    //編集するFolderとその内容をセット
+    func editFolder (updateFolder: FolderModel) {
+        self.updateFolder = updateFolder
         
-        title = updateFolder.unwrappedTitle
-        notDaySetting = updateFolder.notDaySetting
-        selectedStartDate = updateFolder.unwrappedStartDate
-        selectedFinishDate = updateFolder.unwrappedFinishDate
-        backColor = updateFolder.unwrappedBackColor
-        
-        
+        folderTitle = self.updateFolder.unwrappedTitle
+        notDaySetting = self.updateFolder.notDaySetting
+        selectedStartDate = self.updateFolder.unwrappedStartDate
+        selectedFinishDate = self.updateFolder.unwrappedFinishDate
+        backColor = self.updateFolder.unwrappedBackColor
     }
     
     func lockFolder(context: NSManagedObjectContext) {
@@ -92,7 +97,7 @@ class WishListViewModel : ObservableObject{
         lockFolder.folderPassword = folderPassword
         
         try! context.save()
-
+        
         folderPassword = ""
     }
     
@@ -101,24 +106,27 @@ class WishListViewModel : ObservableObject{
         lockFolder.folderPassword = ""
         
         try! context.save()
- 
+        
         folderPassword = ""
     }
     
+    //ViewModel内のFolder関連の変数を初期化
     func resetFolder () {
-        
         updateFolder = nil
         
-        title =  ""
+        folderTitle =  ""
         notDaySetting = false
         selectedStartDate =  Date()
         selectedFinishDate = Date()
         backColor = "snowWhite"
-        
     }
     
+    //MARK: - Listの新規作成や編集関連メソッド
+    
+    //Listの新規作成及び編集
     func writeList (context: NSManagedObjectContext) {
         
+        //updateListがnilではない場合、Listの編集処理
         if updateList != nil {
             updateList.text = text
             updateList.category = category
@@ -128,13 +136,11 @@ class WishListViewModel : ObservableObject{
             updateList.miniMemo = miniMemo
             
             try! context.save()
-            
-         
-            
+    
             return
-            
         }
         
+        //updateListがnilの場合、Listの新規作成処理
         let newListData = ListModel(context:context)
         newListData.text = text
         newListData.listNumber = Int16(listNumber)
@@ -145,32 +151,28 @@ class WishListViewModel : ObservableObject{
         newListData.image2 = image2
         newListData.miniMemo = miniMemo
         
-        
         do {
             try context.save()
-            
         }
         catch {
             print("新しいメモが作れません")
         }
-        
-        
     }
     
-    func editList (upList: ListModel) {
-        updateList = upList
+    //編集するFolderとその内容をセット
+    func editList (updateList: ListModel) {
+        self.updateList = updateList
         
-        text = updateList.unwrappedText
-        category = updateList.unwrappedCategory
-        achievement = updateList.achievement
-        image1 = updateList.unwrappedImage1
-        image2 = updateList.unwrappedImage2
-        miniMemo = updateList.unwrappedMiniMemo
-        
+        text = self.updateList.unwrappedText
+        category = self.updateList.unwrappedCategory
+        achievement = self.updateList.achievement
+        image1 = self.updateList.unwrappedImage1
+        image2 = self.updateList.unwrappedImage2
+        miniMemo = self.updateList.unwrappedMiniMemo
     }
     
+    //ViewModel内のList関連の変数を初期化
     func resetList () {
-        
         updateList = nil
         
         text =  ""
@@ -183,9 +185,9 @@ class WishListViewModel : ObservableObject{
         miniMemo = ""
         
         images = []
-        
     }
     
+    //MARK: - Listの画像処理関連メソッド
     func resetImages () {
         datas = []
         images = []
@@ -193,77 +195,59 @@ class WishListViewModel : ObservableObject{
         image2 = Data.init()
     }
     
+    //PhotosPickerで取得した画像をData型に変換
     func convertDataimages (photos: [PhotosPickerItem]) async {
-        
         for photo in photos {
             guard let data = try? await photo.loadTransferable(type: Data.self) else { continue }
             
             DispatchQueue.main.async {
-                
                 self.datas.append(data)
-              
+            }
+        }
+    }
+    
+    //Data型画像 → UIImage型画像に変換
+    func convertUiimages () async {
+        if !self.images.isEmpty {
+            DispatchQueue.main.async {
+                self.images.removeAll()
             }
         }
         
+        DispatchQueue.main.async {
+            guard let uiimage1 = UIImage(data: self.image1) else { print("uiimage失敗1"); return }
+            self.images.append(uiimage1)
             
-            
+            guard let uiimage2 = UIImage(data: self.image2) else { print("uiimage失敗2");return }
+            self.images.append(uiimage2)
+        }
     }
-
     
-    func convertUiimages () async {
-        
-        if !self.images.isEmpty {
-           DispatchQueue.main.async {
-                self.images.removeAll()
-           }
-        }
-
-            DispatchQueue.main.async {
-                guard let uiimage1 = UIImage(data: self.image1) else { print("uiimage失敗1"); return }
-                self.images.append(uiimage1)
-
-                guard let uiimage2 = UIImage(data: self.image2) else { print("uiimage失敗2");return }
-                self.images.append(uiimage2)
-
-                
-
-                }
-            
-        }
-    
-    
+    //MARK: - カテゴリー関連メソッド
     func setupDefaultCategory(context: NSManagedObjectContext) {
-        
         let newCategoryEntity = CategoryEntity(context: context)
         newCategoryEntity.categoryName = "未分類"
         newCategoryEntity.categoryAddDate = Date()
         
         do {
             try context.save()
-            
         }
         catch {
             print("カテゴリー初期値設定できませんでした")
         }
-        
     }
     
     func addCategory(context: NSManagedObjectContext) {
-        
         let newCategoryEntity = CategoryEntity(context: context)
         newCategoryEntity.categoryName = categoryName
         newCategoryEntity.categoryAddDate = Date()
         
-        
         do {
             try context.save()
-            
         }
         catch {
             print("カテゴリー追加できませんでした")
         }
     }
-    
-    
 }
 

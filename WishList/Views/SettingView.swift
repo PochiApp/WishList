@@ -30,7 +30,6 @@ struct SettingView: View {
                     NavigationLink(destination: CategoryView(wishListViewModel: wishListViewModel)) {
                         Text("カテゴリー編集")
                     }
-                    
                 }
                 
                 Section(header: Text("アプリ情報")) {
@@ -40,13 +39,13 @@ struct SettingView: View {
                         Text("\(version)")
                             .foregroundColor(.gray)
                             .fontWeight(.regular)
-                        
                     }
                     
                     
                     Button("レビューを書く",
                            action: {
-                        requestReview()})
+                        requestReview()
+                    })
                     
                     Link(destination: URL(string: "mailto:pochi.app.dp@gmail.com")!) {
                         Text("お問い合わせ")

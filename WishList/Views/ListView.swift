@@ -20,9 +20,9 @@ struct ListView: View {
     
     private let selectedFolder : FolderModel
     @FetchRequest(
-                entity: ListModel.entity(),
-                sortDescriptors: [NSSortDescriptor(keyPath: \ListModel.listNumber, ascending: true)], 
-                animation:.default)
+        entity: ListModel.entity(),
+        sortDescriptors: [NSSortDescriptor(keyPath: \ListModel.listNumber, ascending: true)],
+        animation:.default)
     private var listModels: FetchedResults<ListModel>
     
     @FetchRequest(
@@ -31,7 +31,7 @@ struct ListView: View {
         animation: .default)
     private var categorys: FetchedResults<CategoryEntity>
     
-    @Binding var isShowPassInputPage: Bool
+    @Binding var isInsertPassViewBeforeListView: Bool
     @State var isShowListAdd = false
     @State var sortCheck = false
     @State var numberSort = true
@@ -44,41 +44,40 @@ struct ListView: View {
         case categorySort
         case all
     }
-        
+    
     private func listSort(sort: Sort){
-            
-            let listNumberSorted: NSSortDescriptor = NSSortDescriptor(keyPath: \ListModel.listNumber, ascending: numberSort)
-            
-            let achievementPredicate: NSPredicate = NSPredicate(format: "achievement == %@ and folderDate == %@", NSNumber(value:achievementCheck),selectedFolder.writeDate! as CVarArg)
-            
-            let categoryPredicate: NSPredicate = NSPredicate(format: "category == %@ and folderDate == %@", categoryName, selectedFolder.writeDate! as CVarArg)
-                                                             
-            switch sort{
-            case .ascending:
-                listModels.nsSortDescriptors = [listNumberSorted]
-
-            case .achievementSort:
-                listModels.nsSortDescriptors = [listNumberSorted]
-                listModels.nsPredicate = achievementPredicate
-                
-            case .categorySort:
-                listModels.nsSortDescriptors = [listNumberSorted]
-                listModels.nsPredicate = categoryPredicate
-            
-            case .all:
-                listModels.nsPredicate = NSPredicate(format: "folderDate == %@", selectedFolder.writeDate! as CVarArg)
-
-            }
-        }
         
+        let listNumberSorted: NSSortDescriptor = NSSortDescriptor(keyPath: \ListModel.listNumber, ascending: numberSort)
+        
+        let achievementPredicate: NSPredicate = NSPredicate(format: "achievement == %@ and folderDate == %@", NSNumber(value:achievementCheck),selectedFolder.writeDate! as CVarArg)
+        
+        let categoryPredicate: NSPredicate = NSPredicate(format: "category == %@ and folderDate == %@", categoryName, selectedFolder.writeDate! as CVarArg)
+        
+        switch sort{
+        case .ascending:
+            listModels.nsSortDescriptors = [listNumberSorted]
+            
+        case .achievementSort:
+            listModels.nsSortDescriptors = [listNumberSorted]
+            listModels.nsPredicate = achievementPredicate
+            
+        case .categorySort:
+            listModels.nsSortDescriptors = [listNumberSorted]
+            listModels.nsPredicate = categoryPredicate
+            
+        case .all:
+            listModels.nsPredicate = NSPredicate(format: "folderDate == %@", selectedFolder.writeDate! as CVarArg)
+            
+        }
+    }
     
     
-    init(wishListViewModel: WishListViewModel, selectedFolder: FolderModel, isShowPassInputPage: Binding<Bool>){
+    
+    init(wishListViewModel: WishListViewModel, selectedFolder: FolderModel, isInsertPassViewBeforeListView: Binding<Bool>){
         self.wishListViewModel = wishListViewModel
         self.selectedFolder = selectedFolder
-        self._isShowPassInputPage = isShowPassInputPage
-
-        
+        self._isInsertPassViewBeforeListView = isInsertPassViewBeforeListView
+    
         guard let selectedFolderDate = selectedFolder.writeDate else{
             return
         }
@@ -93,60 +92,48 @@ struct ListView: View {
     
     
     var body: some View {
-        if selectedFolder.lockIsActive && isShowPassInputPage {
-            PassView(wishListViewModel: wishListViewModel, selectedFolder: selectedFolder, isShowPassInputPage: $isShowPassInputPage)
+        if selectedFolder.lockIsActive && isInsertPassViewBeforeListView {
+            PassView(wishListViewModel: wishListViewModel, selectedFolder: selectedFolder, isInsertPassViewBeforeListView: $isInsertPassViewBeforeListView)
         } else {
             NavigationStack {
                 ZStack {
-
-                        if listModels.isEmpty {
-                            if sortCheck {
-                                sortEmptyView
-                            } else {
-                                emptyListView
-                                
+                    if listModels.isEmpty {
+                        if sortCheck {
+                            sortEmptyView
+                        } else {
+                            emptyListView
+                        }
+                    }
+                    listArea
+                        .scrollContentBackground(.hidden)
+                        .navigationBarTitleDisplayMode(.inline)
+                        .toolbarBackground(Color("\(selectedFolder.unwrappedBackColor)"), for: .navigationBar)
+                        .toolbarBackground(.visible, for: .navigationBar)
+                        .toolbar {
+                            ToolbarItem(placement: .topBarLeading) {
+                                backButton
+                            }
+                            
+                            ToolbarItem(placement: .principal) {
+                                navigationArea
                             }
                         }
-                            listArea
-                                .scrollContentBackground(.hidden)
-                                .navigationBarTitleDisplayMode(.inline)
-                                .toolbarBackground(Color("\(selectedFolder.unwrappedBackColor)"), for: .navigationBar)
-                                .toolbarBackground(.visible, for: .navigationBar)
-                                .toolbar {
-                                    ToolbarItem(placement: .topBarLeading) {
-                                        backButton
-                                    }
-                                    
-                                    ToolbarItem(placement: .principal) {
-                                        navigationArea
-                                    }
-                                    
-                                }
-                                
-                        
+                    
                     VStack {
                         Spacer()
-                            HStack {
-                                Spacer()
-                                
-                                sortFloatingButton
-                                
-                                plusFloatingButton
+                        HStack {
+                            Spacer()
+                            
+                            sortFloatingButton
+                            
+                            plusFloatingButton
                         }
-                            .padding(EdgeInsets(top: 0, leading: 0, bottom: 25, trailing: 25))
-                        
-                        }
-                        
-
+                        .padding(EdgeInsets(top: 0, leading: 0, bottom: 25, trailing: 25))
                     }
-                    
                 }
+            }
         }
-        
-        
-  }
-        
-        
+    }
 }
 
 extension ListView {
@@ -172,12 +159,8 @@ extension ListView {
                     })
                     .buttonStyle(.plain)
                     .frame(alignment: .leading)
-                    
                     listButtonView(list: list, selectedFolder: selectedFolder, wishListViewModel: wishListViewModel)
-                            
-                    }
-                
-
+                }
             }
             .onMove(perform: moveList)
             .onDelete(perform: deleteList)
@@ -190,19 +173,15 @@ extension ListView {
     }
     
     private var navigationArea : some View {
-        
-        
         VStack{
             Text("\(selectedFolder.unwrappedTitle)")
-                    .fontWeight(.light)
+                .fontWeight(.light)
             HStack{
                 Text(selectedFolder.notDaySetting ? "" : "\(wishListViewModel.formattedDateString(date: selectedFolder.unwrappedStartDate)) ~ \(wishListViewModel.formattedDateString(date: selectedFolder.unwrappedFinishDate))")
                     .font(.caption)
                     .padding(.trailing)
             }
-            
         }
-        
     }
     
     private var backButton : some View {
@@ -224,12 +203,10 @@ extension ListView {
                     }, label: {
                         Text("\(selectCategory.unwrappedCategoryName)")
                     })
-                    
                 }
             }
             
             Menu("達成別") {
-                
                 Button("未達成",
                        action: {
                     sortCheck = true
@@ -248,7 +225,7 @@ extension ListView {
                 sortCheck = true
                 numberSort = false
                 listSort(sort: .ascending)
-                })
+            })
             
             Button("昇順",
                    action: {
@@ -261,17 +238,15 @@ extension ListView {
                 sortCheck = false
                 numberSort = true
                 listSort(sort: .all)})
-           
+            
+        }label: {
+        Image(systemName: "line.3.horizontal.decrease.circle")
+            .foregroundColor(Color("originalBlack"))
+            .shadow(color: .gray.opacity(0.4), radius: 3, x: 2, y: 2)
+            .font(.system(size: 40))
         }
-                label: {
-                    Image(systemName: "line.3.horizontal.decrease.circle")
-                        .foregroundColor(Color("originalBlack"))
-                        .shadow(color: .gray.opacity(0.4), radius: 3, x: 2, y: 2)
-                        .font(.system(size: 40))
-                }
-        
     }
-                       
+    
     
     private var plusFloatingButton: some View {
         Button(action: {
@@ -301,19 +276,15 @@ extension ListView {
         if sortCheck { return }
         offSets.map { listModels[$0] }.forEach(context.delete)
         
-        
         do {
             try context.save()
-            
             updateListNumber()
         }
         catch {
-            print("削除失敗")
+            print("リスト削除失敗")
         }
-        
-        
     }
-        
+    
     private func updateListNumber(){
         let sortedListModels = Array(listModels)
         
@@ -323,7 +294,6 @@ extension ListView {
         }
         do {
             try context.save()
-            
         }
         catch {
             print("listNumber変更失敗")
@@ -344,9 +314,8 @@ extension ListView {
                     revisedLists.reverse()
                     for reverseIndex in stride(from: revisedLists.count - 1, through: 0, by: -1){
                         revisedLists[reverseIndex].listNumber = Int16(reverseIndex + 1)
+                    }
                 }
-            
-            }
             do {
                 try context.save()
             }
@@ -357,18 +326,17 @@ extension ListView {
     }
     
     private var emptyListView: some View {
-        
-            VStack(alignment: .center) {
-                Image(systemName: "pencil.and.list.clipboard")
-                    .font(.system(size: 100))
-                    .foregroundColor(Color.gray.opacity(0.5))
-                    .padding(.bottom)
-                
-                Text("右下＋ボタンから、リストを作成してみましょう")
-                    .font(.caption)
-                    .foregroundColor(Color.gray)
-                    .lineLimit(1)
-            }
+        VStack(alignment: .center) {
+            Image(systemName: "pencil.and.list.clipboard")
+                .font(.system(size: 100))
+                .foregroundColor(Color.gray.opacity(0.5))
+                .padding(.bottom)
+            
+            Text("右下＋ボタンから、リストを作成してみましょう")
+                .font(.caption)
+                .foregroundColor(Color.gray)
+                .lineLimit(1)
+        }
     }
     
     private var sortEmptyView: some View {
@@ -385,6 +353,7 @@ extension ListView {
         }
     }
 }
+
 struct listButtonView: View {
     
     @State var isShowListAdd = false
@@ -392,22 +361,22 @@ struct listButtonView: View {
     let selectedFolder: FolderModel
     @ObservedObject var wishListViewModel: WishListViewModel
     
-    
     var body: some View {
         Button(action: {
             isShowListAdd = true
-            wishListViewModel.editList(upList: list)
+            wishListViewModel.editList(updateList: list)
         }, label: {
             HStack {
                 Text("\(list.listNumber)"+".")
                     .font(Font(UIFont.monospacedSystemFont(ofSize: 20, weight: .regular)))
                     .padding(.trailing,5)
+                
                 VStack {
-                        Text("\(list.unwrappedText)")
-                            .font(.headline)
-                            .background(list.achievement ? Color("\(selectedFolder.unwrappedBackColor)").opacity(0.5) : Color.clear)
-                            .frame(maxWidth:.infinity, alignment: .leading)
-                            .padding(.bottom, 5)
+                    Text("\(list.unwrappedText)")
+                        .font(.headline)
+                        .background(list.achievement ? Color("\(selectedFolder.unwrappedBackColor)").opacity(0.5) : Color.clear)
+                        .frame(maxWidth:.infinity, alignment: .leading)
+                        .padding(.bottom, 5)
                     
                     if !list.unwrappedMiniMemo.isEmpty {
                         HStack {
@@ -418,44 +387,38 @@ struct listButtonView: View {
                                 .font(.caption2)
                                 .frame(maxWidth:.infinity, alignment: .leading)
                         }
-                      
                     }
-
                 }
                 
-                
                 Spacer()
+                
                 VStack{
                     HStack{
                         if (!list.unwrappedImage1.isEmpty) {
-                   
+                            
                             if let uiImage1 = UIImage(data: list.unwrappedImage1) {
-                                    Image(uiImage: uiImage1)
-                                        .resizable()
-                                        .frame(width: 30, height:30)
-                                        .clipShape(Circle())
-                                }
+                                Image(uiImage: uiImage1)
+                                    .resizable()
+                                    .frame(width: 30, height:30)
+                                    .clipShape(Circle())
+                            }
                         }
                         
                         if (!list.unwrappedImage2.isEmpty) {
-                       
+                            
                             if let uiImage2 = UIImage(data: list.unwrappedImage2) {
-                                    Image(uiImage: uiImage2)
-                                        .resizable()
-                                        .frame(width: 30, height:30)
-                                        .clipShape(Circle())
-                                }
+                                Image(uiImage: uiImage2)
+                                    .resizable()
+                                    .frame(width: 30, height:30)
+                                    .clipShape(Circle())
+                            }
                         }
                     }
-                    
-            
                     Text("\(list.unwrappedCategory)")
                         .fixedSize(horizontal: false, vertical: true)
                         .frame(width: 70, height: 30)
                         .font(.caption)
                 }
-        
-            
             }
             .foregroundColor(Color("originalBlack"))
         })

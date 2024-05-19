@@ -14,71 +14,73 @@ struct PassView: View {
     @ObservedObject var wishListViewModel : WishListViewModel
     @State var passCode = ""
     @State var selectedFolder: FolderModel
-    @Binding var isShowPassInputPage: Bool
+    @Binding var isInsertPassViewBeforeListView: Bool
     let UINFGenerator = UINotificationFeedbackGenerator()
     
     var body: some View {
-        VStack {
-                HStack {
-                    Image(systemName: passCode.count >= 1 ? "key.fill" : "key")
-                        .font(.system(size:30))
-                        .padding()
-                    
-                    Image(systemName: passCode.count >= 2 ? "key.fill" : "key")
-                        .font(.system(size:30))
-                        .padding()
-                    
-                    Image(systemName: passCode.count >= 3 ? "key.fill" : "key")
-                        .font(.system(size:30))
-                        .padding()
-                    
-                    Image(systemName: passCode.count >= 4 ? "key.fill" : "key")
-                        .font(.system(size:30))
-                        .padding()
-                }
-                .padding()
-            }
-            
-                numberButtonView
-                        .onChange(of: passCode) { newPassCode in
-                                if newPassCode.count == 4 {
-                                    if newPassCode == selectedFolder.unwrappedfolderPassword {
-                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5){
-                                            isShowPassInputPage = false
-                                            passCode = ""
-                                        }
-                                    } else {
-                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5){
-                                            UINFGenerator.notificationOccurred(.warning)
-                                            passCode = ""
-                                        }
-                                    }
-                                }
+        fourKeysImageView
+        
+        numberButtonView
+            .onChange(of: passCode) { newPassCode in
+                if newPassCode.count == 4 {
+                    if newPassCode == selectedFolder.unwrappedfolderPassword {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5){
+                            isInsertPassViewBeforeListView = false
+                            passCode = ""
+                        }
+                    } else {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5){
+                            UINFGenerator.notificationOccurred(.warning)
+                            passCode = ""
+                        }
                     }
                 }
-        
             }
-    
-    struct CapsuleButtonStyle: ButtonStyle {
-        
-        @State var selectedFolder: FolderModel
-        
-        func makeBody(configuration: Configuration) -> some View {
-            configuration.label
-                .padding(8)
-                .frame(width: 80, height: 80)
-                .background(configuration.isPressed ? Color("snowWhite") : Color("\(selectedFolder.unwrappedBackColor)"))
-                .foregroundColor(Color("originalBlack"))
-                .font(.body.bold())
-                .clipShape(Capsule())
-                .scaleEffect(configuration.isPressed ? 0.95 : 1)
-                .padding(.horizontal, 8)
-                .padding(.bottom, 3)
-                
-        }
     }
+}
+
+struct CapsuleButtonStyle: ButtonStyle {
+    
+    @State var selectedFolder: FolderModel
+    
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .padding(8)
+            .frame(width: 80, height: 80)
+            .background(configuration.isPressed ? Color("snowWhite") : Color("\(selectedFolder.unwrappedBackColor)"))
+            .foregroundColor(Color("originalBlack"))
+            .font(.body.bold())
+            .clipShape(Capsule())
+            .scaleEffect(configuration.isPressed ? 0.95 : 1)
+            .padding(.horizontal, 8)
+            .padding(.bottom, 3)
+        
+    }
+}
 
 extension PassView {
+    private var fourKeysImageView: some View{
+        VStack {
+            HStack {
+                Image(systemName: passCode.count >= 1 ? "key.fill" : "key")
+                    .font(.system(size:30))
+                    .padding()
+                
+                Image(systemName: passCode.count >= 2 ? "key.fill" : "key")
+                    .font(.system(size:30))
+                    .padding()
+                
+                Image(systemName: passCode.count >= 3 ? "key.fill" : "key")
+                    .font(.system(size:30))
+                    .padding()
+                
+                Image(systemName: passCode.count >= 4 ? "key.fill" : "key")
+                    .font(.system(size:30))
+                    .padding()
+            }
+            .padding()
+        }
+    }
     private var numberButtonView: some View {
         VStack(alignment: .trailing) {
             HStack {

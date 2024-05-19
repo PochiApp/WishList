@@ -19,15 +19,11 @@ struct AddCategoryView: View {
     
     var body: some View {
         VStack(alignment:.center) {
-            
             NavigationStack{
                 Form {
-                    
                     Section(header: Text("カテゴリー名")) {
                         categoryTextField
                     }
-
-                    
                 }
                 .navigationBarTitleDisplayMode(.inline)
                 .background(Color.gray.opacity(0.1))
@@ -37,8 +33,8 @@ struct AddCategoryView: View {
                     ToolbarItem(placement: .principal){
                         Text("カテゴリー追加")
                             .font(.title3)
-                        
                     }
+                    
                     ToolbarItem(placement: .topBarLeading){
                         cancelButton
                     }
@@ -60,7 +56,6 @@ extension AddCategoryView {
         TextField("", text: $wishListViewModel.categoryName)
             .focused($textIsActive)
             .frame(alignment: .center)
-
     }
     
     
@@ -81,7 +76,6 @@ extension AddCategoryView {
             dismiss()
             
             wishListViewModel.categoryName = ""
-            
         }, label: {
             Text("追加")
                 .foregroundColor(Color("originalBlack"))
