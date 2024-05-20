@@ -23,9 +23,11 @@ struct CategoryView: View {
     var body: some View {
         NavigationView{
             ZStack{
+                //Categoryが未設定のに表示するView
                 if categorys.isEmpty {
                     emptyCategoryView
                 }
+                //フェッチしたCategoryの表示 deleteボタンは横スワイプで表示
                 List {
                     ForEach(categorys){ category in
                         Text("\(category.unwrappedCategoryName)")
@@ -56,8 +58,6 @@ struct CategoryView: View {
     }
     
     
-    
-    
     private func deleteCategory (offSets: IndexSet) {
         offSets.map { categorys[$0] }.forEach(context.delete)
         
@@ -70,6 +70,7 @@ struct CategoryView: View {
     }
 }
 
+//MARK: - extension
 extension CategoryView {
     private var floatingButton: some View {
         Button(action: {
@@ -85,7 +86,6 @@ extension CategoryView {
     
     
     private var emptyCategoryView: some View {
-        
         VStack(alignment: .center) {
             Image(systemName: "books.vertical")
                 .font(.system(size: 100))

@@ -42,7 +42,7 @@ class WishListViewModel : ObservableObject{
     //MARK: - Folder関連メソッド
     
     //Folderの新規作成及び編集
-    func writeFolder (context: NSManagedObjectContext) {
+    func addNewFolderOrEditFolder (context: NSManagedObjectContext) {
         
         //updateFolderがnilではない場合、Folderの編集処理
         if updateFolder != nil {

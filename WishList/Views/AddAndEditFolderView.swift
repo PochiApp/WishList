@@ -1,6 +1,6 @@
 //
-//  WriteFolderView.swift
-//  BucketList
+//  AddAndEditFolderView.swift
+//  WishList
 //
 //  Created by 嶺澤美帆 on 2023/12/16.
 //
@@ -8,12 +8,12 @@
 import SwiftUI
 import CoreData
 
-struct AddFolderView: View {
+struct AddAndEditFolderView: View {
     
     @Environment (\.managedObjectContext)private var context
     @Environment (\.dismiss) var dismiss
     @ObservedObject var wishListViewModel : WishListViewModel
-    @Binding var isShowAddFolderView: Bool
+    @Binding var isShowAddAndEditFolderView: Bool
     @FocusState var textIsActive: Bool
     @State private var folderTitle: String = ""
     
@@ -40,15 +40,7 @@ struct AddFolderView: View {
                 .toolbarBackground(.visible, for: .navigationBar)
                 .toolbar{
                     ToolbarItem(placement: .principal){
-                        if wishListViewModel.updateFolder == nil {
-                            Text("新規フォルダ作成")
-                                .font(.title3)
-                                .foregroundColor(Color("originalBlack"))
-                        } else {
-                            Text("フォルダ編集")
-                                .font(.title3)
-                                .foregroundColor(Color("originalBlack"))
-                        }
+                        navigationBarTitle
                     }
                     ToolbarItem(placement: .topBarLeading) {
                         cancelButton
@@ -59,6 +51,7 @@ struct AddFolderView: View {
                 }
             }
             .onTapGesture {
+                //TextField外をタップしたら、フォーカス状態をOFFにしてキーボードを閉じる
                 textIsActive = false
             }
         }
@@ -67,7 +60,7 @@ struct AddFolderView: View {
 
 
 //MARK: - extension
-extension AddFolderView {
+extension AddAndEditFolderView {
     
     private var folderTitleTextField : some View {
         TextField("フォルダ-タイトル", text: wishListViewModel.updateFolder == nil ? $folderTitle : $wishListViewModel.folderTitle)
@@ -93,7 +86,6 @@ extension AddFolderView {
         }
         .disabled(wishListViewModel.notDaySetting)
     }
-    
     
     private var folderThemeColorPicker : some View {
         Picker("色を選択", selection: $wishListViewModel.backColor){
@@ -154,12 +146,24 @@ extension AddFolderView {
         .padding(.bottom)
     }
     
+    private var navigationBarTitle : some View {
+        //updateFolderがnilなら「新規フォルダー作成」, そうでなければ「フォルダー編集」と表示
+        if wishListViewModel.updateFolder == nil {
+            Text("新規フォルダー作成")
+                .font(.title3)
+                .foregroundColor(Color("originalBlack"))
+        } else {
+            Text("フォルダー編集")
+                .font(.title3)
+                .foregroundColor(Color("originalBlack"))
+        }
+    }
+    
     private var cancelButton : some View {
         Button(action: {
-            isShowAddFolderView = false
+            isShowAddAndEditFolderView = false
             
             wishListViewModel.resetFolder()
-            
         }, label: {
             Image(systemName: "clear.fill")
                 .font(.title3)
@@ -169,10 +173,14 @@ extension AddFolderView {
     
     private var addFolderButton : some View {
         Button(action: {
+            /*updateFolderがnilの場合は、新規作成としてfolderTitleをViewModelのfolderTitleへ代入
+             ViewModelのfolderTitleをTextFieldのBinding変数にしてしまうと、テキスト入力時にカクついてしまうので、
+             folderTitleはFolder新規作成直前にViewModelに引き渡す形をとっている
+             */
             if wishListViewModel.updateFolder == nil {
                 wishListViewModel.folderTitle = folderTitle
             }
-            wishListViewModel.writeFolder(context: context)
+            wishListViewModel.addNewFolderOrEditFolder(context: context)
             
             dismiss()
             

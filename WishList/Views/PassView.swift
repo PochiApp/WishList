@@ -24,13 +24,19 @@ struct PassView: View {
             .onChange(of: passCode) { newPassCode in
                 if newPassCode.count == 4 {
                     if newPassCode == selectedFolder.unwrappedfolderPassword {
+                        //キーが4つ色が変わる前に処理が進んでしまうので、0.5sec判定処理を遅らせている。
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5){
+                            //PassViewの表示を消してListViewを表示するためのフラグ
                             isInsertPassViewBeforeListView = false
+                            
                             passCode = ""
                         }
                     } else {
+                        //キーが4つ色が変わる前に処理が進んでしまうので、0.5sec判定処理を遅らせている。
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5){
+                            //振動で間違えていることを知らせる。
                             UINFGenerator.notificationOccurred(.warning)
+                            
                             passCode = ""
                         }
                     }
@@ -81,6 +87,7 @@ extension PassView {
             .padding()
         }
     }
+    
     private var numberButtonView: some View {
         VStack(alignment: .trailing) {
             HStack {
