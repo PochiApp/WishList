@@ -83,10 +83,10 @@ extension FolderView {
                 NavigationLink(destination:ListView(wishListViewModel: wishListViewModel, selectedFolder: foldermodel, isInsertPassViewBeforeListView: $isInsertPassViewBeforeListView)){
                     RoundedRectangle(cornerRadius: 16)
                         .fill(Color("\(foldermodel.unwrappedBackColor)"))
-                        .frame(width: 290, height: 150)
+                        .frame(width: 280, height: 150)
                         .shadow(color: .gray.opacity(0.9), radius: 1, x: 2, y: 2)
                         .overlay(
-                            VStack(alignment: .center){
+                            LazyVStack(alignment: .center){
                                 //Folder期日表示部分
                                 Text(foldermodel.notDaySetting ? "" : "\(wishListViewModel.formattedDateString(date: foldermodel.unwrappedStartDate)) ~ \(wishListViewModel.formattedDateString(date: foldermodel.unwrappedFinishDate))")
                                     .font(.system(size: 16))
@@ -206,4 +206,15 @@ extension FolderView {
                 .lineLimit(1)
         }
     }
+}
+
+extension UIScrollView {
+    open override var clipsToBounds: Bool {
+        get { false }
+        set { }
+    }
+}
+
+struct DropViewDelegate: DropDelegate {
+    var
 }

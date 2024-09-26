@@ -369,7 +369,6 @@ extension ListView {
 
 //Listの達成チェックボックス以外のメイン表示部分
 struct listButtonView: View {
-    
     @State var isShowListAdd = false
     @ObservedObject var list: ListModel
     let selectedFolder: FolderModel

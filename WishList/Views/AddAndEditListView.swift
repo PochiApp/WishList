@@ -71,7 +71,6 @@ struct AddAndEditListView: View {
                                         }
                                     }
                                 }
-                                
                                 //選択した画像削除ボタン
                                 selectedPhotosDeleteButton
                             }
