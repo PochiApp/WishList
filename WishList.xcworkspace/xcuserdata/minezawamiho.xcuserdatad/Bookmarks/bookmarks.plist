@@ -34,16 +34,15 @@
 			<key>text-context</key>
 			<dict>
 				<key>focused</key>
-				<string>                .onDrop(of: [UTType.text], delegate: DropViewDelegate(dropFolder: foldermodel, folders: folderModel, currentDragFolder: currentFolder, context: context, wishListViewModel: wishListViewModel))
-</string>
+				<string></string>
 				<key>leading</key>
 				<string>                    return NSItemProvider(object: draggedFolder as NSString)
                 }
-</string>
+                .onDrop(of: [UTType.text], delegate: DropViewDelegate(dropFolder: foldermodel, folders: </string>
 				<key>trailing</key>
-				<string>                //パスコード設定画面の表示
+				<string>folderModel, currentDragFolder: currentFolder, context: context, wishListViewModel: wishListViewModel))
+                //パスコード設定画面の表示
                 .fullScreenCover(isPresented: $isShowSetPassView, content: {
-                    SetPassView(wishListViewModel: wishListViewModel, isShowSetPassView: $isShowSetPassView, isShowUnlockPassView: $isShowUnlockPassView)
 </string>
 			</dict>
 			<key>title</key>
@@ -81,16 +80,15 @@
 			<key>text-context</key>
 			<dict>
 				<key>focused</key>
-				<string>                .onDrop(of: [UTType.text], delegate: DropViewDelegate(dropFolder: foldermodel, folders: folderModel, currentDragFolder: currentFolder, context: context, wishListViewModel: wishListViewModel))
-</string>
+				<string></string>
 				<key>leading</key>
 				<string>                    return NSItemProvider(object: draggedFolder as NSString)
                 }
-</string>
+                .onDrop(of: [UTType.text], delegate: DropViewDelegate(dropFolder: foldermodel, folders: </string>
 				<key>trailing</key>
-				<string>                //パスコード設定画面の表示
+				<string>folderModel, currentDragFolder: currentFolder, context: context, wishListViewModel: wishListViewModel))
+                //パスコード設定画面の表示
                 .fullScreenCover(isPresented: $isShowSetPassView, content: {
-                    SetPassView(wishListViewModel: wishListViewModel, isShowSetPassView: $isShowSetPassView, isShowUnlockPassView: $isShowUnlockPassView)
 </string>
 			</dict>
 			<key>title</key>

@@ -21,7 +21,6 @@ class WishListViewModel : ObservableObject{
     @Published var folderPassword = ""
     @Published var notDaySetting = false //フォルダーの期日設定なしの場合true
     @Published var lockFolder: FolderModel! //ロック対象のフォルダーが格納される
-    @Published var currentDropFolder: FolderModel!
     
     //List関連
     @Published var text = ""
@@ -147,22 +146,6 @@ class WishListViewModel : ObservableObject{
         backColor = "snowWhite"
     }
     
-    func moveFolder (dropFolder: FolderModel, folders: FetchedResults<FolderModel>, dragedFolder: FolderModel, context: NSManagedObjectContext) {
-        
-            withAnimation(.default) {
-                let fromIndex = folders.firstIndex(of: dragedFolder)!
-                let toIndex = folders.firstIndex(of: dropFolder)!
-                var folderModelsArray = Array(folders)
-        
-                folderModelsArray.move(fromOffsets: IndexSet(integer: fromIndex), toOffset: toIndex)
-                do {
-                    try context.save()
-                }
-                catch {
-                    print("移動失敗")
-                }
-            }
-    }
     
     //MARK: - Listの新規作成や編集関連メソッド
     
