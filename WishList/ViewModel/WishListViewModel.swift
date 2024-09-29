@@ -21,6 +21,7 @@ class WishListViewModel : ObservableObject{
     @Published var folderPassword = ""
     @Published var notDaySetting = false //フォルダーの期日設定なしの場合true
     @Published var lockFolder: FolderModel! //ロック対象のフォルダーが格納される
+    @Published var currentDropFolder: FolderModel!
     
     //List関連
     @Published var text = ""
@@ -40,6 +41,24 @@ class WishListViewModel : ObservableObject{
     @Published var categoryAddDate = Date()
     
     //MARK: - Folder関連メソッド
+    
+    //初アップデート時、folderIndexを既存のFolderに付与する
+    func setupFolderIndex (context: NSManagedObjectContext, folders: FetchedResults<FolderModel>) {
+        var FolderArray = Array(folders)
+        
+        //ソート機能で昇順と降順で並び替えられている場合で、indexの変更方法を分岐
+        for index in stride(from: FolderArray.count - 1, through: 0, by: -1){
+            FolderArray[index].folderIndex = Int16(index + 1)
+        }
+        do {
+            try context.save()
+            print("\(FolderArray)")
+        }
+        catch {
+            print("folderIndex更新失敗")
+        }
+            
+    }
     
     //Folderの新規作成及び編集
     func addNewFolderOrEditFolder (context: NSManagedObjectContext) {
@@ -81,6 +100,13 @@ class WishListViewModel : ObservableObject{
         return formatter.string(from: date)
     }
     
+    func formattedDateAndTimeString(date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier:"ja_JP")
+        formatter.setLocalizedDateFormatFromTemplate("yyyy/MM/dd HH:mm:ss")
+        return formatter.string(from: date)
+    }
+    
     //編集するFolderとその内容をセット
     func editFolder (updateFolder: FolderModel) {
         self.updateFolder = updateFolder
@@ -119,6 +145,23 @@ class WishListViewModel : ObservableObject{
         selectedStartDate =  Date()
         selectedFinishDate = Date()
         backColor = "snowWhite"
+    }
+    
+    func moveFolder (dropFolder: FolderModel, folders: FetchedResults<FolderModel>, dragedFolder: FolderModel, context: NSManagedObjectContext) {
+        
+            withAnimation(.default) {
+                let fromIndex = folders.firstIndex(of: dragedFolder)!
+                let toIndex = folders.firstIndex(of: dropFolder)!
+                var folderModelsArray = Array(folders)
+        
+                folderModelsArray.move(fromOffsets: IndexSet(integer: fromIndex), toOffset: toIndex)
+                do {
+                    try context.save()
+                }
+                catch {
+                    print("移動失敗")
+                }
+            }
     }
     
     //MARK: - Listの新規作成や編集関連メソッド
@@ -249,5 +292,6 @@ class WishListViewModel : ObservableObject{
             print("カテゴリー追加できませんでした")
         }
     }
+    
 }
 

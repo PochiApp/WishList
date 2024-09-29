@@ -8,16 +8,19 @@
 import SwiftUI
 import CoreData
 import UIKit
+import UniformTypeIdentifiers
 
 struct FolderView: View {
     
     @Environment(\.managedObjectContext) private var context
-    @AppStorage ("isFirstLaunchKey") var launchKey = false  //初回起動したかのフラグをUserDefaultで保存
+    //初回起動したかのフラグをUserDefaultで保存
+    @AppStorage ("isFirstLaunchKey") var launchKey = false
     
-    //
+    @AppStorage ("isUpdateDataModel") var isUpdateDataModel = false
+    
     @FetchRequest(
         entity: FolderModel.entity(),
-        sortDescriptors: [NSSortDescriptor(keyPath: \FolderModel.writeDate, ascending: false)],
+        sortDescriptors: [NSSortDescriptor(keyPath: \FolderModel.folderIndex, ascending: true)],
         animation: .default)
     private var folderModel: FetchedResults<FolderModel>
     
@@ -30,6 +33,7 @@ struct FolderView: View {
     @State var isShowSetPassView: Bool = false
     @State var isShowUnlockPassView: Bool = false
     
+    @State var currentFolder: FolderModel?
     
     var body: some View {
         NavigationStack {
@@ -69,6 +73,11 @@ struct FolderView: View {
                 wishListViewModel.setupDefaultCategory(context: context)
                 launchKey = true
             }
+            
+            if (launchKey == true && isUpdateDataModel == false) {
+                wishListViewModel.setupFolderIndex(context: context, folders: folderModel)
+                isUpdateDataModel = true
+            }
         })
     }
 }
@@ -83,6 +92,7 @@ extension FolderView {
                 NavigationLink(destination:ListView(wishListViewModel: wishListViewModel, selectedFolder: foldermodel, isInsertPassViewBeforeListView: $isInsertPassViewBeforeListView)){
                     RoundedRectangle(cornerRadius: 16)
                         .fill(Color("\(foldermodel.unwrappedBackColor)"))
+                        .opacity(currentFolder == foldermodel ? 0.8 : 1.0)
                         .frame(width: 280, height: 150)
                         .shadow(color: .gray.opacity(0.9), radius: 1, x: 2, y: 2)
                         .overlay(
@@ -137,7 +147,6 @@ extension FolderView {
                         })
                     }
                     
-                    
                     Button(action: {
                         wishListViewModel.editFolder(updateFolder: foldermodel)
                         isShowAddAndEditFolderView.toggle()
@@ -158,6 +167,12 @@ extension FolderView {
                         Label("削除", systemImage: "trash")
                     })
                 }))
+                .onDrag{
+                    currentFolder = foldermodel
+                    let draggedFolder = String(currentFolder?.folderIndex ?? Int16(0))
+                    return NSItemProvider(object: draggedFolder as NSString)
+                }
+                .onDrop(of: [UTType.text], delegate: DropViewDelegate(dropFolder: foldermodel, folders: folderModel, currentDragFolder: currentFolder, context: context, wishListViewModel: wishListViewModel))
                 //パスコード設定画面の表示
                 .fullScreenCover(isPresented: $isShowSetPassView, content: {
                     SetPassView(wishListViewModel: wishListViewModel, isShowSetPassView: $isShowSetPassView, isShowUnlockPassView: $isShowUnlockPassView)
@@ -168,12 +183,9 @@ extension FolderView {
                     SetPassView(wishListViewModel: wishListViewModel, isShowSetPassView: $isShowSetPassView, isShowUnlockPassView: $isShowUnlockPassView)
                         .presentationDetents([.large])
                 })
-                .transition(
-                    AnyTransition.asymmetric(insertion: AnyTransition.slide.combined(with: AnyTransition.opacity), removal: AnyTransition.identity))
             }
         }
     }
-    
     
     private var floatingButton: some View {
         Button(action: {
@@ -190,8 +202,6 @@ extension FolderView {
                 .presentationDetents([.large, .fraction(0.9)])
         }
     }
-    
-    
     
     private var emptyFolderView: some View {
         VStack(alignment: .center) {
@@ -216,5 +226,46 @@ extension UIScrollView {
 }
 
 struct DropViewDelegate: DropDelegate {
-    var
+    var dropFolder: FolderModel
+    var folders: FetchedResults<FolderModel>
+    var currentDragFolder: FolderModel!
+    var context: NSManagedObjectContext
+    @ObservedObject var wishListViewModel : WishListViewModel
+    
+    
+    func performDrop(info: DropInfo) -> Bool {
+        do {
+            try context.save()
+        }
+        catch {
+            print("移動後の順序保存失敗")
+        }
+        return true
+    }
+    
+    func dropEntered(info: DropInfo) {
+        guard let dragedFolder = currentDragFolder else { return }
+        
+        if dragedFolder != dropFolder {
+            withAnimation(.default) {
+                let fromIndex = folders.firstIndex(of: dragedFolder)!
+                let toIndex = folders.firstIndex(of: dropFolder)!
+                
+                var folderModelsArray = Array(folders)
+                
+                folderModelsArray.move(fromOffsets: IndexSet(integer: fromIndex), toOffset: toIndex > fromIndex ? toIndex + 1 : toIndex)
+                
+                for (index, folder) in folderModelsArray.enumerated() {
+                    folder.folderIndex = Int16(index)
+                }
+            }
+        }
+    }
+    
+    func dropUpdated(info: DropInfo) -> DropProposal? {
+        return DropProposal(operation: .move)
+    }
 }
+
+
+

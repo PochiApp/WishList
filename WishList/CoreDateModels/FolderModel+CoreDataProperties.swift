@@ -26,6 +26,7 @@ extension FolderModel {
     @NSManaged public var folderPassword: String?
     @NSManaged public var lists: NSArray?
     @NSManaged public var achievedLists: NSArray?
+    @NSManaged public var folderIndex: Int16
 }
 
 extension FolderModel : Identifiable {

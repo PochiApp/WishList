@@ -25,6 +25,7 @@ struct PersistenceController {
         newFolderModel.folderPassword = ""
         newFolderModel.lists = []
         newFolderModel.achievedLists = []
+        newFolderModel.folderIndex = Int16(0)
         
         let newListModel = ListModel(context: viewContext)
         newListModel.text = ""

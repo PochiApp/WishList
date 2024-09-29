@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>top-level-items</key>
+	<array>
+		<dict>
+			<key>destination</key>
+			<dict>
+				<key>location-parameters</key>
+				<dict>
+					<key>EndingColumnNumber</key>
+					<string>104</string>
+					<key>EndingLineNumber</key>
+					<string>174</string>
+					<key>StartingColumnNumber</key>
+					<string>104</string>
+					<key>StartingLineNumber</key>
+					<string>174</string>
+					<key>Timestamp</key>
+					<string>749310741.1456341</string>
+				</dict>
+				<key>rebasable-url</key>
+				<dict>
+					<key>base</key>
+					<string>workspace</string>
+					<key>payload</key>
+					<dict>
+						<key>relative-path</key>
+						<string>WishList/WishList/Views/FolderView.swift</string>
+					</dict>
+				</dict>
+			</dict>
+			<key>text-context</key>
+			<dict>
+				<key>focused</key>
+				<string>                .onDrop(of: [UTType.text], delegate: DropViewDelegate(dropFolder: foldermodel, folders: folderModel, currentDragFolder: currentFolder, context: context, wishListViewModel: wishListViewModel))
+</string>
+				<key>leading</key>
+				<string>                    return NSItemProvider(object: draggedFolder as NSString)
+                }
+</string>
+				<key>trailing</key>
+				<string>                //パスコード設定画面の表示
+                .fullScreenCover(isPresented: $isShowSetPassView, content: {
+                    SetPassView(wishListViewModel: wishListViewModel, isShowSetPassView: $isShowSetPassView, isShowUnlockPassView: $isShowUnlockPassView)
+</string>
+			</dict>
+			<key>title</key>
+			<string>Error: Cannot convert value of type 'FetchedResults&lt;&gt;' to expected argument type '[FolderModel]'</string>
+			<key>type</key>
+			<string>bookmark</string>
+		</dict>
+		<dict>
+			<key>destination</key>
+			<dict>
+				<key>location-parameters</key>
+				<dict>
+					<key>EndingColumnNumber</key>
+					<string>104</string>
+					<key>EndingLineNumber</key>
+					<string>174</string>
+					<key>StartingColumnNumber</key>
+					<string>104</string>
+					<key>StartingLineNumber</key>
+					<string>174</string>
+					<key>Timestamp</key>
+					<string>749310741.1456341</string>
+				</dict>
+				<key>rebasable-url</key>
+				<dict>
+					<key>base</key>
+					<string>workspace</string>
+					<key>payload</key>
+					<dict>
+						<key>relative-path</key>
+						<string>WishList/WishList/Views/FolderView.swift</string>
+					</dict>
+				</dict>
+			</dict>
+			<key>text-context</key>
+			<dict>
+				<key>focused</key>
+				<string>                .onDrop(of: [UTType.text], delegate: DropViewDelegate(dropFolder: foldermodel, folders: folderModel, currentDragFolder: currentFolder, context: context, wishListViewModel: wishListViewModel))
+</string>
+				<key>leading</key>
+				<string>                    return NSItemProvider(object: draggedFolder as NSString)
+                }
+</string>
+				<key>trailing</key>
+				<string>                //パスコード設定画面の表示
+                .fullScreenCover(isPresented: $isShowSetPassView, content: {
+                    SetPassView(wishListViewModel: wishListViewModel, isShowSetPassView: $isShowSetPassView, isShowUnlockPassView: $isShowUnlockPassView)
+</string>
+			</dict>
+			<key>title</key>
+			<string>Error: Cannot convert value of type 'FetchedResults&lt;FolderModel&gt;' to expected argument type '[FolderModel]'</string>
+			<key>type</key>
+			<string>bookmark</string>
+		</dict>
+	</array>
+</dict>
+</plist>

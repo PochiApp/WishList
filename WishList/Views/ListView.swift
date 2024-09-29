@@ -315,19 +315,13 @@ extension ListView {
     private func moveListAndUpdateListNumber (offSets: IndexSet, destination: Int) {
         if sortCheck { return }
         withAnimation {
-            var revisedLists = Array(listModels)
-            revisedLists.move(fromOffsets: offSets, toOffset: destination)
+            var ListsArray = Array(listModels)
+            ListsArray.move(fromOffsets: offSets, toOffset: destination)
             
             //ソート機能で昇順と降順で並び替えられている場合で、indexの変更方法を分岐
-            if (numberSort == true) {
-                for reverseIndex in stride(from: revisedLists.count - 1, through: 0, by: -1){
-                    revisedLists[reverseIndex].listNumber = Int16(reverseIndex + 1)
-                }} else {
-                    revisedLists.reverse()
-                    for reverseIndex in stride(from: revisedLists.count - 1, through: 0, by: -1){
-                        revisedLists[reverseIndex].listNumber = Int16(reverseIndex + 1)
-                    }
-                }
+            for reverseIndex in stride(from: ListsArray.count - 1, through: 0, by: -1){
+                ListsArray[reverseIndex].listNumber = Int16(reverseIndex + 1)
+            }
             do {
                 try context.save()
             }
