@@ -16,43 +16,50 @@ struct AddAndEditFolderView: View {
     @Binding var isShowAddAndEditFolderView: Bool
     @FocusState var textIsActive: Bool
     @State private var folderTitle: String = ""
+    @State private var showStartDatePicker = false
+    @State private var showFinishDatePicker = false
     
     var body: some View {
-        VStack {
-            NavigationStack{
-                Form {
-                    Section(header: Text("フォルダータイトル")) {
-                        folderTitleTextField
+        ZStack {
+            VStack {
+                NavigationStack{
+                    Form {
+                        Section(header: Text("フォルダータイトル")) {
+                            folderTitleTextField
+                        }
+                        
+                        Section(header: Text("期間")) {
+                            startDatePicker
+                            finishDatePicker
+                            Toggle("期間設定なし", isOn: $wishListViewModel.notDaySetting)
+                        }
+                        
+                        Section(header: Text("テーマカラー")) {
+                            folderThemeColorPicker
+                        }
                     }
-                    
-                    Section(header: Text("期間")) {
-                        startDatePicker
-                        finishDatePicker
-                        Toggle("期間設定なし", isOn: $wishListViewModel.notDaySetting)
-                    }
-                    
-                    Section(header: Text("テーマカラー")) {
-                        folderThemeColorPicker
+                    .navigationBarTitleDisplayMode(.inline)
+                    .toolbarBackground(Color("\(wishListViewModel.backColor)"), for: .navigationBar)
+                    .toolbarBackground(.visible, for: .navigationBar)
+                    .toolbar{
+                        ToolbarItem(placement: .principal){
+                            navigationBarTitle
+                        }
+                        ToolbarItem(placement: .topBarLeading) {
+                            cancelButton
+                        }
+                        ToolbarItem(placement: .topBarTrailing) {
+                            addFolderButton
+                        }
                     }
                 }
-                .navigationBarTitleDisplayMode(.inline)
-                .toolbarBackground(Color("\(wishListViewModel.backColor)"), for: .navigationBar)
-                .toolbarBackground(.visible, for: .navigationBar)
-                .toolbar{
-                    ToolbarItem(placement: .principal){
-                        navigationBarTitle
-                    }
-                    ToolbarItem(placement: .topBarLeading) {
-                        cancelButton
-                    }
-                    ToolbarItem(placement: .topBarTrailing) {
-                        addFolderButton
-                    }
-                }
+                .gesture(self.gesture)
             }
-            .onTapGesture {
-                //TextField外をタップしたら、フォーカス状態をOFFにしてキーボードを閉じる
-                textIsActive = false
+            if showStartDatePicker {
+                customStartDatePicker
+            }
+            if showFinishDatePicker {
+                customFinishDatePicker
             }
         }
     }
@@ -63,27 +70,38 @@ struct AddAndEditFolderView: View {
 extension AddAndEditFolderView {
     
     private var folderTitleTextField : some View {
-        TextField("フォルダ-タイトル", text: wishListViewModel.updateFolder == nil ? $folderTitle : $wishListViewModel.folderTitle)
+        TextField("フォルダータイトル", text: wishListViewModel.updateFolder == nil ? $folderTitle : $wishListViewModel.folderTitle)
             .focused($textIsActive)
         
     }
     
     private var startDatePicker : some View {
-        DisclosureGroup(wishListViewModel.notDaySetting ?"開始　未設定" :"開始  \(wishListViewModel.formattedDateString(date: wishListViewModel.selectedStartDate))"){
-            DatePicker("開始",selection: $wishListViewModel.selectedStartDate, displayedComponents: [.date])
-                .datePickerStyle(.wheel)
-                .environment(\.locale, Locale(identifier: "ja_JP"))
-            
+        Button {
+            showStartDatePicker = true
+        } label: {
+            HStack{
+                Text("開始")
+                Spacer()
+                Text("\(wishListViewModel.formattedDateString(date: wishListViewModel.selectedStartDate))")
+                Image(systemName: "calendar")
+            }
         }
+        .foregroundColor(wishListViewModel.notDaySetting ? .gray : .originalBlack)
         .disabled(wishListViewModel.notDaySetting)
     }
     
     private var finishDatePicker : some View {
-        DisclosureGroup(wishListViewModel.notDaySetting ?"終了　未設定" :"終了  \(wishListViewModel.formattedDateString(date: wishListViewModel.selectedFinishDate))"){
-            DatePicker("終了",selection: $wishListViewModel.selectedFinishDate, in: wishListViewModel.selectedStartDate..., displayedComponents: [.date])
-                .datePickerStyle(.wheel)
-                .environment(\.locale, Locale(identifier: "ja_JP"))
+        Button {
+            showFinishDatePicker = true
+        } label: {
+            HStack{
+                Text("終了")
+                Spacer()
+                Text("\(wishListViewModel.formattedDateString(date: wishListViewModel.selectedFinishDate))")
+                Image(systemName: "calendar")
+            }
         }
+        .foregroundColor(wishListViewModel.notDaySetting ? .gray : .originalBlack)
         .disabled(wishListViewModel.notDaySetting)
     }
     
@@ -190,5 +208,99 @@ extension AddAndEditFolderView {
                 .font(.title3)
                 .foregroundColor(Color("originalBlack"))
         })
+    }
+    
+    //開始期日設定用のDatePicker
+    private var customStartDatePicker : some View {
+        ZStack {
+            Color.black.opacity(0.3)
+                .onTapGesture {
+                    showStartDatePicker = false
+                }
+            VStack {
+                DatePicker(
+                "",
+                selection: $wishListViewModel.selectedStartDate,
+                displayedComponents: [.date]
+                )
+                .datePickerStyle(.graphical)
+                Divider()
+                HStack {
+                    Spacer()
+                    Button("キャンセル") {
+                        showStartDatePicker = false
+                    }
+                    .bold()
+                    .padding(.trailing, 10)
+                    Button("保存") {
+                        //終了期日が、設定した開始期日よりも前になっていたら開始期日と同じ日にする
+                        if (wishListViewModel.selectedStartDate > wishListViewModel.selectedFinishDate) {
+                            wishListViewModel.selectedFinishDate = wishListViewModel.selectedStartDate
+                        }
+                        showStartDatePicker = false
+                    }
+                    .bold()
+                    .padding(.trailing, 8)
+                }
+                .padding(.vertical, 15)
+                .padding(.horizontal, 10)
+            }
+            .padding(.horizontal, 20)
+            .background(
+                Color.white
+                    .cornerRadius(30)
+            )
+            .padding(.horizontal, 20)
+        }
+    }
+    
+    //終了期日設定用のDatePicker
+    private var customFinishDatePicker : some View {
+        ZStack {
+            Color.black.opacity(0.3)
+                .onTapGesture {
+                    showFinishDatePicker = false
+                }
+            VStack {
+                DatePicker(
+                "",
+                selection: $wishListViewModel.selectedFinishDate,
+                in: wishListViewModel.selectedStartDate...,
+                displayedComponents: [.date]
+                )
+                .datePickerStyle(.graphical)
+                Divider()
+                HStack {
+                    Spacer()
+                    Button("キャンセル") {
+                        showFinishDatePicker = false
+                    }
+                    .bold()
+                    .padding(.trailing, 10)
+                    Button("保存") {
+                        showFinishDatePicker = false
+                    }
+                    .bold()
+                    .padding(.trailing, 8)
+                }
+                .padding(.vertical, 15)
+                .padding(.horizontal, 10)
+            }
+            .padding(.horizontal, 20)
+            .background(
+                Color.white
+                    .cornerRadius(30)
+            )
+            .padding(.horizontal, 20)
+        }
+    }
+    
+    private var gesture: some Gesture {
+        DragGesture()
+            .onChanged { value in
+                if value.translation.height != 0 {
+                    self.textIsActive = false
+                }
+            }
     }
 }
