@@ -23,7 +23,7 @@ struct FirstTabView: View {
                     Label("フォルダー", systemImage: "folder")
                 }
             
-            SettingView(wishListViewModel: wishListViewModel)
+            SettingView()
                 .tabItem {
                     Label("設定", systemImage: "gearshape")
                 }

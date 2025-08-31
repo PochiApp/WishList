@@ -18,16 +18,50 @@ struct AddAndEditListView: View {
         animation: .default)
     private var categorys: FetchedResults<CategoryEntity>
     
-    @ObservedObject var wishListViewModel : WishListViewModel
+    @StateObject var listViewModel: ListViewModel
     @Binding var isShowAddAndEditListView: Bool
     @State var listColor: String
     @State var selectedPhoto: [PhotosPickerItem] = []
     @FocusState var textFieldIsActive: Field?
+    let mode: Mode
+    
+    //編集モードか新規モードかでViewModelでオーバーロードしたinitを切り替え
+    enum Mode {
+        case add(listNumber: Int, folderDate: Date)
+        case edit(updateList: ListModel)
+        
+        var writeListLabel: String {
+            switch self {
+            case .add: return "作成"
+            case .edit: return "変更"
+            }
+        }
+        
+        var navigationTitle: String {
+            switch self {
+            case .add: return "リスト作成"
+            case .edit: return "リスト編集"
+            }
+        }
+    }
     
     //TextFieldのフォーカスを、textの時とminiMemoの時で分けている
     enum Field: Hashable {
         case text
         case miniMemo
+    }
+    
+    init(isShowAddAndEditListView: Binding<Bool>, listColor: String, mode: Mode) {
+        self._isShowAddAndEditListView = isShowAddAndEditListView
+        self.mode = mode
+        self.listColor = listColor
+        
+        switch mode {
+        case .add(let listNumber, let folderDate):
+            _listViewModel = StateObject(wrappedValue: ListViewModel(listNumber: listNumber, folderDate: folderDate))
+        case .edit(let updateList):
+            _listViewModel = StateObject(wrappedValue: ListViewModel(update: updateList))
+        }
     }
     
     var body: some View {
@@ -43,27 +77,25 @@ struct AddAndEditListView: View {
                         
                         //カテゴリー追加画面への遷移ボタン
                         NavigationLink(
-                            destination: CategoryView(wishListViewModel: wishListViewModel)
-                                .onDisappear(perform: {
-                                    firstCategoryGet()
-                                })){
-                                    Text("カテゴリー追加へ")
-                                        .font(.subheadline)
-                                        .foregroundColor(Color("originalBlack"))
-                                }
+                            destination: CategoryView()
+                        ){
+                            Text("カテゴリー追加へ")
+                                .font(.subheadline)
+                                .foregroundColor(Color("originalBlack"))
+                        }
                     }
                     
                     Section(header: Text("画像")) {
                         
                         PhotosPicker(selection: $selectedPhoto, maxSelectionCount: 2, selectionBehavior: .ordered, matching: .images) {
-                            if wishListViewModel.images.isEmpty {
+                            if listViewModel.images.isEmpty {
                                 //ViewModelのimagesが空だったときは、noimage画像の表示
                                 Image("noimage")
                                     .resizable()
                                     .scaledToFit()
                             } else {
                                 HStack {
-                                    ForEach(wishListViewModel.images, id:\.self) { image in
+                                    ForEach(listViewModel.images, id:\.self) { image in
                                         if let image {
                                             Image(uiImage: image)
                                                 .resizable()
@@ -78,51 +110,46 @@ struct AddAndEditListView: View {
                         //PhotosPickerで選択した画像の処理
                         .onChange(of: selectedPhoto){ newSelectedPhoto in
                             //ViewModelのdatas初期化処理
-                            if !wishListViewModel.datas.isEmpty {
-                                wishListViewModel.datas.removeAll()
+                            if !listViewModel.datas.isEmpty {
+                                listViewModel.datas.removeAll()
                             }
                             
                             Task {
                                 //PhotosPickerで選択したImageをData型に変換
-                                await wishListViewModel.convertDataimages(photos: newSelectedPhoto)
+                                await listViewModel.convertDataimages(photos: newSelectedPhoto)
                                 
                                 //Imageの数に応じた分岐処理
-                                switch wishListViewModel.datas.count {
-                                //Coredataには、UIImage型ではなくData型で保存
+                                switch listViewModel.datas.count {
+                                    //Coredataには、UIImage型ではなくData型で保存
                                 case 1 :
                                     DispatchQueue.main.async {
-                                        wishListViewModel.image1 = wishListViewModel.datas[0]
-                                        wishListViewModel.image2 = Data.init()
+                                        listViewModel.image1 = listViewModel.datas[0]
+                                        listViewModel.image2 = Data.init()
                                         print("case1")
                                     }
                                 case 2 :
                                     DispatchQueue.main.async {
-                                        wishListViewModel.image1 = wishListViewModel.datas[0]
-                                        wishListViewModel.image2 = wishListViewModel.datas[1]
+                                        listViewModel.image1 = listViewModel.datas[0]
+                                        listViewModel.image2 = listViewModel.datas[1]
                                         print("case2")
                                     }
                                 default :
                                     DispatchQueue.main.async {
-                                        wishListViewModel.image1 = Data.init()
-                                        wishListViewModel.image2 = Data.init()
+                                        listViewModel.image1 = Data.init()
+                                        listViewModel.image2 = Data.init()
                                         print("default")
                                     }
                                     return
                                 }
                                 
                                 //Data型→UIImage型への変換
-                                await wishListViewModel.convertUiimages()
+                                await listViewModel.convertUiimages()
                             }
                         }
                         .onAppear() {
-                            
-                            if wishListViewModel.updateList == nil {
-                                //CategoryPickerの初期値の設定
-                                firstCategoryGet()
-                            }
                             Task {
                                 //Listに保存しているData型のImageをUIImage型に変換して表示
-                                await wishListViewModel.convertUiimages()
+                                await listViewModel.convertUiimages()
                             }
                         }
                     }
@@ -132,7 +159,7 @@ struct AddAndEditListView: View {
                     }
                     
                     //Listの編集時は、達成チェックボックスの表示
-                    if wishListViewModel.updateList !== nil {
+                    if listViewModel.updateList != nil {
                         Section(header: Text("達成チェック")) {
                             achievementCheckBox
                         }
@@ -162,7 +189,7 @@ struct AddAndEditListView: View {
 //MARK: - extension
 extension AddAndEditListView {
     private var wishListTextField: some View {
-        TextField("やりたいこと/欲しいもの など", text: $wishListViewModel.text)
+        TextField("やりたいこと/欲しいもの など", text: $listViewModel.text)
             .focused($textFieldIsActive, equals: .text)
             .onTapGesture {
                 textFieldIsActive = nil
@@ -170,7 +197,8 @@ extension AddAndEditListView {
     }
     
     private var categoryPicker: some View {
-        Picker("カテゴリー", selection: $wishListViewModel.category) {
+        Picker("カテゴリー", selection: $listViewModel.category) {
+            Text("未選択").tag("")
             ForEach(categorys, id: \.self) { category in
                 Text("\(category.unwrappedCategoryName)")
                     .tag(category.unwrappedCategoryName)
@@ -181,7 +209,7 @@ extension AddAndEditListView {
     private var selectedPhotosDeleteButton: some View {
         Button(action: {
             selectedPhoto = []
-            wishListViewModel.resetImages()
+            listViewModel.resetImages()
         }) {
             Text("画像削除")
                 .foregroundColor(.red)
@@ -189,7 +217,7 @@ extension AddAndEditListView {
     }
     
     private var wishListMiniMemoTextField: some View {
-        TextField("一言メモ", text: $wishListViewModel.miniMemo)
+        TextField("一言メモ", text: $listViewModel.miniMemo)
             .focused($textFieldIsActive, equals: .miniMemo)
             .onTapGesture {
                 textFieldIsActive = nil
@@ -198,7 +226,7 @@ extension AddAndEditListView {
     
     private var achievementCheckBox: some View {
         Button(action: {
-            wishListViewModel.achievement.toggle()
+            listViewModel.achievement.toggle()
             do {
                 try context.save()
             }
@@ -207,7 +235,7 @@ extension AddAndEditListView {
             }
             
         }, label: {
-            Image(systemName: wishListViewModel.achievement ? "checkmark.square" : "square")
+            Image(systemName: listViewModel.achievement ? "checkmark.square" : "square")
                 .foregroundColor(Color("originalBlack"))
         })
         .buttonStyle(.plain)
@@ -216,47 +244,36 @@ extension AddAndEditListView {
     private var writeListButton: some View {
         Button(action: {
             
-            wishListViewModel.writeList(context: context)
+            listViewModel.writeList(context: context)
             
             dismiss()
             
-            wishListViewModel.resetList()
+            listViewModel.resetList()
             
         }, label: {
-            Text(wishListViewModel.updateList == nil ? "作成" : "変更")
+            Text(mode.writeListLabel)
                 .font(.title3)
                 .foregroundColor(Color("originalBlack"))
         })
     }
     
+    //モーダル上部のタイトル名
     private var navigationTitle: some View {
-        if wishListViewModel.updateList == nil {
-            Text("リスト作成")
-                .font(.title3)
-                .foregroundColor(Color("originalBlack"))
-            
-        } else {
-            Text("リスト編集")
-                .font(.title3)
-                .foregroundColor(Color("originalBlack"))
-        }
+        Text(mode.navigationTitle)
+            .font(.title3)
+            .foregroundColor(Color("originalBlack"))
     }
     
     
     private var cancelButton: some View {
         Button(action: {
             dismiss()
-            wishListViewModel.resetList()
+            listViewModel.resetList()
         }, label: {
             Image(systemName: "clear.fill")
                 .font(.title2)
                 .foregroundColor(Color("originalBlack"))
         })
-    }
-    
-    private func firstCategoryGet() {
-        let arrayCategory = Array(categorys)
-        wishListViewModel.category = arrayCategory.first?.categoryName ?? ""
     }
 }
 

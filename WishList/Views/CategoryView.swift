@@ -11,7 +11,6 @@ import CoreData
 struct CategoryView: View {
     
     @Environment(\.managedObjectContext) private var context
-    @ObservedObject var wishListViewModel : WishListViewModel
     
     @FetchRequest(
         entity: CategoryEntity.entity(),
@@ -52,7 +51,7 @@ struct CategoryView: View {
         .font(.title3)
         .sheet(isPresented: $isShowCategoryAdd){
             
-            AddCategoryView(wishListViewModel: wishListViewModel, isShowCategoryAdd: $isShowCategoryAdd)
+            AddCategoryView(isShowCategoryAdd: $isShowCategoryAdd)
                 .presentationDetents([.medium])
         }
     }

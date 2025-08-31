@@ -11,9 +11,8 @@ struct AddCategoryView: View {
     
     @Environment (\.managedObjectContext)private var context
     @Environment (\.dismiss) var dismiss
+    @StateObject var categoryViewModel = CategoryViewModel()
     @FocusState var textIsActive: Bool
-    
-    @ObservedObject var wishListViewModel : WishListViewModel
     
     @Binding var isShowCategoryAdd: Bool
     
@@ -53,7 +52,7 @@ struct AddCategoryView: View {
 
 extension AddCategoryView {
     private var categoryTextField: some View {
-        TextField("", text: $wishListViewModel.categoryName)
+        TextField("", text: $categoryViewModel.categoryName)
             .focused($textIsActive)
             .frame(alignment: .center)
     }
@@ -71,15 +70,16 @@ extension AddCategoryView {
     
     private var writeCategoryButton: some View {
         Button(action: {
-            wishListViewModel.addCategory(context: context)
+            categoryViewModel.addCategory(context: context)
             
             dismiss()
             
-            wishListViewModel.categoryName = ""
+            categoryViewModel.categoryName = ""
         }, label: {
             Text("追加")
-                .foregroundColor(Color("originalBlack"))
+                .foregroundColor(categoryViewModel.categoryName.isEmpty ? Color.gray : Color("originalBlack"))
                 .font(.title3)
         })
+        .disabled(categoryViewModel.categoryName.isEmpty)
     }
 }

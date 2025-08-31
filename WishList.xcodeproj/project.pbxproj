@@ -22,6 +22,8 @@
 		395828A72B2D75EE007E085C /* AddAndEditFolderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395828A62B2D75ED007E085C /* AddAndEditFolderView.swift */; };
 		3977865F2BD2B4900066D5D9 /* BannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3977865E2BD2B4900066D5D9 /* BannerViewController.swift */; };
 		397786612BD3A2C80066D5D9 /* BannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 397786602BD3A2C80066D5D9 /* BannerView.swift */; };
+		399151092E609E9200EF98EE /* ListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 399151082E609E9200EF98EE /* ListViewModel.swift */; };
+		3991510B2E60A23B00EF98EE /* CategoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3991510A2E60A23B00EF98EE /* CategoryViewModel.swift */; };
 		39B4A8542B99A6BD00FDFE67 /* PassView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39B4A8532B99A6BD00FDFE67 /* PassView.swift */; };
 		39C7D2BE2B8865F9009F32B1 /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C7D2BD2B8865F9009F32B1 /* SettingView.swift */; };
 		39C7D2C02B886C84009F32B1 /* FirstTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C7D2BF2B886C84009F32B1 /* FirstTabView.swift */; };
@@ -32,6 +34,7 @@
 		39E54C682B2E949100298D98 /* WishListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39E54C672B2E949100298D98 /* WishListViewModel.swift */; };
 		39E54C6B2B3068A800298D98 /* FolderModel+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39E54C692B3068A800298D98 /* FolderModel+CoreDataClass.swift */; };
 		39E54C6C2B3068A800298D98 /* FolderModel+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39E54C6A2B3068A800298D98 /* FolderModel+CoreDataProperties.swift */; };
+		39F6D4AB2E642B0D00BA4CCD /* Date_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39F6D4AA2E642B0D00BA4CCD /* Date_Extension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -52,6 +55,8 @@
 		3977865C2BD131200066D5D9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		3977865E2BD2B4900066D5D9 /* BannerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerViewController.swift; sourceTree = "<group>"; };
 		397786602BD3A2C80066D5D9 /* BannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerView.swift; sourceTree = "<group>"; };
+		399151082E609E9200EF98EE /* ListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewModel.swift; sourceTree = "<group>"; };
+		3991510A2E60A23B00EF98EE /* CategoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewModel.swift; sourceTree = "<group>"; };
 		3991546B2CA94F820063A1C2 /* ListModel 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "ListModel 3.xcdatamodel"; sourceTree = "<group>"; };
 		39B4A8532B99A6BD00FDFE67 /* PassView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassView.swift; sourceTree = "<group>"; };
 		39C7D2BD2B8865F9009F32B1 /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
@@ -63,6 +68,7 @@
 		39E54C672B2E949100298D98 /* WishListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishListViewModel.swift; sourceTree = "<group>"; };
 		39E54C692B3068A800298D98 /* FolderModel+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FolderModel+CoreDataClass.swift"; sourceTree = "<group>"; };
 		39E54C6A2B3068A800298D98 /* FolderModel+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FolderModel+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		39F6D4AA2E642B0D00BA4CCD /* Date_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date_Extension.swift; sourceTree = "<group>"; };
 		873B0063C0C8BC0EB78DAD24 /* Pods-WishList.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WishList.release.xcconfig"; path = "Target Support Files/Pods-WishList/Pods-WishList.release.xcconfig"; sourceTree = "<group>"; };
 		E5E9132EB91BDA24446FD0D3 /* Pods_WishList.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WishList.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F98742E72A056DEA8BBE56DD /* Pods-WishList.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WishList.debug.xcconfig"; path = "Target Support Files/Pods-WishList/Pods-WishList.debug.xcconfig"; sourceTree = "<group>"; };
@@ -112,6 +118,7 @@
 			children = (
 				3977865C2BD131200066D5D9 /* Info.plist */,
 				3958285C2B21DB13007E085C /* WishListApp.swift */,
+				39F6D4A92E642A9700BA4CCD /* Extension */,
 				395828722B234829007E085C /* Views */,
 				395828A32B2D1CE0007E085C /* ViewModel */,
 				3977865D2BD2B4490066D5D9 /* Banner */,
@@ -166,6 +173,8 @@
 			isa = PBXGroup;
 			children = (
 				39E54C672B2E949100298D98 /* WishListViewModel.swift */,
+				399151082E609E9200EF98EE /* ListViewModel.swift */,
+				3991510A2E60A23B00EF98EE /* CategoryViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -177,6 +186,14 @@
 				397786602BD3A2C80066D5D9 /* BannerView.swift */,
 			);
 			path = Banner;
+			sourceTree = "<group>";
+		};
+		39F6D4A92E642A9700BA4CCD /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				39F6D4AA2E642B0D00BA4CCD /* Date_Extension.swift */,
+			);
+			path = Extension;
 			sourceTree = "<group>";
 		};
 		561681CC3C99F846F6E7EABC /* Frameworks */ = {
@@ -305,7 +322,9 @@
 				3958286F2B21E148007E085C /* FolderView.swift in Sources */,
 				39CC4AC92B70F8A600F070D9 /* AddCategoryView.swift in Sources */,
 				3958285D2B21DB13007E085C /* WishListApp.swift in Sources */,
+				3991510B2E60A23B00EF98EE /* CategoryViewModel.swift in Sources */,
 				39CC4AC72B6F748E00F070D9 /* CategoryEntity+CoreDataProperties.swift in Sources */,
+				39F6D4AB2E642B0D00BA4CCD /* Date_Extension.swift in Sources */,
 				395828712B2347FE007E085C /* ListView.swift in Sources */,
 				3977865F2BD2B4900066D5D9 /* BannerViewController.swift in Sources */,
 				3958287C2B29C8CE007E085C /* Persistence.swift in Sources */,
@@ -321,6 +340,7 @@
 				395828752B29C152007E085C /* BucketList.xcdatamodeld in Sources */,
 				395828792B29C576007E085C /* ListModel+CoreDataClass.swift in Sources */,
 				39E54C682B2E949100298D98 /* WishListViewModel.swift in Sources */,
+				399151092E609E9200EF98EE /* ListViewModel.swift in Sources */,
 				39CC4AC62B6F748E00F070D9 /* CategoryEntity+CoreDataClass.swift in Sources */,
 				39E54C6B2B3068A800298D98 /* FolderModel+CoreDataClass.swift in Sources */,
 			);
@@ -478,7 +498,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.2;
+				MARKETING_VERSION = 1.0.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.gmail.dp.app.pochi.BucketList;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -516,7 +536,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.2;
+				MARKETING_VERSION = 1.0.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.gmail.dp.app.pochi.BucketList;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";

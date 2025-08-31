@@ -24,7 +24,7 @@ struct FolderView: View {
         animation: .default)
     private var folderModel: FetchedResults<FolderModel>
     
-    @ObservedObject var wishListViewModel : WishListViewModel
+    @StateObject var wishListViewModel = WishListViewModel()
     @State var isShowListView = false
     @State var isShowAddAndEditFolderView: Bool = false
     
@@ -69,10 +69,10 @@ struct FolderView: View {
             self.context.refreshAllObjects()
             
             //初回起動時のみCategoryを"未分類"のみに初期設定
-            if launchKey == false {
-                wishListViewModel.setupDefaultCategory(context: context)
-                launchKey = true
-            }
+//            if launchKey == false {
+//                wishListViewModel.setupDefaultCategory(context: context)
+//                launchKey = true
+//            }
             
             if (launchKey == true && isUpdateDataModel == false) {
                 wishListViewModel.setupFolderIndex(context: context, folders: folderModel)
@@ -89,7 +89,7 @@ extension FolderView {
             Spacer()
             
             ForEach(folderModel){ foldermodel in
-                NavigationLink(destination:ListView(wishListViewModel: wishListViewModel, selectedFolder: foldermodel, isInsertPassViewBeforeListView: $isInsertPassViewBeforeListView)){
+                NavigationLink(destination:ListView(selectedFolder: foldermodel, isInsertPassViewBeforeListView: $isInsertPassViewBeforeListView)){
                     RoundedRectangle(cornerRadius: 16)
                         .fill(Color("\(foldermodel.unwrappedBackColor)"))
                         .opacity(currentFolder == foldermodel ? 0.8 : 1.0)

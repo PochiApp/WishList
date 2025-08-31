@@ -14,8 +14,6 @@ struct ListView: View {
     
     @Environment(\.managedObjectContext) private var context
     
-    @ObservedObject var wishListViewModel : WishListViewModel
-    
     let UISFGenerator = UISelectionFeedbackGenerator()
     
     //Listのフェッチ
@@ -78,8 +76,7 @@ struct ListView: View {
         }
     }
     
-    init(wishListViewModel: WishListViewModel, selectedFolder: FolderModel, isInsertPassViewBeforeListView: Binding<Bool>){
-        self.wishListViewModel = wishListViewModel
+    init(selectedFolder: FolderModel, isInsertPassViewBeforeListView: Binding<Bool>){
         self.selectedFolder = selectedFolder
         self._isInsertPassViewBeforeListView = isInsertPassViewBeforeListView
         
@@ -103,7 +100,7 @@ struct ListView: View {
     
     var body: some View {
         if selectedFolder.lockIsActive && isInsertPassViewBeforeListView {
-            PassView(wishListViewModel: wishListViewModel, selectedFolder: selectedFolder, isInsertPassViewBeforeListView: $isInsertPassViewBeforeListView)
+            PassView(selectedFolder: selectedFolder, isInsertPassViewBeforeListView: $isInsertPassViewBeforeListView)
         } else {
             NavigationStack {
                 ZStack {
@@ -170,7 +167,7 @@ extension ListView {
                     .buttonStyle(.plain)
                     .frame(alignment: .leading)
                     
-                    listButtonView(list: list, selectedFolder: selectedFolder, wishListViewModel: wishListViewModel)
+                    listButtonView(list: list, selectedFolder: selectedFolder)
                 }
             }
             .onMove(perform: moveListAndUpdateListNumber) //リストの長押しスワイプ並び替え
@@ -189,7 +186,7 @@ extension ListView {
             Text("\(selectedFolder.unwrappedTitle)")
                 .fontWeight(.light)
             HStack{
-                Text(selectedFolder.notDaySetting ? "" : "\(wishListViewModel.formattedDateString(date: selectedFolder.unwrappedStartDate)) ~ \(wishListViewModel.formattedDateString(date: selectedFolder.unwrappedFinishDate))")
+                Text(selectedFolder.notDaySetting ? "" : "\(selectedFolder.unwrappedStartDate.formattedDateString()) ~ \(selectedFolder.unwrappedFinishDate.formattedDateString())")
                     .font(.caption)
                     .padding(.trailing)
             }
@@ -197,7 +194,7 @@ extension ListView {
     }
     
     private var backButton : some View {
-        NavigationLink(destination: FolderView(wishListViewModel: wishListViewModel)) {
+        NavigationLink(destination: FolderView()) {
             Image(systemName: "arrowshape.turn.up.backward")
                 .foregroundColor(Color("originalBlack"))
                 .navigationBarBackButtonHidden(true)
@@ -267,8 +264,6 @@ extension ListView {
             listSort(sort: .all)
             
             isShowAddAndEditListView = true
-            wishListViewModel.folderDate = selectedFolder.writeDate ?? Date()
-            wishListViewModel.listNumber = listModels.count + 1
         }, label: {
             Image(systemName: "plus.circle.fill")
                 .foregroundColor(Color("originalBlack"))
@@ -278,7 +273,7 @@ extension ListView {
         })
         .sheet(isPresented: $isShowAddAndEditListView){
             
-            AddAndEditListView(wishListViewModel: wishListViewModel ,isShowAddAndEditListView: $isShowAddAndEditListView, listColor: selectedFolder.unwrappedBackColor)
+            AddAndEditListView(isShowAddAndEditListView: $isShowAddAndEditListView, listColor: selectedFolder.unwrappedBackColor, mode: .add(listNumber: listModels.count + 1, folderDate: selectedFolder.writeDate ?? Date()))
                 .presentationDetents([.large, .fraction(0.9)])
             
         }
@@ -366,13 +361,11 @@ struct listButtonView: View {
     @State var isShowListAdd = false
     @ObservedObject var list: ListModel
     let selectedFolder: FolderModel
-    @ObservedObject var wishListViewModel: WishListViewModel
     
     var body: some View {
         Button(action: {
             //Listクリックで編集ページの表示
             isShowListAdd = true
-            wishListViewModel.editList(updateList: list)
         }, label: {
             HStack {
                 //Listのindex番号表示
@@ -438,7 +431,7 @@ struct listButtonView: View {
             .foregroundColor(Color("originalBlack"))
         })
         .sheet(isPresented: $isShowListAdd) {
-            AddAndEditListView(wishListViewModel : wishListViewModel, isShowAddAndEditListView: $isShowListAdd, listColor:selectedFolder.unwrappedBackColor)
+            AddAndEditListView(isShowAddAndEditListView: $isShowListAdd, listColor:selectedFolder.unwrappedBackColor, mode: .edit(updateList: list))
                 .presentationDetents([.large])
         }
     }
