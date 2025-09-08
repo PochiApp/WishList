@@ -9,10 +9,10 @@ import SwiftUI
 
 struct AddCategoryView: View {
     
-    @Environment (\.managedObjectContext)private var context
-    @Environment (\.dismiss) var dismiss
-    @StateObject var categoryViewModel = CategoryViewModel()
+    @Environment(\.managedObjectContext)private var context
+    @Environment(\.dismiss) var dismiss
     @FocusState var textIsActive: Bool
+    @ObservedObject var categoryViewModel : CategoryViewModel
     
     @Binding var isShowCategoryAdd: Bool
     

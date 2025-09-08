@@ -10,8 +10,8 @@ import CoreData
 
 struct AddAndEditFolderView: View {
     
-    @Environment (\.managedObjectContext)private var context
-    @Environment (\.dismiss) var dismiss
+    @Environment(\.managedObjectContext)private var context
+    @Environment(\.dismiss) var dismiss
     @ObservedObject var wishListViewModel : WishListViewModel
     @Binding var isShowAddAndEditFolderView: Bool
     @FocusState var textIsActive: Bool

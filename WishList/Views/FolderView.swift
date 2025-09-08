@@ -14,9 +14,9 @@ struct FolderView: View {
     
     @Environment(\.managedObjectContext) private var context
     //初回起動したかのフラグをUserDefaultで保存
-    @AppStorage ("isFirstLaunchKey") var launchKey = false
+    @AppStorage("isFirstLaunchKey") var launchKey = false
     
-    @AppStorage ("isUpdateDataModel") var isUpdateDataModel = false
+    @AppStorage("isUpdateDataModel") var isUpdateDataModel = false
     
     @FetchRequest(
         entity: FolderModel.entity(),
@@ -24,8 +24,8 @@ struct FolderView: View {
         animation: .default)
     private var folderModel: FetchedResults<FolderModel>
     
-    @StateObject var wishListViewModel = WishListViewModel()
-    @State var isShowListView = false
+    @StateObject var wishListViewModel: WishListViewModel = WishListViewModel()
+    @State var isShowListView: Bool = false
     @State var isShowAddAndEditFolderView: Bool = false
     
     //Folderロック機能関係のフラグ

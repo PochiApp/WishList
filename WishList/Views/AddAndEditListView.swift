@@ -10,8 +10,8 @@ import PhotosUI
 
 struct AddAndEditListView: View {
     
-    @Environment (\.managedObjectContext)private var context
-    @Environment (\.dismiss) var dismiss
+    @Environment(\.managedObjectContext)private var context
+    @Environment(\.dismiss) var dismiss
     @FetchRequest(
         entity: CategoryEntity.entity(),
         sortDescriptors: [NSSortDescriptor(keyPath: \CategoryEntity.categoryAddDate, ascending: true)],
@@ -150,6 +150,9 @@ struct AddAndEditListView: View {
                             Task {
                                 //Listに保存しているData型のImageをUIImage型に変換して表示
                                 await listViewModel.convertUiimages()
+                            }
+                            if !categorys.map { $0.unwrappedCategoryName }.contains(listViewModel.category) {
+                                listViewModel.category = ""
                             }
                         }
                     }
