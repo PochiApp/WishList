@@ -213,7 +213,11 @@ extension ListView {
                     .buttonStyle(.plain)
                     .frame(alignment: .leading)
 
-                    listButtonView(list: list, selectedFolder: selectedFolder)
+                    listButtonView(
+                        list: list,
+                        selectedFolder: selectedFolder,
+                        context: context
+                    )
                 }
             }
             .onMove(perform: moveListAndUpdateListNumber)  //リストの長押しスワイプ並び替え
@@ -446,6 +450,7 @@ struct listButtonView: View {
     @State var isShowListAdd = false
     @ObservedObject var list: ListModel
     let selectedFolder: FolderModel
+    let context: NSManagedObjectContext
 
     var body: some View {
         Button(
@@ -550,6 +555,9 @@ struct listButtonView: View {
                 mode: .edit(updateList: list)
             )
             .presentationDetents([.large])
+        }
+        .onDisappear {
+            context.rollback()
         }
     }
 }
