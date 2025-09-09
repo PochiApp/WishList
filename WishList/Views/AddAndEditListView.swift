@@ -72,7 +72,7 @@ struct AddAndEditListView: View {
                         wishListTextField
                     }
                     
-                    Section(header: Text("カテゴリー").foregroundColor(Color("originalBlack"))) {
+                    Section(header: Text("カテゴリー")) {
                         categoryPicker
                         
                         //カテゴリー追加画面への遷移ボタン
