@@ -47,6 +47,7 @@ struct CategoryView: View {
                     }
                     .onDelete(perform: deleteCategory)
                 }
+                .listStyle(.grouped)
                 .background(Color.gray.opacity(0.1))
                 VStack {
                     Spacer()
