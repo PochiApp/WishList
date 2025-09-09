@@ -353,7 +353,7 @@ extension ListView {
                     folderDate: selectedFolder.writeDate ?? Date()
                 )
             )
-            .presentationDetents([.large, .fraction(0.9)])
+            .presentationDetents([.large])
             .onDisappear {
                 context.rollback()
             }
