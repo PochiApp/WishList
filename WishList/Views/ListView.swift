@@ -244,9 +244,11 @@ extension ListView {
     }
 
     private var backButton: some View {
-        Image(systemName: "arrowshape.turn.up.backward")
-            .foregroundColor(Color("originalBlack"))
-            .navigationBarBackButtonHidden(true)
+        NavigationLink(destination: FolderView()) {
+            Image(systemName: "arrowshape.turn.up.backward")
+                .foregroundColor(Color("originalBlack"))
+                .navigationBarBackButtonHidden(true)
+        }
     }
 
     private var sortFloatingButton: some View {

@@ -77,18 +77,6 @@ class ListViewModel: ObservableObject {
         }
     }
     
-    //編集するListとその内容をセット
-//    func editList (updateList: ListModel) {
-//        self.updateList = updateList
-//        
-//        text = self.updateList.unwrappedText
-//        category = self.updateList.unwrappedCategory
-//        achievement = self.updateList.achievement
-//        image1 = self.updateList.unwrappedImage1
-//        image2 = self.updateList.unwrappedImage2
-//        miniMemo = self.updateList.unwrappedMiniMemo
-//    }
-    
     //ViewModel内のList関連の変数を初期化
     func resetList () {
         updateList = nil
