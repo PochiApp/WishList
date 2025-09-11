@@ -144,7 +144,7 @@ extension CategoryView {
                 .font(.system(size: 100))
                 .foregroundColor(Color.gray.opacity(0.5))
                 .padding(.bottom)
-            
+
             Text("カテゴリーを追加して、リストを分類しましょう")
                 .font(.caption)
                 .foregroundColor(Color.gray)
@@ -204,7 +204,7 @@ extension CategoryView {
                 isEditMode = false
             },
             label: {
-                Image(systemName: "checkmark.square")
+                Text("保存")
                     .foregroundColor(Color("originalBlack"))
             }
         )
