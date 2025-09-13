@@ -74,6 +74,15 @@ class WishListViewModel : ObservableObject{
             return
         }
         
+        //新規フォルダーのfolderIndexを0として挿入するため、既存のフォルダーのfolderIndexを+1に変更
+        let fetchRequest: NSFetchRequest<FolderModel> = FolderModel.fetchRequest()
+        fetchRequest.sortDescriptors = [NSSortDescriptor(keyPath: \FolderModel.folderIndex, ascending: true)]
+        
+        if let results = try? context.fetch(fetchRequest) {
+            for (index, folder) in results.enumerated() {
+                folder.folderIndex = Int16(index + 1)
+            }
+        }
         //updateFolderがnilの場合、Folderの新規作成処理
         let newFolderData = FolderModel(context:context)
         newFolderData.title = folderTitle
