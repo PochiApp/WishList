@@ -10,7 +10,8 @@ import StoreKit
 
 struct SettingView: View {
     
-    @Environment (\.requestReview) var requestReview
+    @Environment(\.requestReview) var requestReview
+    @AppStorage("useCloudSync") var useCloudSync = false
     
     var version: String {
         guard let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String else { return "" }
@@ -28,6 +29,16 @@ struct SettingView: View {
                 Section(header: Text("設定")) {
                     NavigationLink(destination: CategoryView()) {
                         Text("カテゴリー編集")
+                    }
+                    
+                    NavigationLink(destination: iCloudSettingView()) {
+                        HStack {
+                            Text("iCloud連携")
+                            Spacer()
+                            Text(useCloudSync ? "ON" : "OFF")
+                                .foregroundColor(.gray)
+                                .fontWeight(.regular)
+                        }
                     }
                 }
                 
