@@ -22,6 +22,8 @@
 		395828A72B2D75EE007E085C /* AddAndEditFolderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395828A62B2D75ED007E085C /* AddAndEditFolderView.swift */; };
 		3977865F2BD2B4900066D5D9 /* BannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3977865E2BD2B4900066D5D9 /* BannerViewController.swift */; };
 		397786612BD3A2C80066D5D9 /* BannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 397786602BD3A2C80066D5D9 /* BannerView.swift */; };
+		397A719D2E9A826700967FD5 /* iCloudSettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 397A719C2E9A826700967FD5 /* iCloudSettingViewModel.swift */; };
+		39895F892E9267B700F5D82C /* iCloudSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39895F882E9267B700F5D82C /* iCloudSettingView.swift */; };
 		399151092E609E9200EF98EE /* ListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 399151082E609E9200EF98EE /* ListViewModel.swift */; };
 		3991510B2E60A23B00EF98EE /* CategoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3991510A2E60A23B00EF98EE /* CategoryViewModel.swift */; };
 		39B4A8542B99A6BD00FDFE67 /* PassView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39B4A8532B99A6BD00FDFE67 /* PassView.swift */; };
@@ -55,6 +57,9 @@
 		3977865C2BD131200066D5D9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		3977865E2BD2B4900066D5D9 /* BannerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerViewController.swift; sourceTree = "<group>"; };
 		397786602BD3A2C80066D5D9 /* BannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerView.swift; sourceTree = "<group>"; };
+		397A719B2E97E79A00967FD5 /* WishListDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WishListDebug.entitlements; sourceTree = "<group>"; };
+		397A719C2E9A826700967FD5 /* iCloudSettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iCloudSettingViewModel.swift; sourceTree = "<group>"; };
+		39895F882E9267B700F5D82C /* iCloudSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iCloudSettingView.swift; sourceTree = "<group>"; };
 		399151082E609E9200EF98EE /* ListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewModel.swift; sourceTree = "<group>"; };
 		3991510A2E60A23B00EF98EE /* CategoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewModel.swift; sourceTree = "<group>"; };
 		3991546B2CA94F820063A1C2 /* ListModel 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "ListModel 3.xcdatamodel"; sourceTree = "<group>"; };
@@ -116,6 +121,7 @@
 		3958285B2B21DB13007E085C /* WishList */ = {
 			isa = PBXGroup;
 			children = (
+				397A719B2E97E79A00967FD5 /* WishListDebug.entitlements */,
 				3977865C2BD131200066D5D9 /* Info.plist */,
 				3958285C2B21DB13007E085C /* WishListApp.swift */,
 				39F6D4A92E642A9700BA4CCD /* Extension */,
@@ -148,6 +154,7 @@
 				39CC4ABE2B6F602500F070D9 /* CategoryView.swift */,
 				39CC4AC82B70F8A600F070D9 /* AddCategoryView.swift */,
 				39C7D2BD2B8865F9009F32B1 /* SettingView.swift */,
+				39895F882E9267B700F5D82C /* iCloudSettingView.swift */,
 				39B4A8532B99A6BD00FDFE67 /* PassView.swift */,
 				39361DF02BA020EC008B0AD9 /* SetPassView.swift */,
 			);
@@ -175,6 +182,7 @@
 				39E54C672B2E949100298D98 /* WishListViewModel.swift */,
 				399151082E609E9200EF98EE /* ListViewModel.swift */,
 				3991510A2E60A23B00EF98EE /* CategoryViewModel.swift */,
+				397A719C2E9A826700967FD5 /* iCloudSettingViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -280,9 +288,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-WishList/Pods-WishList-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-WishList/Pods-WishList-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -320,6 +332,7 @@
 			files = (
 				395828A72B2D75EE007E085C /* AddAndEditFolderView.swift in Sources */,
 				3958286F2B21E148007E085C /* FolderView.swift in Sources */,
+				397A719D2E9A826700967FD5 /* iCloudSettingViewModel.swift in Sources */,
 				39CC4AC92B70F8A600F070D9 /* AddCategoryView.swift in Sources */,
 				3958285D2B21DB13007E085C /* WishListApp.swift in Sources */,
 				3991510B2E60A23B00EF98EE /* CategoryViewModel.swift in Sources */,
@@ -335,6 +348,7 @@
 				39361DF12BA020EC008B0AD9 /* SetPassView.swift in Sources */,
 				39C7D2BE2B8865F9009F32B1 /* SettingView.swift in Sources */,
 				39E54C6C2B3068A800298D98 /* FolderModel+CoreDataProperties.swift in Sources */,
+				39895F892E9267B700F5D82C /* iCloudSettingView.swift in Sources */,
 				3958287A2B29C576007E085C /* ListModel+CoreDataProperties.swift in Sources */,
 				39B4A8542B99A6BD00FDFE67 /* PassView.swift in Sources */,
 				395828752B29C152007E085C /* BucketList.xcdatamodeld in Sources */,
@@ -479,8 +493,10 @@
 				ADMOB_SETTINGVIEW_BANNER_AD_UNIT_ID = "ca-app-pub-3940256099942544/2934735716";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = WishList/WishListDebug.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_ASSET_PATHS = "\"WishList/Preview Content\"";
 				DEVELOPMENT_TEAM = KDZUTKP4G4;
 				ENABLE_PREVIEWS = YES;
@@ -498,9 +514,10 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1.3;
+				MARKETING_VERSION = 1.1.4;
 				PRODUCT_BUNDLE_IDENTIFIER = com.gmail.dp.app.pochi.BucketList;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -518,7 +535,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_ASSET_PATHS = "\"WishList/Preview Content\"";
 				DEVELOPMENT_TEAM = KDZUTKP4G4;
 				ENABLE_PREVIEWS = YES;
@@ -536,7 +553,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1.3;
+				MARKETING_VERSION = 1.1.4;
 				PRODUCT_BUNDLE_IDENTIFIER = com.gmail.dp.app.pochi.BucketList;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
