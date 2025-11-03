@@ -207,7 +207,7 @@ extension ListView {
                                 systemName: list.achievement
                                     ? "checkmark.square" : "square"
                             )
-                            .font(.system(size: 30))
+                            .font(.system(size: 25))
                         }
                     )
                     .buttonStyle(.plain)
@@ -447,6 +447,35 @@ extension ListView {
 
 //Listの達成チェックボックス以外のメイン表示部分
 struct listButtonView: View {
+    // 横サイズ取得
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    // 縦サイズ取得
+    @Environment(\.verticalSizeClass) private var verticalSizeClass
+
+    let UISFGenerator = UISelectionFeedbackGenerator()
+    
+    // iPad判定
+    var isPad: Bool {
+        horizontalSizeClass == .regular && verticalSizeClass == .regular
+    }
+    
+    // image1およびimage2のサイズ
+    var imageSize: CGFloat {
+        isPad ? 40 : 30
+    }
+    
+    // listNumberサイズ(通常)
+    var listNumberSize: CGFloat {
+        isPad ? 20 : 15
+        
+    }
+    
+    // listNumberサイズ(3桁)
+    var threeDigitsListNumberSize: CGFloat {
+        isPad ? 18 : 11
+    }
+    
+    
     @State var isShowListAdd = false
     @ObservedObject var list: ListModel
     let selectedFolder: FolderModel
@@ -465,12 +494,12 @@ struct listButtonView: View {
                         .font(
                             Font(
                                 UIFont.monospacedSystemFont(
-                                    ofSize: 20,
+                                    ofSize: list.listNumber > 99 ? threeDigitsListNumberSize : listNumberSize,
                                     weight: .regular
                                 )
                             )
                         )
-                        .padding(.trailing, 5)
+                        .frame(width: isPad ? 45 : 28, alignment: .leading)
 
                     VStack {
                         //Listのメインテキスト部分
@@ -513,7 +542,7 @@ struct listButtonView: View {
                                 ) {
                                     Image(uiImage: uiImage1)
                                         .resizable()
-                                        .frame(width: 30, height: 30)
+                                        .frame(width: imageSize, height: imageSize)
                                         .clipShape(Circle())
                                 }
                             }
@@ -526,7 +555,7 @@ struct listButtonView: View {
                                 ) {
                                     Image(uiImage: uiImage2)
                                         .resizable()
-                                        .frame(width: 30, height: 30)
+                                        .frame(width: imageSize, height: imageSize)
                                         .clipShape(Circle())
                                 }
                             }

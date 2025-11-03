@@ -5,13 +5,18 @@
 //  Created by 嶺澤美帆 on 2023/12/07.
 //
 
-import SwiftUI
 import CoreData
+import SwiftUI
 import UIKit
 import UniformTypeIdentifiers
 
 struct FolderView: View {
     @Environment(\.managedObjectContext) private var context
+    
+    // 横サイズ取得
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    // 縦サイズ取得
+    @Environment(\.verticalSizeClass) private var verticalSizeClass
     //初回起動したかのフラグをUserDefaultで保存
     @AppStorage("isFirstLaunchKey") var launchKey = false
 
@@ -36,6 +41,28 @@ struct FolderView: View {
     @State var isShowUnlockPassView: Bool = false
 
     @State var currentFolder: FolderModel?
+    
+    // iPad判定
+    var isPad: Bool {
+        horizontalSizeClass == .regular && verticalSizeClass == .regular
+    }
+    
+    var cardWidth: CGFloat {
+        isPad ? 450 : 280
+    }
+
+    var cardHeight: CGFloat {
+        isPad ? 280 : 180
+    }
+    
+    var folderTitleFontSize: CGFloat {
+        isPad ? 20 : 17
+    }
+    
+    var folderDayFontSize: CGFloat {
+        isPad ? 14 : 12
+    }
+    
 
     var body: some View {
         NavigationStack {
@@ -98,7 +125,7 @@ extension FolderView {
                     RoundedRectangle(cornerRadius: 16)
                         .fill(Color("\(foldermodel.unwrappedBackColor)"))
                         .opacity(currentFolder == foldermodel ? 0.8 : 1.0)
-                        .frame(width: 280, height: 150)
+                        .frame(width: cardWidth, height: cardHeight)
                         .shadow(
                             color: .gray.opacity(0.9),
                             radius: 1,
@@ -113,8 +140,7 @@ extension FolderView {
                                         ? ""
                                         : "\(wishListViewModel.formattedDateString(date: foldermodel.unwrappedStartDate)) ~ \(wishListViewModel.formattedDateString(date: foldermodel.unwrappedFinishDate))"
                                 )
-                                .font(.system(size: 16))
-                                .padding(.top)
+                                .font(.system(size: folderDayFontSize))
 
                                 HStack {
                                     //Folderロック機能がONなら、キーマークを表示
@@ -128,9 +154,10 @@ extension FolderView {
                                     Text("\(foldermodel.unwrappedTitle)")
                                         .lineLimit(2)
                                         .font(
-                                            .system(size: 17, weight: .semibold)
+                                            .system(size: folderTitleFontSize, weight: .semibold)
                                         )
-                                        .padding(.top)
+                                        .padding(.top, isPad ? 30 : 16)
+                                        .padding(.horizontal, isPad ? 10 : 5)
                                 }
 
                                 //リスト達成率表示部分
@@ -142,14 +169,14 @@ extension FolderView {
                                         "達成：\(listsAchieved.count)/\(allLists.count)"
                                     )
                                     .font(.system(size: 11))
-                                    .padding(.top, 6)
+                                    .padding(.top, isPad ? 30 : 16)
                                 }
                             }
                             .foregroundColor(
                                 Color("originalBlack")
-                            )//このalignmentを設定しないと、Folder内の文字が全体的に下へいってしまう
-                            ,
-                            alignment: .top
+                            ),
+                            //このalignmentを設定しないと、Folder内の文字が全体的に下へいってしまう
+                            alignment: .center
                         )
                 }
                 //長押しで表示するMenu部分
