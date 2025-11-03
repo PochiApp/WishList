@@ -70,12 +70,6 @@ struct FolderView: View {
             //List更新後、達成率が反映するように再度fetchが必要
             self.context.refreshAllObjects()
 
-            //初回起動時のみCategoryを"未分類"のみに初期設定
-            //            if launchKey == false {
-            //                wishListViewModel.setupDefaultCategory(context: context)
-            //                launchKey = true
-            //            }
-
             if launchKey == true && isUpdateDataModel == false {
                 wishListViewModel.setupFolderIndex(
                     context: context,
@@ -145,7 +139,7 @@ extension FolderView {
                                     let allLists = foldermodel.lists
                                 {
                                     Text(
-                                        "達成：\(listsAchieved.count)/\(allLists.count) index:\(foldermodel.folderIndex)"
+                                        "達成：\(listsAchieved.count)/\(allLists.count)"
                                     )
                                     .font(.system(size: 11))
                                     .padding(.top, 6)
