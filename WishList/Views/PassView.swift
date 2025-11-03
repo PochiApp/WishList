@@ -11,10 +11,23 @@ import AudioToolbox
 struct PassView: View {
     
     @Environment(\.managedObjectContext) private var context
+    // 横サイズ取得
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    // 縦サイズ取得
+    @Environment(\.verticalSizeClass) private var verticalSizeClass
     @State var passCode = ""
     @State var selectedFolder: FolderModel
     @Binding var isInsertPassViewBeforeListView: Bool
     let UINFGenerator = UINotificationFeedbackGenerator()
+    
+    // iPad判定
+    var isPad: Bool {
+        horizontalSizeClass == .regular && verticalSizeClass == .regular
+    }
+    
+    var keySize: CGFloat {
+        isPad ? 60 : 30
+    }
     
     var body: some View {
         fourKeysImageView
@@ -47,18 +60,19 @@ struct PassView: View {
 struct CapsuleButtonStyle: ButtonStyle {
     
     @State var selectedFolder: FolderModel
+    var isPad: Bool
     
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .padding(8)
-            .frame(width: 80, height: 80)
+            .frame(width: isPad ? 100 : 80, height: isPad ? 100 : 80)
             .background(configuration.isPressed ? Color("snowWhite") : Color("\(selectedFolder.unwrappedBackColor)"))
             .foregroundColor(Color("originalBlack"))
             .font(.body.bold())
             .clipShape(Capsule())
             .scaleEffect(configuration.isPressed ? 0.95 : 1)
-            .padding(.horizontal, 8)
-            .padding(.bottom, 3)
+            .padding(.horizontal, isPad ? 20 : 8)
+            .padding(.bottom, isPad ? 6 : 3)
         
     }
 }
@@ -68,19 +82,19 @@ extension PassView {
         VStack {
             HStack {
                 Image(systemName: passCode.count >= 1 ? "key.fill" : "key")
-                    .font(.system(size:30))
+                    .font(.system(size: keySize))
                     .padding()
                 
                 Image(systemName: passCode.count >= 2 ? "key.fill" : "key")
-                    .font(.system(size:30))
+                    .font(.system(size: keySize))
                     .padding()
                 
                 Image(systemName: passCode.count >= 3 ? "key.fill" : "key")
-                    .font(.system(size:30))
+                    .font(.system(size: keySize))
                     .padding()
                 
                 Image(systemName: passCode.count >= 4 ? "key.fill" : "key")
-                    .font(.system(size:30))
+                    .font(.system(size: keySize))
                     .padding()
             }
             .padding()
@@ -97,7 +111,7 @@ extension PassView {
                         Text("\(number)")
                             .font(.title2)
                     })
-                    .buttonStyle(CapsuleButtonStyle(selectedFolder: selectedFolder))
+                    .buttonStyle(CapsuleButtonStyle(selectedFolder: selectedFolder, isPad: isPad))
                 }
             }
             
@@ -109,7 +123,7 @@ extension PassView {
                         Text("\(number)")
                             .font(.title2)
                     })
-                    .buttonStyle(CapsuleButtonStyle(selectedFolder: selectedFolder))
+                    .buttonStyle(CapsuleButtonStyle(selectedFolder: selectedFolder, isPad: isPad))
                 }
             }
             
@@ -121,7 +135,7 @@ extension PassView {
                         Text("\(number)")
                             .font(.title2)
                     })
-                    .buttonStyle(CapsuleButtonStyle(selectedFolder: selectedFolder))
+                    .buttonStyle(CapsuleButtonStyle(selectedFolder: selectedFolder, isPad: isPad))
                 }
             }
             
@@ -132,14 +146,14 @@ extension PassView {
                     Text("0")
                         .font(.title2)
                 })
-                .buttonStyle(CapsuleButtonStyle(selectedFolder: selectedFolder))
+                .buttonStyle(CapsuleButtonStyle(selectedFolder: selectedFolder, isPad: isPad))
                 
                 Button(action: {
                     passCode = String(passCode.dropLast())
                 }, label: {
                     Image(systemName: "delete.left")
                 })
-                .buttonStyle(CapsuleButtonStyle(selectedFolder: selectedFolder))
+                .buttonStyle(CapsuleButtonStyle(selectedFolder: selectedFolder, isPad: isPad))
             }
         }
     }

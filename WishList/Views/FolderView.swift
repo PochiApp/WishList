@@ -147,7 +147,7 @@ extension FolderView {
                                     if foldermodel.lockIsActive {
                                         Image(systemName: "lock.fill")
                                             .font(.system(size: 14))
-                                            .padding(.top)
+                                            .padding(.top, isPad ? 30 : 16)
                                     }
 
                                     //Folderのタイトル表示部分
