@@ -25,7 +25,7 @@ struct WishListApp: App {
     private let persistence = PersistenceController.shared
         var body: some Scene {
             WindowGroup {
-                FirstTabView()
+                LaunchScreen()
                     .environment(\.managedObjectContext, persistence.container.viewContext)
             }
         }

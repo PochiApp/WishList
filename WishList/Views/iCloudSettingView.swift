@@ -5,12 +5,16 @@
 //  Created by 嶺澤美帆 on 2025/10/05.
 //
 
+import CoreData
 import SwiftUI
 
 struct iCloudSettingView: View {
-    @AppStorage("isICloudEnabled") private var isICloudEnabled = false
-    @State private var showAlert = false
-    @State private var pendingToggleValue = false
+    @Environment(\.managedObjectContext) private var context
+    @StateObject var iCloudViewModel = iCloudSettingViewModel()
+    @AppStorage("isICloudEnabled") var isICloudEnabled = false
+    @State private var showMailView = false
+    @State private var errorMessage: ErrorMessage?
+    @State private var errorTitle: String = "iCloud連携失敗しました"
 
     var body: some View {
         Form {
@@ -21,7 +25,7 @@ struct iCloudSettingView: View {
                         iCloudに保存されたデータは、同じApple IDでサインインしているすべてのデバイスで共有されます。
 
                         - ネットワーク環境により同期に時間がかかる場合があります。
-                        - iCloudを無効にすると、今後はローカルデータのみが使用されます。
+                        - 一度iCloud連携を有効にすると、以降このデバイスのデータはiCloudと自動同期され、連携解除はできません。
                         """
                     )
                     .font(.footnote)
@@ -34,8 +38,36 @@ struct iCloudSettingView: View {
                     get: { isICloudEnabled },
                     set: { newValue in
                         // すぐには切り替えず、確認アラートを出す
-                        pendingToggleValue = newValue
-                        showAlert = true
+                        iCloudViewModel.pendingToggleValue = newValue
+                        // iCloudアカウント連携が設定しているか確認
+                        Task {
+                            let isAvailable =
+                                await iCloudViewModel.checkiCloudAccountStatus()
+                            if isAvailable {
+                                // iCloudアカウント連携済であれば処理継続
+                                do {
+                                    //iCloudにデータが存在するかを確認
+                                    iCloudViewModel.cloudHasData =
+                                        try await iCloudViewModel
+                                        .checkiCloudHasData()
+                                    print(
+                                        "cloudHasData: \(iCloudViewModel.cloudHasData)"
+                                    )
+                                    iCloudViewModel.showAlert = true
+                                } catch {
+                                    print(
+                                        "⚠️ iCloudデータ確認中にエラー発生 error: \(error)"
+                                    )
+                                    errorTitle =
+                                        "iCloudデータ確認中にエラー発生 error: \(error)"
+                                    // エラーダイアログ表示
+                                    iCloudViewModel.syncFailed = true
+                                }
+                            } else {
+                                // iCloudアカウント連携未設定の場合、iCloudサインインしてください警告アラート表示
+                                iCloudViewModel.showAccountAlert = true
+                            }
+                        }
                     }
                 )
             ) {
@@ -43,50 +75,103 @@ struct iCloudSettingView: View {
             }
         }
         .navigationTitle("iCloud連携設定")
-        .alert(isPresented: $showAlert) {
-            Alert(
-                title: Text(
-                    pendingToggleValue
-                        ? "iCloud連携を有効にしますか？" : "iCloud連携を無効にしますか？"
-                ),
-                message: Text(
-                    pendingToggleValue
-                        ? "有効にすると、データがiCloudに保存され、他のデバイスと同期されます。"
-                        : "無効にすると、iCloudとの同期が停止し、ローカルデータのみが使用されます。"
-                ),
-                primaryButton: .default(Text("はい")) {
-                    withAnimation {
-                        isICloudEnabled = pendingToggleValue
-                    }
-                    if pendingToggleValue {
-                        enableICloudSync()
-                    } else {
-                        disableICloudSync()
-                    }
-                },
-                secondaryButton: .cancel(Text("キャンセル")) {
-                    // 元に戻す
-                    pendingToggleValue = isICloudEnabled
+        .disabled(isICloudEnabled)
+        // アラート1. iCloudアカウントにサインインしているか確認
+        .alert(
+            "iCloudアカウント連携が必要です",
+            isPresented: $iCloudViewModel.showAccountAlert
+        ) {
+            Button("OK") {
+                // 元に戻す
+                iCloudViewModel.pendingToggleValue = isICloudEnabled
+                iCloudViewModel.showAccountAlert = false
+            }
+        } message: {
+            Text("この機能を利用するには、端末の設定でiCloudにサインインしてください")
+        }
+        // アラート2. iCloud連携有効確認
+        .alert("iCloud連携を有効にします", isPresented: $iCloudViewModel.showAlert) {
+            Button("キャンセル") {
+                // 元に戻す
+                iCloudViewModel.pendingToggleValue = isICloudEnabled
+            }
+            Button("OK") {
+                Task {
+                    await handleICloudToggle()
                 }
+            }
+        } message: {
+            Text(
+                iCloudViewModel.cloudHasData
+                    ? "iCloudにすでにデータが保存されています。iCloudのデータを読み込みますか？\n※現在表示中のデータは上書きされます"
+                    : "iCloudにデータはありません。ローカルのデータをiCloudに移行しますか？"
             )
         }
+        // アラート3. iCloud連携完了表示
+        .alert("iCloud連携完了", isPresented: $iCloudViewModel.syncCompleted) {
+            Button("OK") {
+                // タイマーで遅延後アプリを終了する
+                UIControl().sendAction(
+                    #selector(URLSessionTask.suspend),
+                    to: UIApplication.shared,
+                    for: nil
+                )
+                Timer.scheduledTimer(withTimeInterval: 0.2, repeats: false) {
+                    _ in
+                    exit(0)
+                }
+            }
+        } message: {
+            Text(
+                """
+                    iCloud連携完了しました。
+                    データ更新のため、一度アプリを終了します。
+                    再起動してください。
+                """
+            )
+        }
+        .alert("iCloud連携失敗", isPresented: $iCloudViewModel.syncFailed) {
+            Button("キャンセル") {
+                // 元に戻す
+                iCloudViewModel.pendingToggleValue =
+                    isICloudEnabled
+            }
+
+            Button("エラー報告") {
+                errorMessage = ErrorMessage(text: errorTitle)
+            }
+        } message: {
+            Text(
+                """
+                    iCloud連携に失敗しました。
+                    改善のためエラー報告を頂けますと幸いです。
+                """
+            )
+        }
+        .sheet(item: $errorMessage) { message in
+            MailView(errorMessage: message.text)
+        }
     }
-
-    // MARK: - iCloud同期制御メソッド
-
-    private func enableICloudSync() {
-        print("iCloud同期を有効化しました")
-        // CloudKitストアへの切り替え処理などをここに
-    }
-
-    private func disableICloudSync() {
-        print("iCloud同期を無効化しました")
-        // ローカルストアへの戻し処理などをここに
+    
+    @MainActor
+    private func handleICloudToggle() async {
+        if iCloudViewModel.cloudHasData {
+            iCloudViewModel.syncCompleted = true
+            isICloudEnabled = iCloudViewModel.pendingToggleValue
+        } else {
+            do {
+                try await iCloudViewModel.migrateLocalToCloud(context)
+                iCloudViewModel.syncCompleted = true
+                isICloudEnabled = iCloudViewModel.pendingToggleValue
+            } catch {
+                errorTitle = "ローカルからiCloudへの読み込みに失敗 error: \(error)"
+                iCloudViewModel.syncFailed = true
+            }
+        }
     }
 }
 
-#Preview {
-    NavigationStack {
-        iCloudSettingView()
-    }
+struct ErrorMessage: Identifiable {
+    let id = UUID()
+    let text: String
 }

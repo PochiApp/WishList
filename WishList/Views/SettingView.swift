@@ -11,7 +11,7 @@ import StoreKit
 struct SettingView: View {
     
     @Environment(\.requestReview) var requestReview
-    @AppStorage("useCloudSync") var useCloudSync = false
+    @AppStorage("isICloudEnabled") var isICloudEnabled = false
     
     var version: String {
         guard let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String else { return "" }
@@ -35,7 +35,7 @@ struct SettingView: View {
                         HStack {
                             Text("iCloud連携")
                             Spacer()
-                            Text(useCloudSync ? "ON" : "OFF")
+                            Text(isICloudEnabled ? "連携済み" : "未連携")
                                 .foregroundColor(.gray)
                                 .fontWeight(.regular)
                         }

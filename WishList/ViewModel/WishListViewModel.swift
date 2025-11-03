@@ -153,20 +153,5 @@ class WishListViewModel : ObservableObject{
         selectedFinishDate = Date()
         backColor = "snowWhite"
     }
-    
-    
-    //カテゴリー初期化処理 未分類廃止
-//    func setupDefaultCategory(context: NSManagedObjectContext) {
-//        let newCategoryEntity = CategoryEntity(context: context)
-//        newCategoryEntity.categoryName = "未分類"
-//        newCategoryEntity.categoryAddDate = Date()
-//        
-//        do {
-//            try context.save()
-//        }
-//        catch {
-//            print("カテゴリー初期値設定できませんでした")
-//        }
-//    }
 }
 
