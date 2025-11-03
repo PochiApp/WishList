@@ -67,6 +67,7 @@ struct CategoryView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbarBackground(.visible, for: .navigationBar)
         .navigationBarBackButtonHidden(true)
+        .navigationViewStyle(.stack)
         .toolbar {
             ToolbarItem(placement: .principal) {
                 navigationTitle
